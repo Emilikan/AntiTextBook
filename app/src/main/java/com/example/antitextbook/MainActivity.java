@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity
         // создаем новый фрагмент
         Fragment fragment = null;
         Class fragmentClass = null;
+
         int id = item.getItemId();
 
         if (id == R.id.library) {
@@ -90,6 +91,16 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.nav_send) {
         fragmentClass = Send.class;
         }
+        else if (id == R.id.home) {
+            fragmentClass = Home.class;
+        }
+        else if (id == R.id.schedule) {
+            fragmentClass = Schedule.class;
+        }
+        else {
+            fragmentClass = Home.class;
+        }
+
         // ловим ошибки
         try {
             fragment = (Fragment) fragmentClass.newInstance();
