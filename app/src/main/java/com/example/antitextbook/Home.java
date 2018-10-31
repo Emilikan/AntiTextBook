@@ -24,7 +24,7 @@ public class Home extends Fragment {
                              Bundle savedInstanceState) {
         View rootView1 = inflater.inflate(R.layout.fragment_home, container, false);
 
-        int numberOfPictures = 5, numberOfPicturesMin = 5, numberOfPicturesMax = 6;
+        int numberOfPictures = 0, numberOfPicturesMin = 0, numberOfPicturesMax = 6;
         ImageView mImageView;
         ScrollView scrollViewSwipe;
         String folderName = "temp/ATB", fileName = "numberOfPictures.txt";// название файла, где хранится номер данной картинки
@@ -32,15 +32,17 @@ public class Home extends Fragment {
         scrollViewSwipe = (ScrollView) rootView1.findViewById(R.id.scrollView1);// получаем ScrollView для свайпов
         mImageView = (ImageView) rootView1.findViewById(R.id.imageView1);// получаем ImageView для установки и смены картинки
 
-        // проверяем наличие файла
+        // проверяем наличие cd-card
+        //* написать проверку на наличие файла (тогда будут сохранятся страницы)
         String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName + "/" + fileName;
         if(isExternalStorageWritable()){
             saveFile(fullPath, String.valueOf(numberOfPicturesMin));
         }
         else{
             Toast.makeText(getActivity(), "Error: " + "не установлена cd-card. Для корректной работы приложения необходима cd-card", Toast.LENGTH_SHORT).show();
-            // поменять потом все на внутренний накопитель, ща чет не получилось и пошло оно все нахер
-            // а, и еще. Я ваще хз, куда созраняется файл (у меня на телефоне он, как мне показалось, сохраняет на внутреннюю)
+            //* поменять потом все на внутренний накопитель, ща чет не получилось и пошло оно все нахер
+            //* а, и еще. Я ваще хз, куда созраняется файл (у меня на телефоне он, как мне показалось, сохраняет на внутреннюю)
+
         }
 
         swipeImage(mImageView, scrollViewSwipe);
@@ -68,13 +70,13 @@ public class Home extends Fragment {
 
                         String numberStringRes = readFile(fullPath);
                         int number = Integer.parseInt(numberStringRes);
+                        String lesson = "geography", grage = "10";
+                        //* написать метод получение названия и класса (это после реализации библиотеки)
+                        String name = lesson + grage + "_"+ number;
 
-                        if(number == 5){
-                            imageView.setImageResource(R.drawable.geography10_5);
-                        }
-                        else {
-                            imageView.setImageResource(R.drawable.geography10_6);
-                        }
+                        int holderInt = getResources().getIdentifier(name, "drawable", getActivity().getPackageName());
+
+                        imageView.setImageResource(holderInt);
                     }
                     catch (NumberFormatException e){
                         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -97,13 +99,12 @@ public class Home extends Fragment {
 
                     String numberStringRes = readFile(fullPath);
                     int number = Integer.parseInt(numberStringRes);
+                    String lesson = "geography", grage = "10";
+                    String name = lesson + grage + "_"+ number;
 
-                    if(number == 5){
-                        imageView.setImageResource(R.drawable.geography10_5);
-                    }
-                    else {
-                        imageView.setImageResource(R.drawable.geography10_6);
-                    }
+                    int holderInt = getResources().getIdentifier(name, "drawable", getActivity().getPackageName());
+
+                    imageView.setImageResource(holderInt);
                 }
                 catch (NumberFormatException e){
                     Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -117,13 +118,10 @@ public class Home extends Fragment {
         String numberString = readFile(fullPath);
         try {
            int number = Integer.parseInt(numberString);
-
-           if(number == 5){
-               imageView.setImageResource(R.drawable.geography10_5);
-           }
-           else {
-               imageView.setImageResource(R.drawable.geography10_6);
-           }
+            String lesson = "geography", grage = "10";
+            String name = lesson + grage + "_"+ number;
+            int holderInt = getResources().getIdentifier(name, "drawable", getActivity().getPackageName());
+               imageView.setImageResource(holderInt);
         }
         catch (NumberFormatException e){
             Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -167,7 +165,7 @@ public class Home extends Fragment {
     }
 
     // Функция, которая читает файл по определенному адресу, возвращает то, что в файле (Если там более одного слова, то вернет все "слипшееся")
-    // Переписать ее для того, чтобы можно было использовать свой адресс
+    //* Переписать ее для того, чтобы можно было использовать свой адресс (а не встроенный)
     public String readFile (String path){
         File sdcard = Environment.getExternalStorageDirectory();
         //Get the text file
