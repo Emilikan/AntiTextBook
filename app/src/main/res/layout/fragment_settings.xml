@@ -3,12 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".settings">
+    tools:context=".Settings">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Настройки" />
+        android:orientation="vertical">
 
+        <Button
+            android:id="@+id/infoApp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="О приложении" />
+    </LinearLayout>
 </FrameLayout>
