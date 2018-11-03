@@ -7,6 +7,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
+// класс, обрабатывающий свайпы. Пример использования смотри в классе Home
+
 public class OnSwipeTouchListener implements OnTouchListener {
     private final GestureDetector gestureDetector;
 

@@ -1,6 +1,7 @@
 package com.example.antitextbook;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
@@ -11,12 +12,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -65,11 +74,55 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+    public boolean lessonOrNo(){
+        boolean couples = false;
+        String folderName = "temp/ATB/settings", fileName = "checkedBox.txt";
+        String path = "/" + folderName + "/" + fileName;
+        String couplesAfterFile = readFile(path);
 
+        Toast.makeText(this, couplesAfterFile, Toast.LENGTH_SHORT).show();
+        if(couplesAfterFile == "1"){
+            couples = true;
+        }
+        else if(couplesAfterFile == "2"){
+            couples = false;
+        }
+        else{
+            Toast.makeText(this, "Error: " + "ошибка в значении в файле с обозначением пар или уроков. Выставлены уроки.", Toast.LENGTH_SHORT).show();
+            couples = false;
+        }
+        return couples;
+    }
+
+    public String readFile (String path){
+        File sdcard = Environment.getExternalStorageDirectory();
+        //получает текстовый файл
+        File file = new File(sdcard,"/" + path);
+        //читаем текстовый файл
+        StringBuilder text = new StringBuilder();
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            String resultText = "";
+
+            while ((line = br.readLine()) != null) {
+                resultText += line;
+                return resultText;
+            }
+            br.close();
+        }
+        catch (IOException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        return null;
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
+
         // создаем новый фрагмент
         Fragment fragment = null;
         Class fragmentClass = null;
@@ -96,7 +149,10 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.home) {
             fragmentClass = Home.class;
         }
-        else if (id == R.id.schedule) {
+        else if (id == R.id.schedule && lessonOrNo()) {
+            fragmentClass = Schedule2.class;
+        }
+        else if(id == R.id.schedule && !lessonOrNo()){
             fragmentClass = Schedule.class;
         }
         else {

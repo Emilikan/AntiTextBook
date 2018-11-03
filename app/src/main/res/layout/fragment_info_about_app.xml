@@ -16,10 +16,29 @@
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Приложение AntiTextBook разработанно программистами и, по совместительству, учащимися: Насыровым Эмильем, Данилой Суворовым, Никитой Романовым и Дмитрием Севастьяновым" />
-
+            android:text="Приложение AntiTextBook разработанно программистами и, по совместительству, учащимися:" />
+        <TextView
+            android:id="@+id/textViewOurNames1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Эмилькой;" />
+        <TextView
+            android:id="@+id/textViewOurNames2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Данилой Суворовым;" />
+        <TextView
+            android:id="@+id/textViewOurNames3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Дмитрием Севастьяновым;" />
+        <TextView
+            android:id="@+id/textViewOurNames4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Никитой Романовым." />
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/backOnFragmentOfSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Назад" />

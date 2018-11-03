@@ -24,39 +24,51 @@ public class Home extends Fragment {
                              Bundle savedInstanceState) {
         View rootView1 = inflater.inflate(R.layout.fragment_home, container, false);
 
-        int numberOfPictures = 0, numberOfPicturesMin = 0, numberOfPicturesMax = 6;
+        int numberOfPicturesMin = 0;
         ImageView mImageView;
         ScrollView scrollViewSwipe;
         String folderName = "temp/ATB", fileName = "numberOfPictures.txt";// название файла, где хранится номер данной картинки
 
         scrollViewSwipe = (ScrollView) rootView1.findViewById(R.id.scrollView1);// получаем ScrollView для свайпов
         mImageView = (ImageView) rootView1.findViewById(R.id.imageView1);// получаем ImageView для установки и смены картинки
+        String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName + "/" + fileName;
+        File file = new File(fullPath);
 
         // проверяем наличие cd-card
-        //* написать проверку на наличие файла (тогда будут сохранятся страницы)
-        String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName + "/" + fileName;
-        if(isExternalStorageWritable()){
-            saveFile(fullPath, String.valueOf(numberOfPicturesMin));
-        }
-        else{
-            Toast.makeText(getActivity(), "Error: " + "не установлена cd-card. Для корректной работы приложения необходима cd-card", Toast.LENGTH_SHORT).show();
-            //* поменять потом все на внутренний накопитель, ща чет не получилось и пошло оно все нахер
-            //* а, и еще. Я ваще хз, куда созраняется файл (у меня на телефоне он, как мне показалось, сохраняет на внутреннюю)
+        if(!file.exists()) {
+            if (isExternalStorageWritable()) {
+                saveFile(fullPath, String.valueOf(numberOfPicturesMin));
 
+            } else {
+                Toast.makeText(getActivity(), "Error: " + "не установлена cd-card. Для корректной работы приложения необходима cd-card", Toast.LENGTH_SHORT).show();
+                //* поменять потом все на внутренний накопитель, ща чет не получилось и пошло оно все нахер
+                //* а, и еще. Я ваще хз, куда созраняется файл (у меня на телефоне он, как мне показалось, сохраняет на внутреннюю)
+            }
         }
-
+        String numberString = readFile(fullPath);
+        try {
+            int number = Integer.parseInt(numberString);
+            String lesson = "geography", grage = "10";
+            String name = lesson + grage + "_"+ number;
+            int holderInt = getResources().getIdentifier(name, "drawable", getActivity().getPackageName());
+            mImageView.setImageResource(holderInt);
+        }
+        catch (NumberFormatException e){
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            mImageView.setImageResource(R.drawable.geography10_5);
+        }
         swipeImage(mImageView, scrollViewSwipe);
 
         return rootView1;
     }
-    public void swipeImage(ImageView imageView, ScrollView scrollViewSwipe){
+    private void swipeImage(ImageView imageView, ScrollView scrollViewSwipe){
 
         //обработка свайпа (там же сменяем картинку)
         scrollViewSwipe.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
                 public void onSwipeRight() {
                 //обработка свайпа вправо
                     String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp/ATB/numberOfPictures.txt";
-                    String numberString = readFile(fullPath);;
+                    String numberString = readFile(fullPath);
                     try {
                         int myInt = Integer.parseInt(numberString);
                         if(myInt != 0) {
@@ -114,19 +126,7 @@ public class Home extends Fragment {
         } );
 
         // устанавливаем картинку в самом начале только один раз (при свайпах к этому уже не обращаемся)
-        String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp/ATB/numberOfPictures.txt";
-        String numberString = readFile(fullPath);
-        try {
-           int number = Integer.parseInt(numberString);
-            String lesson = "geography", grage = "10";
-            String name = lesson + grage + "_"+ number;
-            int holderInt = getResources().getIdentifier(name, "drawable", getActivity().getPackageName());
-               imageView.setImageResource(holderInt);
-        }
-        catch (NumberFormatException e){
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            imageView.setImageResource(R.drawable.geography10_5);
-        }
+
     }
 
     // Функция, которая проверяет, доступно ли external storage(cd-card) для чтения и записи
@@ -141,6 +141,7 @@ public class Home extends Fragment {
     }
 
     //Функция, которая сохраняет файл, принимая полный путь до файла filePath и сохраняемый текст FileContent (так же используется для создания файла)
+    //* написать функцию подобно этой, но без перезаписывания файла
     public void saveFile (String filePath, String FileContent)
     {
         //Создание объекта файла.
@@ -164,13 +165,14 @@ public class Home extends Fragment {
         }
     }
 
-    // Функция, которая читает файл по определенному адресу, возвращает то, что в файле (Если там более одного слова, то вернет все "слипшееся")
+    // Функция, которая читает файл по определенному адресу, возвращает то, что в файле (Если там более одного слова, то вернет все "слипшееся". В идеале заменить строку на массив (список),
+    // а то функцию почти нигде не получится использовать)
     //* Переписать ее для того, чтобы можно было использовать свой адресс (а не встроенный)
     public String readFile (String path){
         File sdcard = Environment.getExternalStorageDirectory();
-        //Get the text file
+        //получает текстовый файл
         File file = new File(sdcard,"/temp/ATB/numberOfPictures.txt");
-        //Read text from file
+        //читаем текстовый файл
         StringBuilder text = new StringBuilder();
 
         try {

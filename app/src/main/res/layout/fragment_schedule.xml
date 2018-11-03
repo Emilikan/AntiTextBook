@@ -14,16 +14,14 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/buttonChangeSchedule"
             android:layout_width="match_parent"
-            android:layout_height="38dp"
-
+            android:layout_height="38sp"
             android:text="Изменить расписание" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -48,33 +46,51 @@
                             android:text="Понедельник"
                             android:textSize="30sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/lesson_mon1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/mon"
                             android:text="Первый урок" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/lesson_mon2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_mon1"
                             android:text="Второй урок" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/lesson_mon3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_mon2"
                             android:text="Третий урок" />
 
-                        <TextView
-                            android:id="@+id/lesson_mon4"
+                        <EditText
+                        android:id="@+id/lesson_mon4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/lesson_mon3"
+                        android:text="Четвертый урок" />
+                        <EditText
+                            android:id="@+id/lesson_mon5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/lesson_mon3"
-                            android:text="Четвертый урок" />
+                            android:layout_below="@+id/lesson_mon4"
+                            android:text="Пятый урок" />
+                        <EditText
+                            android:id="@+id/lesson_mon6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_mon5"
+                            android:text="Шестой урок" />
+                        <EditText
+                            android:id="@+id/lesson_mon7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_mon6"
+                            android:text="Седьмой урок" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
 
@@ -97,33 +113,51 @@
                             android:text="Вторник"
                             android:textSize="30sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/lesson_th1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/thuesday"
                             android:text="Первый урок" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/lesson_th2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_th1"
                             android:text="Второй урок" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/lesson_th3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_th2"
                             android:text="Третий урок" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/lesson_th4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_th3"
                             android:text="Четвертый урок" />
+                        <EditText
+                            android:id="@+id/lesson_th5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_th4"
+                            android:text="Пятый урок" />
+                        <EditText
+                            android:id="@+id/lesson_th6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_th5"
+                            android:text="Шестой урок" />
+                        <EditText
+                            android:id="@+id/lesson_th7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_th6"
+                            android:text="Седьмой урок" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
 
@@ -145,33 +179,51 @@
                             android:text="Среда"
                             android:textSize="30sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/lesson_wed1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/wednesday"
                             android:text="Первый урок" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/lesson_wed2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_wed1"
                             android:text="Второй урок" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/lesson_wed3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_wed2"
                             android:text="Третий урок" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/lesson_wed4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_wed3"
                             android:text="Четвертый урок" />
+                        <EditText
+                            android:id="@+id/lesson_wed5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_wed4"
+                            android:text="Пятый урок" />
+                        <EditText
+                            android:id="@+id/lesson_wed6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_wed5"
+                            android:text="Шестой урок" />
+                        <EditText
+                            android:id="@+id/lesson_wed7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_wed6"
+                            android:text="Седьмой урок" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
 
@@ -193,33 +245,51 @@
                             android:text="Четверг"
                             android:textSize="30sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/lesson_thur1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/thursday"
                             android:text="Первый урок" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/lesson_thur2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_thur1"
                             android:text="Второй урок" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/lesson_thur3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_thur2"
                             android:text="Третий урок" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/lesson_thur4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_thur3"
                             android:text="Четвертый урок" />
+                        <EditText
+                            android:id="@+id/lesson_thur5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_thur4"
+                            android:text="Пятый урок" />
+                        <EditText
+                            android:id="@+id/lesson_thur6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_thur5"
+                            android:text="Шестой урок" />
+                        <EditText
+                            android:id="@+id/lesson_thur7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_thur6"
+                            android:text="Седьмой урок" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
 
@@ -241,33 +311,117 @@
                             android:text="Пятница"
                             android:textSize="30sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/lesson_fri1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/friday"
                             android:text="Первый урок" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/lesson_fri2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_fri1"
                             android:text="Второй урок" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/lesson_fri3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_fri2"
                             android:text="Третий урок" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/lesson_fri4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_fri3"
                             android:text="Четвертый урок" />
+                        <EditText
+                            android:id="@+id/lesson_fri5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_fri4"
+                            android:text="Пятый урок" />
+                        <EditText
+                            android:id="@+id/lesson_fri6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_fri5"
+                            android:text="Шестой урок" />
+                        <EditText
+                            android:id="@+id/lesson_fri7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_fri6"
+                            android:text="Седьмой урок" />
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/colorGreen">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/saturday"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:text="Суббота"
+                            android:textSize="30sp" />
+
+                        <EditText
+                            android:id="@+id/lesson_sat1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/saturday"
+                            android:text="Первый урок" />
+
+                        <EditText
+                            android:id="@+id/lesson_sat2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_sat1"
+                            android:text="Второй урок" />
+
+                        <EditText
+                            android:id="@+id/lesson_sat3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_sat2"
+                            android:text="Третий урок" />
+
+                        <EditText
+                            android:id="@+id/lesson_sat4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_sat3"
+                            android:text="Четвертый урок" />
+                        <EditText
+                            android:id="@+id/lesson_sat5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_sat4"
+                            android:text="Пятый урок" />
+                        <EditText
+                            android:id="@+id/lesson_sat6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_sat5"
+                            android:text="Шестой урок" />
+                        <EditText
+                            android:id="@+id/lesson_sat7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_sat6"
+                            android:text="Седьмой урок" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
             </LinearLayout>
