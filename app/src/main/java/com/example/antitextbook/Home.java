@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.util.FitPolicy;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,10 +32,26 @@ public class Home extends Fragment {
         ScrollView scrollViewSwipe;
         String folderName = "temp/ATB", fileName = "numberOfPictures.txt";// название файла, где хранится номер данной картинки
 
-        scrollViewSwipe = (ScrollView) rootView1.findViewById(R.id.scrollView1);// получаем ScrollView для свайпов
-        mImageView = (ImageView) rootView1.findViewById(R.id.imageView1);// получаем ImageView для установки и смены картинки
+        //scrollViewSwipe = (ScrollView) rootView1.findViewById(R.id.scrollView1);// получаем ScrollView для свайпов
         String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName + "/" + fileName;
         File file = new File(fullPath);
+
+        // открытие pdf файла
+        PDFView pdfView = rootView1.findViewById(R.id.pdfView);
+
+        pdfView.fromAsset("geogr_10_maksakovskiy.pdf")
+                .enableSwipe(true) // allows to block changing pages using swipe
+                .swipeHorizontal(true)
+                .enableDoubletap(true)
+                .defaultPage(0)
+                .enableAnnotationRendering(false) // render annotations (such as comments, colors or forms)
+                .password(null)
+                .scrollHandle(null)
+                .enableAntialiasing(true) // improve rendering a little bit on low-res screens
+                // spacing between pages in dp. To define spacing color, set view background
+                .spacing(0)
+                .pageFitPolicy(FitPolicy.WIDTH)
+                .load();
 
         // проверяем наличие cd-card
         if(!file.exists()) {
@@ -50,17 +69,18 @@ public class Home extends Fragment {
             int number = Integer.parseInt(numberString);
             String lesson = "geography", grage = "10";
             String name = lesson + grage + "_"+ number;
-            int holderInt = getResources().getIdentifier(name, "drawable", getActivity().getPackageName());
-            mImageView.setImageResource(holderInt);
+            int holderInt = getResources().getIdentifier(name, "drawable", getActivity().getPackageName()); // для поиска id по названию. Крутаю вещь. Если ты не понимаешь, что это, то спроси у меня (Эмиля)
+            //mImageView.setImageResource(holderInt); // используем это для изменения КАРТИНКИ
         }
         catch (NumberFormatException e){
             Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            mImageView.setImageResource(R.drawable.geography10_5);
+            //mImageView.setImageResource(R.drawable.geography10_5);
         }
-        swipeImage(mImageView, scrollViewSwipe);
+        //swipeImage(mImageView, scrollViewSwipe);
 
         return rootView1;
     }
+
     private void swipeImage(ImageView imageView, ScrollView scrollViewSwipe){
 
         //обработка свайпа (там же сменяем картинку)
@@ -78,7 +98,7 @@ public class Home extends Fragment {
                         numberString = readFile(fullPath);
                         Toast.makeText(getActivity(), numberString, Toast.LENGTH_SHORT).show();
 
-                        ImageView imageView = (ImageView) getView().findViewById(R.id.imageView1);
+                        //ImageView imageView = (ImageView) getView().findViewById(R.id.imageView1);
 
                         String numberStringRes = readFile(fullPath);
                         int number = Integer.parseInt(numberStringRes);
@@ -88,7 +108,7 @@ public class Home extends Fragment {
 
                         int holderInt = getResources().getIdentifier(name, "drawable", getActivity().getPackageName());
 
-                        imageView.setImageResource(holderInt);
+                        //imageView.setImageResource(holderInt);
                     }
                     catch (NumberFormatException e){
                         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -107,7 +127,7 @@ public class Home extends Fragment {
                     numberString = readFile(fullPath);
                     Toast.makeText(getActivity(), numberString, Toast.LENGTH_SHORT).show();
 
-                    ImageView imageView = (ImageView) getView().findViewById(R.id.imageView1);
+                    //ImageView imageView = (ImageView) getView().findViewById(R.id.imageView1);
 
                     String numberStringRes = readFile(fullPath);
                     int number = Integer.parseInt(numberStringRes);
@@ -116,7 +136,7 @@ public class Home extends Fragment {
 
                     int holderInt = getResources().getIdentifier(name, "drawable", getActivity().getPackageName());
 
-                    imageView.setImageResource(holderInt);
+                    //imageView.setImageResource(holderInt);
                 }
                 catch (NumberFormatException e){
                     Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();

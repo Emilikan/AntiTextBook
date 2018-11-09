@@ -33,4 +33,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-storage:16.0.1'
     implementation 'com.google.firebase:firebase-auth:16.0.1'
+    implementation 'com.github.barteksc:android-pdf-viewer:3.1.0-beta.1'
 }
