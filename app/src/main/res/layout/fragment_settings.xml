@@ -17,6 +17,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Пары вместо уроков?" />
+        <CheckBox
+            android:id="@+id/darkBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Темная тема" />
 
         <Button
             android:id="@+id/infoApp"
