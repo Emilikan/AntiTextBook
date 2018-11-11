@@ -143,6 +143,9 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.server) {
         fragmentClass = Server.class;
         }
+        else if (id == R.id.cloud) {
+            fragmentClass = Cloud.class;
+        }
         /*
         else if (id == R.id.nav_share) {
 
@@ -160,6 +163,7 @@ public class MainActivity extends AppCompatActivity
         else if(id == R.id.schedule && !lessonOrNo()){
             fragmentClass = Schedule.class;
         }
+
         else {
             fragmentClass = Home.class;
         }

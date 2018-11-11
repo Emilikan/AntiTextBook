@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".library">
+    tools:context=".Library">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Библиотека" />
+        android:orientation="vertical">
 
+        <Button
+            android:id="@+id/choose"
+            android:layout_width="match_parent"
+            android:layout_height="257dp"
+            android:text="Скачать книгу" />
+
+        <Button
+            android:id="@+id/download"
+            android:layout_width="match_parent"
+            android:layout_height="247dp"
+            android:text="Выбрать скачанную книгу" />
+    </LinearLayout>
 </FrameLayout>
