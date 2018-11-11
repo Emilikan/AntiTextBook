@@ -1,16 +1,19 @@
 package com.example.antitextbook;
 
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.listener.OnDrawListener;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 
 import java.io.BufferedReader;
@@ -21,6 +24,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 public class Home extends Fragment {
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,23 +40,58 @@ public class Home extends Fragment {
         //scrollViewSwipe = (ScrollView) rootView1.findViewById(R.id.scrollView1);// получаем ScrollView для свайпов
         String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName + "/" + fileName;
         File file = new File(fullPath);
-
+        String folderName1 = "temp/ATB/settings", fileName1 = "darkBox.txt";
+        String fullPath1 = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName1 + "/" + fileName1;
+        Toast.makeText(getActivity(),Environment.getExternalStorageDirectory().getAbsolutePath(), Toast.LENGTH_SHORT).show();
+        String dark = readFile(fullPath1);
         // открытие pdf файла
         PDFView pdfView = rootView1.findViewById(R.id.pdfView);
+        if(dark == "TRUE") {
+            pdfView.fromAsset("geogr_10_maksakovskiy.pdf")
+                    .enableSwipe(true) // allows to block changing pages using swipe
+                    .swipeHorizontal(true)
+                    .enableDoubletap(true)
+                    .defaultPage(0)
+                    .nightMode(true)
+                    .enableAnnotationRendering(false) // render annotations (such as comments, colors or forms)
+                    .password(null)
+                    .scrollHandle(null)
+                    .onDrawAll(new OnDrawListener() {
+                        @Override
+                        public void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int displayedPage) {
 
-        pdfView.fromAsset("geogr_10_maksakovskiy.pdf")
-                .enableSwipe(true) // allows to block changing pages using swipe
-                .swipeHorizontal(true)
-                .enableDoubletap(true)
-                .defaultPage(0)
-                .enableAnnotationRendering(false) // render annotations (such as comments, colors or forms)
-                .password(null)
-                .scrollHandle(null)
-                .enableAntialiasing(true) // improve rendering a little bit on low-res screens
-                // spacing between pages in dp. To define spacing color, set view background
-                .spacing(0)
-                .pageFitPolicy(FitPolicy.WIDTH)
-                .load();
+
+                        }
+                    })
+                    .enableAntialiasing(true) // improve rendering a little bit on low-res screens
+                    // spacing between pages in dp. To define spacing color, set view background
+                    .spacing(0)
+                    .pageFitPolicy(FitPolicy.WIDTH)
+                    .load();
+        }
+        else {
+            pdfView.fromAsset("geogr_10_maksakovskiy.pdf")
+                    .enableSwipe(true) // allows to block changing pages using swipe
+                    .swipeHorizontal(true)
+                    .enableDoubletap(true)
+                    .defaultPage(0)
+                    .nightMode(false)
+                    .enableAnnotationRendering(false) // render annotations (such as comments, colors or forms)
+                    .password(null)
+                    .scrollHandle(null)
+                    .onDrawAll(new OnDrawListener() {
+                        @Override
+                        public void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int displayedPage) {
+
+
+                        }
+                    })
+                    .enableAntialiasing(true) // improve rendering a little bit on low-res screens
+                    // spacing between pages in dp. To define spacing color, set view background
+                    .spacing(0)
+                    .pageFitPolicy(FitPolicy.WIDTH)
+                    .load();
+        }
 
         // проверяем наличие cd-card
         if(!file.exists()) {
@@ -61,7 +101,7 @@ public class Home extends Fragment {
             } else {
                 Toast.makeText(getActivity(), "Error: " + "не установлена cd-card. Для корректной работы приложения необходима cd-card", Toast.LENGTH_SHORT).show();
                 //* поменять потом все на внутренний накопитель, ща чет не получилось и пошло оно все нахер
-                //* а, и еще. Я ваще хз, куда созраняется файл (у меня на телефоне он, как мне показалось, сохраняет на внутреннюю)
+                //* а, и еще. Я ваще хз, куда сохраняется файл (у меня на телефоне он, как мне показалось, сохраняет на внутреннюю)
             }
         }
         String numberString = readFile(fullPath);
@@ -77,9 +117,9 @@ public class Home extends Fragment {
             //mImageView.setImageResource(R.drawable.geography10_5);
         }
         //swipeImage(mImageView, scrollViewSwipe);
-
         return rootView1;
     }
+
 
     private void swipeImage(ImageView imageView, ScrollView scrollViewSwipe){
 
@@ -191,7 +231,7 @@ public class Home extends Fragment {
     public String readFile (String path){
         File sdcard = Environment.getExternalStorageDirectory();
         //получает текстовый файл
-        File file = new File(sdcard,"/temp/ATB/numberOfPictures.txt");
+        File file = new File(sdcard,path);
         //читаем текстовый файл
         StringBuilder text = new StringBuilder();
 
@@ -202,9 +242,9 @@ public class Home extends Fragment {
 
             while ((line = br.readLine()) != null) {
                 resultText += line;
-                return resultText;
             }
             br.close();
+            return resultText;
         }
         catch (IOException e) {
             Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
