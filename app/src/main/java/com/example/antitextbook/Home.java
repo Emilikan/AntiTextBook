@@ -1,16 +1,19 @@
 package com.example.antitextbook;
 
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.listener.OnDrawListener;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 
 import java.io.BufferedReader;
@@ -21,6 +24,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 public class Home extends Fragment {
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,14 +49,23 @@ public class Home extends Fragment {
                 .swipeHorizontal(true)
                 .enableDoubletap(true)
                 .defaultPage(0)
+                .nightMode(true)
                 .enableAnnotationRendering(false) // render annotations (such as comments, colors or forms)
                 .password(null)
                 .scrollHandle(null)
+                .onDrawAll(new OnDrawListener() {
+                    @Override
+                    public void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int displayedPage) {
+
+
+                    }
+                })
                 .enableAntialiasing(true) // improve rendering a little bit on low-res screens
                 // spacing between pages in dp. To define spacing color, set view background
                 .spacing(0)
                 .pageFitPolicy(FitPolicy.WIDTH)
                 .load();
+
 
         // проверяем наличие cd-card
         if(!file.exists()) {
@@ -77,9 +91,9 @@ public class Home extends Fragment {
             //mImageView.setImageResource(R.drawable.geography10_5);
         }
         //swipeImage(mImageView, scrollViewSwipe);
-
         return rootView1;
     }
+
 
     private void swipeImage(ImageView imageView, ScrollView scrollViewSwipe){
 

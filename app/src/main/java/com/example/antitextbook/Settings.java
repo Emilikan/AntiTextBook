@@ -79,7 +79,6 @@ public class Settings extends Fragment {
         });
         return rootView;
     }
-
     public void saveFile (String filePath, String FileContent)
     {
         //Создание объекта файла.
