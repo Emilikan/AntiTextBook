@@ -77,6 +77,23 @@ public class Settings extends Fragment {
                 }
             }
         });
+        CheckBox darkBox = (CheckBox) rootView.findViewById(R.id.darkBox);
+        darkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CheckBox checkBox = (CheckBox) getView().findViewById(R.id.darkBox);
+                String folderName1 = "temp/ATB/settings", fileName = "darkBox.txt";
+                String fullPath1 = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName1 + "/" + fileName;
+                if(checkBox.isChecked()){
+                    String i = "TRUE";
+                    saveFile(fullPath1, i);
+                }
+                else {
+                   String i = "FALSE";
+                    saveFile(fullPath1, i);
+                }
+            }
+        });
         return rootView;
     }
     public void saveFile (String filePath, String FileContent)
