@@ -19,11 +19,16 @@
         <item
             android:id="@+id/server"
             android:icon="@drawable/icon_server"
-            android:title="Сервер" />
+            android:title="Авторизация" />
+        <item
+            android:id="@+id/cloud"
+            android:icon="@drawable/icon_cloud"
+            android:title="Облако" />
         <item
             android:id="@+id/settings"
             android:icon="@drawable/ic_menu_manage"
             android:title="Настройки" />
+
     </group>
 
     <item android:title="Связь">
