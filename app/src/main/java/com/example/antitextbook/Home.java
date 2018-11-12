@@ -82,7 +82,7 @@ public class Home extends Fragment {
     }
 
     private void swipeImage(ImageView imageView, ScrollView scrollViewSwipe){
-
+/*
         //обработка свайпа (там же сменяем картинку)
         scrollViewSwipe.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
                 public void onSwipeRight() {
@@ -145,8 +145,9 @@ public class Home extends Fragment {
             }
         } );
 
-        // устанавливаем картинку в самом начале только один раз (при свайпах к этому уже не обращаемся)
 
+        // устанавливаем картинку в самом начале только один раз (при свайпах к этому уже не обращаемся)
+*/
     }
 
     // Функция, которая проверяет, доступно ли external storage(cd-card) для чтения и записи
