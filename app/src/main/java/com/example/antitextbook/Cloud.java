@@ -27,8 +27,8 @@ public class Cloud extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_cloud, container, false);
-        Button button1 = (Button) rootView.findViewById(R.id.buttonSendToCloud);//Кнопка отправить
-        button1.setOnClickListener(new View.OnClickListener() {
+        Button sendOnCloud = (Button) rootView.findViewById(R.id.buttonSendToCloud);//Кнопка отправить
+        sendOnCloud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String Author = ((EditText) getActivity().findViewById(R.id.textAuthorCloud)).getText().toString();
@@ -37,7 +37,7 @@ public class Cloud extends Fragment {
                 String Subject = ((EditText) getActivity().findViewById(R.id.textSubjectCloud)).getText().toString();
                 String Part = ((EditText) getActivity().findViewById(R.id.textPartCloud)).getText().toString();
                 if ("".equals(Author)|| "".equals(Class)|| "".equals(Year) || "".equals(Subject) || "".equals(Part)) {
-                    Toast.makeText(getActivity(), "Ошибка", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Одно из полей не заполненно. Пожалуйста, заполните все поля и повторите отправку", Toast.LENGTH_LONG).show();
                 }
                 else{
                     Toast.makeText(getActivity(), "Нет ошибки", Toast.LENGTH_LONG).show();
@@ -45,17 +45,17 @@ public class Cloud extends Fragment {
                 }
             }
         });
-        Button button2 = (Button) rootView.findViewById(R.id.buttonDownloadPDF);//Кнопка загрузки pdf
-        button2.setOnClickListener(new View.OnClickListener() {
+        Button choicePdf = (Button) rootView.findViewById(R.id.buttonDownloadPDF);//Кнопка загрузки pdf
+        choicePdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                photoPickerIntent.setType("application/pdf");
+                Intent pdfPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                pdfPickerIntent.setType("application/pdf");
                 startActivityForResult(photoPickerIntent, 1);
             }
         });
-        Button button3 = (Button) rootView.findViewById(R.id.buttonDownloadImage);//Кнопка загрузки Изображения
-        button3.setOnClickListener(new View.OnClickListener() {
+        Button choiceImages = (Button) rootView.findViewById(R.id.buttonDownloadImage);//Кнопка загрузки Изображения
+        choiceImages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
