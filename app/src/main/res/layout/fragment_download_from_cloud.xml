@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DownloadFromCloud">
 
     <!-- TODO: Update blank fragment layout -->
-    <Button
-        android:id="@+id/search"
-        android:layout_width="167dp"
-        android:layout_height="wrap_content"
-        android:text="Поиск" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/search"
+            android:layout_width="167dp"
+            android:layout_height="wrap_content"
+            android:text="Поиск" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="78dp"
+            android:layout_height="76dp"
+            android:src="@color/colorGold" />
+    </LinearLayout>
 
 </FrameLayout>

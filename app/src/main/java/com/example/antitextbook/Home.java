@@ -35,12 +35,12 @@ public class Home extends Fragment {
         int numberOfPicturesMin = 0;
         ImageView mImageView;
         ScrollView scrollViewSwipe;
-        String folderName = "temp/ATB", fileName = "numberOfPictures.txt";// название файла, где хранится номер данной картинки
+        String folderName = "AntiTextBook/ATB", fileName = "numberOfPictures.txt";// название файла, где хранится номер данной картинки
 
         //scrollViewSwipe = (ScrollView) rootView1.findViewById(R.id.scrollView1);// получаем ScrollView для свайпов
         String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName + "/" + fileName;
         File file = new File(fullPath);
-        String folderName1 = "temp/ATB/settings", fileName1 = "darkBox.txt";
+        String folderName1 = "AntiTextBook/ATB/settings", fileName1 = "darkBox.txt";
         String fullPath1 = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName1 + "/" + fileName1;
         Toast.makeText(getActivity(),Environment.getExternalStorageDirectory().getAbsolutePath(), Toast.LENGTH_SHORT).show();
         String dark = readFile(fullPath1);
@@ -127,7 +127,7 @@ public class Home extends Fragment {
         scrollViewSwipe.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
                 public void onSwipeRight() {
                 //обработка свайпа вправо
-                    String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp/ATB/numberOfPictures.txt";
+                    String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/AntiTextBook/ATB/numberOfPictures.txt";
                     String numberString = readFile(fullPath);
                     try {
                         int myInt = Integer.parseInt(numberString);
@@ -158,7 +158,7 @@ public class Home extends Fragment {
             @Override
             public void onSwipeLeft() {
                 //обработка свайпа влево
-                String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp/ATB/numberOfPictures.txt";
+                String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/AntiTextBook/ATB/numberOfPictures.txt";
                 String numberString = readFile(fullPath);
                 try {
                     int myInt = Integer.parseInt(numberString);
@@ -194,11 +194,7 @@ public class Home extends Fragment {
     public boolean isExternalStorageWritable()
     {
         String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state))
-        {
-            return true;
-        }
-        return false;
+        return Environment.MEDIA_MOUNTED.equals(state);
     }
 
     //Функция, которая сохраняет файл, принимая полный путь до файла filePath и сохраняемый текст FileContent (так же используется для создания файла)
@@ -239,13 +235,13 @@ public class Home extends Fragment {
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
-            String resultText = "";
+            StringBuilder resultText = new StringBuilder();
 
             while ((line = br.readLine()) != null) {
-                resultText += line;
+                resultText.append(line);
             }
             br.close();
-            return resultText;
+            return resultText.toString();
         }
         catch (IOException e) {
             Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();

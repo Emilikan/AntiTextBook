@@ -11,7 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
+        <TextView
+            android:id="@+id/textView0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Приложение AntiTextBook (ATB) разработано с целью..." />
         <TextView
             android:id="@+id/textView4"
             android:layout_width="match_parent"
@@ -21,22 +25,22 @@
             android:id="@+id/textViewOurNames1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Эмилькой;" />
+            android:text="1. Эмилькой;" />
         <TextView
             android:id="@+id/textViewOurNames2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Данилой Суворовым;" />
+            android:text="2. Данилой Суворовым;" />
         <TextView
             android:id="@+id/textViewOurNames3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Дмитрием Севастьяновым;" />
+            android:text="3. Дмитрием Севастьяновым." />
         <TextView
             android:id="@+id/textViewOurNames4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Никитой Романовым." />
+            android:text="При финансовой поддержке Платцера Максима" />
         <Button
             android:id="@+id/backOnFragmentOfSettings"
             android:layout_width="match_parent"
