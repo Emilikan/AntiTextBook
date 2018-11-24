@@ -65,7 +65,6 @@ public class Cloud extends Fragment {
         imageView = (ImageView) rootView.findViewById(R.id.checkImage);
 
         Button sendOnCloud = (Button) rootView.findViewById(R.id.buttonSendToCloud);//Кнопка отправить
-        //* изначально заблокировать эту кнопку. Зfтем, после выгрузки изображения - разблокировать
         sendOnCloud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

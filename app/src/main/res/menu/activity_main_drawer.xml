@@ -6,27 +6,26 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/home"
-            android:icon="@drawable/icon_main1"
+
             android:title="Домашняя" />
         <item
             android:id="@+id/library"
-            android:icon="@drawable/icon_library"
+
             android:title="Библиотека" />
         <item
             android:id="@+id/schedule"
-            android:icon="@drawable/icon_schedule1"
             android:title="Расписание" />
         <item
             android:id="@+id/server"
-            android:icon="@drawable/icon_server"
+
             android:title="Авторизация" />
         <item
             android:id="@+id/cloud"
-            android:icon="@drawable/icon_cloud"
+
             android:title="Облако" />
         <item
             android:id="@+id/settings"
-            android:icon="@drawable/ic_menu_manage"
+
             android:title="Настройки" />
 
     </group>

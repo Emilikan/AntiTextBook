@@ -13,8 +13,10 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -23,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
@@ -30,17 +33,24 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import static android.support.constraint.Constraints.TAG;
+
 public class DownloadFromCloud extends Fragment {
-    private int STORAGE_PERMISSION_CODE = 23;
+    private final int STORAGE_PERMISSION_CODE = 23;
 
     private DatabaseReference mRef;
+    private ArrayList<String> mBooksOfDatabase;
 
+    ListView mListBooks;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_download_from_cloud, container, false);
+        getStringsAboutBooksOfDatabase();
         Button button4 = (Button) rootView.findViewById(R.id.search);
 
         button4.setOnClickListener(new View.OnClickListener() {
@@ -112,24 +122,43 @@ public class DownloadFromCloud extends Fragment {
 
 
         });
+
+
+
         return rootView;
     }
 
-    private void saveDataToDatabase(String book){
+    private void getStringsAboutBooksOfDatabase(){
+        mListBooks = (ListView) getActivity().findViewById(R.id.booksListView);
+
         mRef = FirebaseDatabase.getInstance().getReference(); // получаем ссылку на базу данных
         // прикрепляем слушателя
-        /*mRef.child().addChildEventListener(new ValueEventListener(){
+        mRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot){
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Post post = dataSnapshot.getValue(Post.class);
+                GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {};
 
+                //mBooksOfDatabase = dataSnapshot.getValue(t);
+                Toast.makeText(getActivity(), dataSnapshot.child("Алгебра_10_Перышкин_1").child("Author").getValue(String.class), Toast.LENGTH_SHORT).show();
+                mBooksOfDatabase.add("ghf");
+                mBooksOfDatabase.add("fhg");
+                //updateUI();
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError){
-
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            //* написать обработку ошибок
             }
-        });*/
+        });
+
     }
+
+    public void updateUI(){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, mBooksOfDatabase);
+        mListBooks.setAdapter(adapter);
+    }
+
 
     //We are calling this method to check the permission status
     private boolean isReadStorageAllowed() {
