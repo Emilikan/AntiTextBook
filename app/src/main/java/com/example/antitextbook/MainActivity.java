@@ -15,6 +15,8 @@ import android.view.MenuItem;
 
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -139,9 +141,6 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.server) {
         fragmentClass = Server.class;
         }
-        else if (id == R.id.cloud) {
-            fragmentClass = Cloud.class;
-        }
         /*
         else if (id == R.id.nav_share) {
 
@@ -159,11 +158,13 @@ public class MainActivity extends AppCompatActivity
         else if(id == R.id.schedule && !lessonOrNo()){
             fragmentClass = Schedule.class;
         }
-
+        else if (id == R.id.exit) {
+            FirebaseAuth.getInstance().signOut();
+        }
         else {
             fragmentClass = Home.class;
         }
-
+        if(fragmentClass != null) {
         // ловим ошибки
         try {
             fragment = (Fragment) fragmentClass.newInstance();
@@ -171,16 +172,17 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
-        // Вставляем фрагмент, заменяя текущий фрагмент
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-        // Выделяем выбранный пункт меню в шторке
-        item.setChecked(true);
-        // Выводим выбранный пункт в заголовке
-        setTitle(item.getTitle());
+            // Вставляем фрагмент, заменяя текущий фрагмент
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+            // Выделяем выбранный пункт меню в шторке
+            item.setChecked(true);
+            // Выводим выбранный пункт в заголовке
+            setTitle(item.getTitle());
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
         return true;
     }
 }

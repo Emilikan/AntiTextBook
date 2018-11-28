@@ -20,13 +20,13 @@
 
             android:title="Авторизация" />
         <item
-            android:id="@+id/cloud"
-
-            android:title="Облако" />
-        <item
             android:id="@+id/settings"
 
             android:title="Настройки" />
+        <item
+            android:id="@+id/exit"
+
+            android:title="Выйти" />
 
     </group>
 

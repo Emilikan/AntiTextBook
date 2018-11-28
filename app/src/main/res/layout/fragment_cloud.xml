@@ -80,6 +80,8 @@
                 android:layout_height="wrap_content"
                 android:text="Отправить" />
 
+
+
         </LinearLayout>
     </ScrollView>
 

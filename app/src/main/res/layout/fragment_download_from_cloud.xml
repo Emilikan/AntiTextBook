@@ -17,11 +17,6 @@
             android:layout_width="167dp"
             android:layout_height="wrap_content"
             android:text="Поиск" />
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="78dp"
-            android:layout_height="76dp"
-            android:src="@color/colorGold" />
 
         <ListView
             android:layout_width="match_parent"

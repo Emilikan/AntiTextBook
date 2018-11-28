@@ -22,8 +22,11 @@ import android.widget.Toast;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -47,6 +50,13 @@ public class Cloud extends Fragment {
     private String mYear;
     private String mSubject;
     private String mPart;
+
+    private String name;
+    private String pdfUri;
+    private String imgUri;
+
+    private int counterFor = 0;
+    private String dbCounter;
 
     private DatabaseReference mRef;
 
@@ -84,12 +94,13 @@ public class Cloud extends Fragment {
                 }
                 else{
                     // код отправки на сервер
-                    String path = "gs://antitextbook.appspot.com/" + mSubject + "_" + mClass + "_" + mAuthor + "_" + mPart + "_" + mYear + "/"  + mSubject + "_" + mClass + "_" + mAuthor + "_" + mPart + "_" + mYear+"_pdf"; // путь до учебника
-                    String name = mSubject + "_" + mClass + "_" + mAuthor + "_" + mPart + "_" + mYear;// так называется каталог в базе данных
-                    String imagePath = "gs://antitextbook.appspot.com/images/" + mSubject + "_" + mClass + "_" + mAuthor + "_" + mPart + "_" + mYear +"_img"; // путь до обложки
-                    saveDataToDatabase(name, path, imagePath);
-                    uploadFile(path, filePdfPath);
-                    uploadFile(imagePath, filePath);
+                    pdfUri = "gs://antitextbook.appspot.com/" + mSubject + "_" + mClass + "_" + mAuthor + "_" + mPart + "_" + mYear + "/"  + mSubject + "_" + mClass + "_" + mAuthor + "_" + mPart + "_" + mYear+"_pdf"; // путь до учебника
+                    name = mSubject + "_" + mClass + "_" + mAuthor + "_" + mPart + "_" + mYear;// так называется каталог в базе данных
+                    imgUri = "gs://antitextbook.appspot.com/images/" + mSubject + "_" + mClass + "_" + mAuthor + "_" + mPart + "_" + mYear +"_img"; // путь до обложки
+                    saveDataToDatabase();
+                    uploadFile(pdfUri, filePdfPath);
+                    uploadFile(imgUri, filePath);
+                    counterFor = 1;
                 }
             }
         });
@@ -113,17 +124,44 @@ public class Cloud extends Fragment {
         return rootView;
     }
 
-    private void saveDataToDatabase(String name, String pdfUri, String imgUri){
+    private void saveDataToDatabase(){
 
-        mRef = FirebaseDatabase.getInstance().getReference(); // получаем ссылку на базу данных
-        // устанавливаем значение
-        mRef.child(name).child("Class").setValue(mClass);
-        mRef.child(name).child("Author").setValue(mAuthor);
-        mRef.child(name).child("Year").setValue(mYear);
-        mRef.child(name).child("Subject").setValue(mSubject);
-        mRef.child(name).child("Part").setValue(mPart);
-        mRef.child(name).child("Pdf").setValue(pdfUri);
-        mRef.child(name).child("Icon").setValue(imgUri);
+        mRef = FirebaseDatabase.getInstance().getReference();
+
+        mRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(counterFor == 1) {
+                    dbCounter = dataSnapshot.child("counter").getValue(String.class);
+                    Toast.makeText(getActivity(), dbCounter, Toast.LENGTH_SHORT).show();
+                    int intCounter = Integer.parseInt(dbCounter);
+                    intCounter++;
+                    String stringCounter = Integer.toString(intCounter);
+
+                    mRef.child("Books").child(stringCounter).child("Class").setValue(mClass);
+                    mRef.child("Books").child(stringCounter).child("Author").setValue(mAuthor);
+                    mRef.child("Books").child(stringCounter).child("Year").setValue(mYear);
+                    mRef.child("Books").child(stringCounter).child("Subject").setValue(mSubject);
+                    mRef.child("Books").child(stringCounter).child("Part").setValue(mPart);
+                    mRef.child("Books").child(stringCounter).child("Pdf").setValue(pdfUri);
+                    mRef.child("Books").child(stringCounter).child("Icon").setValue(imgUri);
+                    mRef.child("Books").child(stringCounter).child("ThisCounter").setValue(stringCounter);
+                    mRef.child("counter").setValue(stringCounter);
+
+                    mRef.child("AllBooks").child(stringCounter).setValue(mSubject + " " + mAuthor + " " + mClass);
+
+                    counterFor = 0;
+                    Toast.makeText(getActivity(), "Загружено", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getActivity(), "Error" + databaseError.getCode(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
     }
 
     private void pdfChooser() {

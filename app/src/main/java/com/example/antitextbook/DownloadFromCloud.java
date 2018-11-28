@@ -13,14 +13,17 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,14 +46,17 @@ public class DownloadFromCloud extends Fragment {
     private final int STORAGE_PERMISSION_CODE = 23;
 
     private DatabaseReference mRef;
-    private ArrayList<String> mBooksOfDatabase;
+    private List<String> mTasks;
+    private String counter = "-1";
+
+    private ListView listTasks;
 
     ListView mListBooks;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_download_from_cloud, container, false);
-        getStringsAboutBooksOfDatabase();
         Button button4 = (Button) rootView.findViewById(R.id.search);
 
         button4.setOnClickListener(new View.OnClickListener() {
@@ -69,8 +75,29 @@ public class DownloadFromCloud extends Fragment {
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
             }
         });
+        mRef = FirebaseDatabase.getInstance().getReference();
+        mRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                counter = dataSnapshot.child("counter").getValue(String.class);
+                if ("-1".equals(counter)) {
+                    Fragment fragment = new Server();
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                    Toast.makeText(getActivity(), "Нет книг", Toast.LENGTH_SHORT).show();
+                } else {
+                    checked();
+                }
+            }
 
-        ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.imageButton);
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        listTasks = (ListView) rootView.findViewById(R.id.booksListView);
+
+        /*ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.imageButton);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +114,7 @@ public class DownloadFromCloud extends Fragment {
                 Toast.makeText(getActivity(), name, Toast.LENGTH_SHORT).show();
                 StorageReference islandRef = storageRef.child("images/island.jpg");
 
-                /*final long ONE_MEGABYTE = 49739700;
+                final long ONE_MEGABYTE = 49739700;
                 gsReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @Override
                     public void onSuccess(byte[] bytes) {
@@ -98,7 +125,7 @@ public class DownloadFromCloud extends Fragment {
                         public void onFailure(@NonNull Exception exception) {
                             Toast.makeText(getActivity(), "Ошибка загрузки", Toast.LENGTH_SHORT).show();
                         }
-                    }); */
+                    });
                 File localFile = null;
                 try {
                     localFile = File.createTempFile("Informat", "pdf");
@@ -121,43 +148,55 @@ public class DownloadFromCloud extends Fragment {
             }
 
 
-        });
-
-
+        });*/
 
         return rootView;
     }
 
-    private void getStringsAboutBooksOfDatabase(){
-        mListBooks = (ListView) getActivity().findViewById(R.id.booksListView);
+    private void checked() {
+        mRef = FirebaseDatabase.getInstance().getReference();
 
-        mRef = FirebaseDatabase.getInstance().getReference(); // получаем ссылку на базу данных
-        // прикрепляем слушателя
+        listTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onItemClick(AdapterView<?> parent, View itemClicked, int position,
+                                    long id) {
+                TextView textView = (TextView) itemClicked;
+                String strText = textView.getText().toString(); // получаем текст нажатого элемента
+                //Toast.makeText(getActivity(), position + "", Toast.LENGTH_SHORT).show();
+                Fragment fragment = new AboutBook();
+                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                Bundle bundle = new Bundle();
+                String valueOfReplace = position + "";
+                bundle.putString("Value", valueOfReplace);
+                fragment.setArguments(bundle);
+            }
+        });
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //Post post = dataSnapshot.getValue(Post.class);
-                GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {};
-
-                //mBooksOfDatabase = dataSnapshot.getValue(t);
-                Toast.makeText(getActivity(), dataSnapshot.child("Алгебра_10_Перышкин_1").child("Author").getValue(String.class), Toast.LENGTH_SHORT).show();
-                mBooksOfDatabase.add("ghf");
-                mBooksOfDatabase.add("fhg");
-                //updateUI();
+                GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {
+                };
+                mTasks = dataSnapshot.child("AllBooks").getValue(t);
+                updateUI();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-            //* написать обработку ошибок
+                Toast.makeText(getActivity(), "Error cod" + databaseError.getCode(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
-    public void updateUI(){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, mBooksOfDatabase);
-        mListBooks.setAdapter(adapter);
+    public void updateUI() {
+        if (getActivity() != null) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mTasks);
+            listTasks.setAdapter(adapter);
+        }
     }
+
+
 
 
     //We are calling this method to check the permission status
