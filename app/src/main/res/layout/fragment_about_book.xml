@@ -19,8 +19,8 @@
 
             <ImageView
                 android:id="@+id/imageView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_width="200dp"
+                android:layout_height="200dp" />
 
             <TextView
                 android:id="@+id/Project2"
@@ -51,7 +51,7 @@
                 android:id="@+id/upload2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Скачать" />
+                android:text="@string/download" />
         </LinearLayout>
     </ScrollView>
 

@@ -1,16 +1,19 @@
 package com.example.antitextbook;
 
+import android.content.DialogInterface;
 import android.graphics.Canvas;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ScrollView;
-import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnDrawListener;
@@ -22,31 +25,28 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.Objects;
 
 public class Home extends Fragment {
-
-
-
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView1 = inflater.inflate(R.layout.fragment_home, container, false);
 
         int numberOfPicturesMin = 0;
-        ImageView mImageView;
-        ScrollView scrollViewSwipe;
         String folderName = "AntiTextBook/ATB", fileName = "numberOfPictures.txt";// название файла, где хранится номер данной картинки
 
-        //scrollViewSwipe = (ScrollView) rootView1.findViewById(R.id.scrollView1);// получаем ScrollView для свайпов
         String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName + "/" + fileName;
-        File file = new File(fullPath);
         String folderName1 = "AntiTextBook/ATB/settings", fileName1 = "darkBox.txt";
         String fullPath1 = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName1 + "/" + fileName1;
-        Toast.makeText(getActivity(),Environment.getExternalStorageDirectory().getAbsolutePath(), Toast.LENGTH_SHORT).show();
         String dark = readFile(fullPath1);
+
+        File file = new File(fullPath);
+
         // открытие pdf файла
         PDFView pdfView = rootView1.findViewById(R.id.pdfView);
-        if(dark == "TRUE") {
+        if("TRUE".equals(dark)) {
             pdfView.fromAsset("geogr_10_maksakovskiy.pdf")
                     .enableSwipe(true) // allows to block changing pages using swipe
                     .swipeHorizontal(true)
@@ -58,10 +58,7 @@ public class Home extends Fragment {
                     .scrollHandle(null)
                     .onDrawAll(new OnDrawListener() {
                         @Override
-                        public void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int displayedPage) {
-
-
-                        }
+                        public void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int displayedPage) {}
                     })
                     .enableAntialiasing(true) // improve rendering a little bit on low-res screens
                     // spacing between pages in dp. To define spacing color, set view background
@@ -81,10 +78,7 @@ public class Home extends Fragment {
                     .scrollHandle(null)
                     .onDrawAll(new OnDrawListener() {
                         @Override
-                        public void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int displayedPage) {
-
-
-                        }
+                        public void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int displayedPage) {}
                     })
                     .enableAntialiasing(true) // improve rendering a little bit on low-res screens
                     // spacing between pages in dp. To define spacing color, set view background
@@ -97,24 +91,44 @@ public class Home extends Fragment {
         if(!file.exists()) {
             if (isExternalStorageWritable()) {
                 saveFile(fullPath, String.valueOf(numberOfPicturesMin));
-
             } else {
-                Toast.makeText(getActivity(), "Error: " + "не установлена cd-card. Для корректной работы приложения необходима cd-card", Toast.LENGTH_SHORT).show();
-                //* поменять потом все на внутренний накопитель, ща чет не получилось и пошло оно все нахер
-                //* а, и еще. Я ваще хз, куда сохраняется файл (у меня на телефоне он, как мне показалось, сохраняет на внутреннюю)
+                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                builder.setTitle("Error")
+                        .setMessage("не установлена cd-card. Для корректной работы приложения необходима cd-card")
+                        .setCancelable(false)
+                        .setNegativeButton("Ок, закрыть",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         }
+
         String numberString = readFile(fullPath);
+
         try {
             int number = Integer.parseInt(numberString);
             String lesson = "geography", grage = "10";
             String name = lesson + grage + "_"+ number;
-            int holderInt = getResources().getIdentifier(name, "drawable", getActivity().getPackageName()); // для поиска id по названию. Крутаю вещь. Если ты не понимаешь, что это, то спроси у меня (Эмиля)
+            int holderInt = getResources().getIdentifier(name, "drawable", Objects.requireNonNull(getActivity()).getPackageName()); // для поиска id по названию. Крутаю вещь. Если ты не понимаешь, что это, то спроси у меня (Эмиля)
             //mImageView.setImageResource(holderInt); // используем это для изменения КАРТИНКИ
         }
         catch (NumberFormatException e){
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            //mImageView.setImageResource(R.drawable.geography10_5);
+            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+            builder.setTitle("Error")
+                    .setMessage(e.getMessage())
+                    .setCancelable(false)
+                    .setNegativeButton("Ок, закрыть",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
         }
         //swipeImage(mImageView, scrollViewSwipe);
         return rootView1;
@@ -199,6 +213,7 @@ public class Home extends Fragment {
 
     //Функция, которая сохраняет файл, принимая полный путь до файла filePath и сохраняемый текст FileContent (так же используется для создания файла)
     //* написать функцию подобно этой, но без перезаписывания файла
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void saveFile (String filePath, String FileContent)
     {
         //Создание объекта файла.
@@ -218,13 +233,25 @@ public class Home extends Fragment {
         }
         catch (IOException e)
         {
-            Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+            builder.setTitle("Error")
+                    .setMessage(e.getMessage())
+                    .setCancelable(false)
+                    .setNegativeButton("Ок, закрыть",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
         }
     }
 
     // Функция, которая читает файл по определенному адресу, возвращает то, что в файле (Если там более одного слова, то вернет все "слипшееся". В идеале заменить строку на массив (список),
     // а то функцию почти нигде не получится использовать)
     //* Переписать ее для того, чтобы можно было использовать свой адресс (а не встроенный)
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public String readFile (String path){
         File sdcard = Environment.getExternalStorageDirectory();
         //получает текстовый файл
@@ -244,7 +271,18 @@ public class Home extends Fragment {
             return resultText.toString();
         }
         catch (IOException e) {
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+            builder.setTitle("Error")
+                    .setMessage(e.getMessage())
+                    .setCancelable(false)
+                    .setNegativeButton("Ок, закрыть",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
         }
         return null;
     }

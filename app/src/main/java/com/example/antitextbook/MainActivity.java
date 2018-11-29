@@ -1,13 +1,18 @@
 package com.example.antitextbook;
 
+import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -21,15 +26,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-
-
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,6 +80,7 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public boolean lessonOrNo(){
         boolean couples = false;
         String folderName = "temp/ATB/settings", fileName = "checkedBox.txt";
@@ -91,7 +95,18 @@ public class MainActivity extends AppCompatActivity
             couples = false;
         }
         else{
-            Toast.makeText(this, "Error: " + "ошибка в значении в файле с обозначением пар или уроков. Выставлены уроки.", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("Error")
+                    .setMessage("ошибка в значении в файле с обозначением пар или уроков. Выставлены уроки.")
+                    .setCancelable(false)
+                    .setNegativeButton("Ок, закрыть",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
             couples = false;
         }
         return couples;
@@ -116,16 +131,26 @@ public class MainActivity extends AppCompatActivity
             br.close();
         }
         catch (IOException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("Error")
+                    .setMessage(e.getMessage())
+                    .setCancelable(false)
+                    .setNegativeButton("Ок, закрыть",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
         }
         return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-
-
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // создаем новый фрагмент
         Fragment fragment = null;
         Class fragmentClass = null;
@@ -141,11 +166,6 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.server) {
         fragmentClass = Server.class;
         }
-        /*
-        else if (id == R.id.nav_share) {
-
-        }
-        */
         else if (id == R.id.nav_send) {
         fragmentClass = Send.class;
         }
@@ -171,9 +191,9 @@ public class MainActivity extends AppCompatActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
-
             // Вставляем фрагмент, заменяя текущий фрагмент
             FragmentManager fragmentManager = getSupportFragmentManager();
+            assert fragment != null;
             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
             // Выделяем выбранный пункт меню в шторке
             item.setChecked(true);

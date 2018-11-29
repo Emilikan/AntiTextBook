@@ -16,16 +16,13 @@
             android:id="@+id/search"
             android:layout_width="167dp"
             android:layout_height="wrap_content"
-            android:text="Поиск" />
+            android:text="@string/search" />
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/booksListView"
             />
-
-
-
     </LinearLayout>
 
 </FrameLayout>

@@ -82,4 +82,16 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+
+    <string name="download">Скачать</string>
+
+    <string name="cloud_choose_pdf">Выбрать PDF файл</string>
+    <string name="cloud_choose_img">Выбрать img файл</string>
+    <string name="help">Помощь</string>
+    <string name="cloud_upload">Отправить</string>
+    <string name="cloud_desribing">Загрузка книги</string>
+    <string name="search">Поиск</string>
+    <string name="back">Назад</string>
+    <string name="downloadBooks">Скачать книгу</string>
+    <string name="chooseBook">Выбрать книгу</string>
 </resources>

@@ -19,30 +19,30 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="что то" />
-
-            <Button
-                android:id="@+id/buttonChoosePDF"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Загрузка pdf" />
-
-            <Button
-                android:id="@+id/buttonDownloadImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Выбор изображения" />
-
-            <ImageView
-                android:id="@+id/checkImage"
-                android:layout_width="80dp"
-                android:layout_height="63dp" />
+                android:text="@string/cloud_desribing" />
 
             <Button
                 android:id="@+id/button6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Помощь" />
+                android:text="@string/help" />
+
+            <Button
+                android:id="@+id/buttonChoosePDF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cloud_choose_pdf" />
+
+            <Button
+                android:id="@+id/buttonDownloadImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cloud_choose_img" />
+
+            <ImageView
+                android:id="@+id/checkImage"
+                android:layout_width="80dp"
+                android:layout_height="63dp" />
 
             <EditText
                 android:id="@+id/textAuthorCloud"
@@ -78,7 +78,7 @@
                 android:id="@+id/buttonSendToCloud"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Отправить" />
+                android:text="@string/cloud_upload" />
 
 
 

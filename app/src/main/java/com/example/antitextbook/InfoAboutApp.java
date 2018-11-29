@@ -1,6 +1,8 @@
 package com.example.antitextbook;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.util.Objects;
 
 public class InfoAboutApp extends Fragment {
 
@@ -19,11 +22,11 @@ public class InfoAboutApp extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_info_about_app, container, false);
-        Button button1 = (Button) rootView.findViewById(R.id.backOnFragmentOfSettings);
 
-        button1.setOnClickListener(new View.OnClickListener() {
+        Button backOnFragmentOfSettings = (Button) rootView.findViewById(R.id.backOnFragmentOfSettings); // кнопка назад
+        backOnFragmentOfSettings.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
                 Fragment fragment = null;
@@ -34,7 +37,8 @@ public class InfoAboutApp extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                assert fragment != null;
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
             }
         });

@@ -1,6 +1,7 @@
 package com.example.antitextbook;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +20,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-
-import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -38,9 +38,9 @@ import java.util.Objects;
 import static android.app.Activity.RESULT_OK;
 
 public class Cloud extends Fragment {
-
     private static final int PICK_IMAGE_REQUEST = 234;
     private static final int PICK_PDF_REQUEST = 345;
+
     private Uri filePath = null;
     private Uri filePdfPath = null;
     private ImageView imageView;
@@ -69,13 +69,13 @@ public class Cloud extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_cloud, container, false);
 
         imageView = (ImageView) rootView.findViewById(R.id.checkImage);
 
         Button sendOnCloud = (Button) rootView.findViewById(R.id.buttonSendToCloud);//Кнопка отправить
         sendOnCloud.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
                 mAuthor = ((EditText) getActivity().findViewById(R.id.textAuthorCloud)).getText().toString();
@@ -85,18 +85,39 @@ public class Cloud extends Fragment {
                 mPart = ((EditText) getActivity().findViewById(R.id.textPartCloud)).getText().toString();
 
                 if("".equals(mAuthor)|| "".equals(mClass)|| "".equals(mYear) || "".equals(mSubject) || "".equals(mPart)) {
-                    //* заменить на активити
-                    Toast.makeText(getActivity(), "Одно из полей не заполненно. Пожалуйста, заполните все поля и повторите отправку", Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    builder.setTitle("Предупреждение")
+                            .setMessage("Одно из полей не заполненно. Пожалуйста, заполните все поля и повторите отправку")
+                            .setCancelable(false)
+                            .setNegativeButton("Ок, закрыть",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 }
                 else if(filePath == null){
-                    //* заменить на активити
-                    Toast.makeText(getActivity(), "Не выбран файл загрузки", Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    builder.setTitle("Предупреждение")
+                            .setMessage("Не выбран файл загрузки")
+                            .setCancelable(false)
+                            .setNegativeButton("Ок, закрыть",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 }
                 else{
                     // код отправки на сервер
-                    pdfUri = "gs://antitextbook.appspot.com/" + mSubject + "_" + mClass + "_" + mAuthor + "_" + mPart + "_" + mYear + "/"  + mSubject + "_" + mClass + "_" + mAuthor + "_" + mPart + "_" + mYear+"_pdf"; // путь до учебника
-                    name = mSubject + "_" + mClass + "_" + mAuthor + "_" + mPart + "_" + mYear;// так называется каталог в базе данных
+                    pdfUri = "gs://antitextbook.appspot.com/" + mSubject + "_" + mClass + "_" + mAuthor + "_" + mPart + "_" + mYear + "/"  + mSubject +
+                            "_" + mClass + "_" + mAuthor + "_" + mPart + "_" + mYear+"_pdf"; // путь до учебника
                     imgUri = "gs://antitextbook.appspot.com/images/" + mSubject + "_" + mClass + "_" + mAuthor + "_" + mPart + "_" + mYear +"_img"; // путь до обложки
+
                     saveDataToDatabase();
                     uploadFile(pdfUri, filePdfPath);
                     uploadFile(imgUri, filePath);
@@ -125,7 +146,6 @@ public class Cloud extends Fragment {
     }
 
     private void saveDataToDatabase(){
-
         mRef = FirebaseDatabase.getInstance().getReference();
 
         mRef.addValueEventListener(new ValueEventListener() {
@@ -147,16 +167,27 @@ public class Cloud extends Fragment {
                     mRef.child("Books").child(stringCounter).child("Icon").setValue(imgUri);
                     mRef.child("Books").child(stringCounter).child("ThisCounter").setValue(stringCounter);
                     mRef.child("counter").setValue(stringCounter);
-
                     mRef.child("AllBooks").child(stringCounter).setValue(mSubject + " " + mAuthor + " " + mClass);
 
                     counterFor = 0;
                     Toast.makeText(getActivity(), "Загружено", Toast.LENGTH_SHORT).show();
                 }
             }
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(), "Error" + databaseError.getCode(), Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                builder.setTitle("Error")
+                        .setMessage(databaseError.getMessage())
+                        .setCancelable(false)
+                        .setNegativeButton("Ок, закрыть",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
 
@@ -177,8 +208,6 @@ public class Cloud extends Fragment {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
-
-    //handling the image chooser activity result
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -192,8 +221,18 @@ public class Cloud extends Fragment {
                     imageView.setImageBitmap(bitmap);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
-                //* написать обработку ошибок
+                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                builder.setTitle("Error")
+                        .setMessage(e.getMessage())
+                        .setCancelable(false)
+                        .setNegativeButton("Ок, закрыть",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         }
         else if(requestCode == PICK_PDF_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
@@ -201,10 +240,9 @@ public class Cloud extends Fragment {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void uploadFile(String path, Uri pathOfFile) {
-        //if there is a file to upload
         if (pathOfFile != null) {
-            //displaying a progress dialog while upload is going on
             final ProgressDialog progressDialog = new ProgressDialog(getContext());
             progressDialog.setTitle("Uploading");
             progressDialog.show();
@@ -229,16 +267,23 @@ public class Cloud extends Fragment {
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                         @Override
                         public void onFailure(@NonNull Exception exception) {
-                            //if the upload is not successfull
-                            //hiding the progress dialog
                             progressDialog.dismiss();
 
-                            //and displaying error message
-
-                            //* заменить на активити
-                            Toast.makeText(getActivity(), exception.getMessage(), Toast.LENGTH_LONG).show();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                            builder.setTitle("Error")
+                                    .setMessage(exception.getMessage())
+                                    .setCancelable(false)
+                                    .setNegativeButton("Ок, закрыть",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    dialog.cancel();
+                                                }
+                                            });
+                            AlertDialog alert = builder.create();
+                            alert.show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -246,7 +291,6 @@ public class Cloud extends Fragment {
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                             //calculating progress percentage
                             double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-
                             //displaying percentage in progress dialog
                             progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
                         }
@@ -254,7 +298,18 @@ public class Cloud extends Fragment {
         }
         //if there is not any file
         else {
-            //you can display an error toast
+            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+            builder.setTitle("Error")
+                    .setMessage("Нет файлов")
+                    .setCancelable(false)
+                    .setNegativeButton("Ок, закрыть",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
         }
     }
 

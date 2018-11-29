@@ -1,6 +1,7 @@
 package com.example.antitextbook;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +27,6 @@ import java.io.OutputStreamWriter;
 import java.util.Objects;
 
 public class Settings extends Fragment {
-
     private int STORAGE_PERMISSION_CODE = 23;
 
     @Override
@@ -33,10 +34,10 @@ public class Settings extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
 
         Button buttonInfoApp = (Button) rootView.findViewById(R.id.infoApp);
@@ -60,14 +61,24 @@ public class Settings extends Fragment {
 
         String folderName = "AntiTextBook/ATB/settings", fileName = "checkedBox.txt";
         final String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName + "/" + fileName;
+
         File file = new File(fullPath);
         if(!file.exists()) {
             if (isExternalStorageWritable()) {
                 saveFile(fullPath, String.valueOf("false"));
             } else {
-                Toast.makeText(getActivity(), "Error: " + "не установлена cd-card. Для корректной работы приложения необходима cd-card", Toast.LENGTH_SHORT).show();
-                //* поменять потом все на внутренний накопитель, ща чет не получилось и пошло оно все нахер
-                //* а, и еще. Я ваще хз, куда созраняется файл (у меня на телефоне он, как мне показалось, сохраняет на внутреннюю)
+                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                builder.setTitle("Error")
+                        .setMessage("не установлена cd-card. Для корректной работы приложения необходима cd-card")
+                        .setCancelable(false)
+                        .setNegativeButton("Ок, закрыть",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         }
 
@@ -81,9 +92,11 @@ public class Settings extends Fragment {
                 if(isReadStorageAllowed()){
                     requestStoragePermission();
                 }
+
                 CheckBox checkBox = (CheckBox) Objects.requireNonNull(getView()).findViewById(R.id.checkBox);
                 String folderName = "AntiTextBook/ATB/settings", fileName = "checkedBox.txt";
                 String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName + "/" + fileName;
+
                 if(checkBox.isChecked()){
                     int i = 1;
                     saveFile(fullPath,String.valueOf(i));

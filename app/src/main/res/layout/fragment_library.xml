@@ -17,12 +17,12 @@
             android:id="@+id/choose"
             android:layout_width="match_parent"
             android:layout_height="257dp"
-            android:text="Скачать книгу" />
+            android:text="@string/downloadBooks" />
 
         <Button
             android:id="@+id/download"
             android:layout_width="match_parent"
             android:layout_height="247dp"
-            android:text="Выбрать скачанную книгу" />
+            android:text="@string/chooseBook" />
     </LinearLayout>
 </FrameLayout>

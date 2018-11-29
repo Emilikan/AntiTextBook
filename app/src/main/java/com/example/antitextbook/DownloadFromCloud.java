@@ -1,6 +1,7 @@
 package com.example.antitextbook;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,37 +11,26 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static android.support.constraint.Constraints.TAG;
 
 public class DownloadFromCloud extends Fragment {
     private final int STORAGE_PERMISSION_CODE = 23;
@@ -51,15 +41,13 @@ public class DownloadFromCloud extends Fragment {
 
     private ListView listTasks;
 
-    ListView mListBooks;
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_download_from_cloud, container, false);
-        Button button4 = (Button) rootView.findViewById(R.id.search);
 
-        button4.setOnClickListener(new View.OnClickListener() {
+        Button search = (Button) rootView.findViewById(R.id.search); // кнопка поиска
+        search.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             public void onClick(View v) {
                 Fragment fragment = null;
@@ -75,14 +63,16 @@ public class DownloadFromCloud extends Fragment {
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
             }
         });
+
         mRef = FirebaseDatabase.getInstance().getReference();
         mRef.addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 counter = dataSnapshot.child("counter").getValue(String.class);
                 if ("-1".equals(counter)) {
                     Fragment fragment = new Server();
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                     Toast.makeText(getActivity(), "Нет книг", Toast.LENGTH_SHORT).show();
                 } else {
@@ -90,9 +80,21 @@ public class DownloadFromCloud extends Fragment {
                 }
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                builder.setTitle("Error")
+                        .setMessage(databaseError.getMessage())
+                        .setCancelable(false)
+                        .setNegativeButton("Ок, закрыть",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
         listTasks = (ListView) rootView.findViewById(R.id.booksListView);
@@ -159,39 +161,48 @@ public class DownloadFromCloud extends Fragment {
         listTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
-            public void onItemClick(AdapterView<?> parent, View itemClicked, int position,
-                                    long id) {
-                TextView textView = (TextView) itemClicked;
-                String strText = textView.getText().toString(); // получаем текст нажатого элемента
-                //Toast.makeText(getActivity(), position + "", Toast.LENGTH_SHORT).show();
+            public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
                 Fragment fragment = new AboutBook();
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+
                 Bundle bundle = new Bundle();
                 String valueOfReplace = position + "";
                 bundle.putString("Value", valueOfReplace);
                 fragment.setArguments(bundle);
             }
         });
+
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {
-                };
+                GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {};
                 mTasks = dataSnapshot.child("AllBooks").getValue(t);
                 updateUI();
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(), "Error cod" + databaseError.getCode(), Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                builder.setTitle("Error")
+                        .setMessage(databaseError.getMessage())
+                        .setCancelable(false)
+                        .setNegativeButton("Ок, закрыть",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
     }
 
     public void updateUI() {
         if (getActivity() != null) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mTasks);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mTasks);
             listTasks.setAdapter(adapter);
         }
     }
@@ -200,9 +211,10 @@ public class DownloadFromCloud extends Fragment {
 
 
     //We are calling this method to check the permission status
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private boolean isReadStorageAllowed() {
         //Getting the permission status
-        int result = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
+        int result = ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.READ_EXTERNAL_STORAGE);
 
         //If permission is granted returning true
         if (result == PackageManager.PERMISSION_GRANTED)
@@ -213,9 +225,10 @@ public class DownloadFromCloud extends Fragment {
     }
 
     //Requesting permission
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void requestStoragePermission(){
 
-        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.READ_EXTERNAL_STORAGE)){
+        if (ActivityCompat.shouldShowRequestPermissionRationale(Objects.requireNonNull(getActivity()),Manifest.permission.READ_EXTERNAL_STORAGE)){
             //If the user has denied the permission previously your code will come to this block
             //Here you can explain why you need this permission
             //Explain here why you need this permission

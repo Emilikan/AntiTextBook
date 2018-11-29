@@ -1,13 +1,14 @@
 package com.example.antitextbook;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +30,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
-
 public class AboutBook extends Fragment {
+
     private TextView mPart2;
     private TextView mAuthor2;
     private TextView mProject2;
@@ -41,21 +42,22 @@ public class AboutBook extends Fragment {
     public String conterOfFragment;
 
     private DatabaseReference mRef;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_about_book, container, false);
+
         Bundle bundle = getArguments();
         conterOfFragment = "0";
         if(bundle != null){
             conterOfFragment = bundle.getString("Value", "0");
         }
+
         imageView = (ImageView) rootView.findViewById(R.id.imageView3);
         mPart2 = (TextView) rootView.findViewById(R.id.Part2);
         mAuthor2 = (TextView) rootView.findViewById(R.id.Author2);
@@ -68,34 +70,30 @@ public class AboutBook extends Fragment {
             @Override
             public void onClick(View v) {
             // скачивание книги
+
             }
         });
+
         changeText();
+
         return rootView;
     }
+
     @SuppressLint("WrongViewCast")
     public void changeText() {
-
         mRef = FirebaseDatabase.getInstance().getReference();
         mRef.addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //dbCounter = dataSnapshot.child("counter").getValue(String.class);
-                //Toast.makeText(getActivity(), dbCounter, Toast.LENGTH_SHORT).show();
-
                 FirebaseStorage storage = FirebaseStorage.getInstance();
-
                 StorageReference storageRef = storage.getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(conterOfFragment).child("Icon").getValue(String.class)));
 
-                // создаем ссылку на файл по адресу scoin.png
-                // вызываем getDownloadUrl() и устанавливаем слушатель успеха,
-                // который срабатывает в случае успеха процесса скачивания
                 storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Picasso.with(getContext()).load(uri).into(imageView);  //ВАШ IMAGEVIEW,без id работать не будет
+                        Picasso.with(getContext()).load(uri).into(imageView);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -104,20 +102,32 @@ public class AboutBook extends Fragment {
                         toast.show();
                     }
                 });
+
                 mPart2.setText("Часть: " + dataSnapshot.child("Books").child(conterOfFragment).child("Part").getValue(String.class));
                 mAuthor2.setText("Автор: " +dataSnapshot.child("Books").child(conterOfFragment).child("Author").getValue(String.class));
                 mProject2.setText("Предмет: " +dataSnapshot.child("Books").child(conterOfFragment).child("Subject").getValue(String.class));
                 mClass2.setText("Класс: " + dataSnapshot.child("Books").child(conterOfFragment).child("Class").getValue(String.class));
                 mYear2.setText("Год: " + dataSnapshot.child("Books").child(conterOfFragment).child("Year").getValue(String.class));
-
             }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(), "Error" + databaseError.getCode(), Toast.LENGTH_SHORT).show();
+                // создаем диологовое окно с ошибкой
+                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                builder.setTitle("Error")
+                        .setMessage(databaseError.getMessage())
+                        .setCancelable(false)
+                        .setNegativeButton("Ок, закрыть",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
-
-
 
     }
 
