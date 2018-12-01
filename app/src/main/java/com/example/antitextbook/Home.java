@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnDrawListener;
@@ -40,14 +41,22 @@ public class Home extends Fragment {
         String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName + "/" + fileName;
         String folderName1 = "AntiTextBook/ATB/settings", fileName1 = "darkBox.txt";
         String fullPath1 = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName1 + "/" + fileName1;
-        String dark = readFile(fullPath1);
+        String dark = readTxtFile(fullPath1);
+
+        File localFile = null;
+        try {
+            localFile = File.createTempFile("uploads", "pdf");
+        } catch (IOException e) {
+            Toast.makeText(getContext(), "Error1 " + e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
 
         File file = new File(fullPath);
 
         // открытие pdf файла
         PDFView pdfView = rootView1.findViewById(R.id.pdfView);
         if("TRUE".equals(dark)) {
-            pdfView.fromAsset("geogr_10_maksakovskiy.pdf")
+            pdfView.fromFile(localFile)
                     .enableSwipe(true) // allows to block changing pages using swipe
                     .swipeHorizontal(true)
                     .enableDoubletap(true)
@@ -58,16 +67,16 @@ public class Home extends Fragment {
                     .scrollHandle(null)
                     .onDrawAll(new OnDrawListener() {
                         @Override
-                        public void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int displayedPage) {}
+                        public void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int displayedPage) {
+                        }
                     })
                     .enableAntialiasing(true) // improve rendering a little bit on low-res screens
                     // spacing between pages in dp. To define spacing color, set view background
                     .spacing(0)
                     .pageFitPolicy(FitPolicy.WIDTH)
                     .load();
-        }
-        else {
-            pdfView.fromAsset("geogr_10_maksakovskiy.pdf")
+        } else {
+            pdfView.fromFile(localFile)
                     .enableSwipe(true) // allows to block changing pages using swipe
                     .swipeHorizontal(true)
                     .enableDoubletap(true)
@@ -107,7 +116,7 @@ public class Home extends Fragment {
             }
         }
 
-        String numberString = readFile(fullPath);
+        String numberString = readTxtFile(fullPath);
 
         try {
             int number = Integer.parseInt(numberString);
@@ -142,19 +151,19 @@ public class Home extends Fragment {
                 public void onSwipeRight() {
                 //обработка свайпа вправо
                     String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/AntiTextBook/ATB/numberOfPictures.txt";
-                    String numberString = readFile(fullPath);
+                    String numberString = readTxtFile(fullPath);
                     try {
                         int myInt = Integer.parseInt(numberString);
                         if(myInt != 0) {
                             myInt--;
                         }
                         saveFile(fullPath, String.valueOf(myInt));
-                        numberString = readFile(fullPath);
+                        numberString = readTxtFile(fullPath);
                         Toast.makeText(getActivity(), numberString, Toast.LENGTH_SHORT).show();
 
                         //ImageView imageView = (ImageView) getView().findViewById(R.id.imageView1);
 
-                        String numberStringRes = readFile(fullPath);
+                        String numberStringRes = readTxtFile(fullPath);
                         int number = Integer.parseInt(numberStringRes);
                         String lesson = "geography", grage = "10";
                         //* написать метод получение названия и класса (это после реализации библиотеки)
@@ -173,17 +182,17 @@ public class Home extends Fragment {
             public void onSwipeLeft() {
                 //обработка свайпа влево
                 String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/AntiTextBook/ATB/numberOfPictures.txt";
-                String numberString = readFile(fullPath);
+                String numberString = readTxtFile(fullPath);
                 try {
                     int myInt = Integer.parseInt(numberString);
                     myInt++;
                     saveFile(fullPath, String.valueOf(myInt));
-                    numberString = readFile(fullPath);
+                    numberString = readTxtFile(fullPath);
                     Toast.makeText(getActivity(), numberString, Toast.LENGTH_SHORT).show();
 
                     //ImageView imageView = (ImageView) getView().findViewById(R.id.imageView1);
 
-                    String numberStringRes = readFile(fullPath);
+                    String numberStringRes = readTxtFile(fullPath);
                     int number = Integer.parseInt(numberStringRes);
                     String lesson = "geography", grage = "10";
                     String name = lesson + grage + "_"+ number;
@@ -252,7 +261,7 @@ public class Home extends Fragment {
     // а то функцию почти нигде не получится использовать)
     //* Переписать ее для того, чтобы можно было использовать свой адресс (а не встроенный)
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public String readFile (String path){
+    public String readTxtFile(String path){
         File sdcard = Environment.getExternalStorageDirectory();
         //получает текстовый файл
         File file = new File(sdcard,path);

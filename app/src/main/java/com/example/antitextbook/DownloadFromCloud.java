@@ -1,8 +1,10 @@
 package com.example.antitextbook;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,22 +14,33 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseError;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Objects;
@@ -40,6 +53,21 @@ public class DownloadFromCloud extends Fragment {
     private String counter = "-1";
 
     private ListView listTasks;
+
+    public ImageView imageView;
+    public String conterOfFragment;
+
+    private static class TaskViewHolder extends RecyclerView.ViewHolder{
+
+        TextView mTitleBooks;
+        ImageView mBooksImage;
+
+        TaskViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mTitleBooks = (TextView) itemView.findViewById(R.id.tv_title_books);
+            mBooksImage = (ImageView) itemView.findViewById(R.id.image_books_id);
+        }
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -64,6 +92,33 @@ public class DownloadFromCloud extends Fragment {
             }
         });
 
+        /*RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_list_books);
+        Toast.makeText(getContext(), "2", Toast.LENGTH_LONG).show();
+        FirebaseRecyclerOptions<String> options = new FirebaseRecyclerOptions.Builder<String>().setQuery(mRef, String.class).build();
+
+        FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<String, TaskViewHolder>(options) {
+
+            @Override
+            public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.books_fragment, parent, false);
+                Toast.makeText(getContext(), "gh", Toast.LENGTH_LONG).show();
+
+                return new TaskViewHolder(view);
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            protected void onBindViewHolder(TaskViewHolder viewHolder, int position, @NonNull String model) {
+
+                Toast.makeText(getContext(), "ghdf", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), model, Toast.LENGTH_LONG).show();
+                viewHolder.mTitleBooks.setText(model);
+            }
+
+        };
+
+        recyclerView.setAdapter(adapter);
+        */
         mRef = FirebaseDatabase.getInstance().getReference();
         mRef.addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -98,6 +153,7 @@ public class DownloadFromCloud extends Fragment {
             }
         });
         listTasks = (ListView) rootView.findViewById(R.id.booksListView);
+
 
         /*ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.imageButton);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -154,6 +210,7 @@ public class DownloadFromCloud extends Fragment {
 
         return rootView;
     }
+
 
     private void checked() {
         mRef = FirebaseDatabase.getInstance().getReference();
