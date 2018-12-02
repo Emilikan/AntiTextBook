@@ -123,6 +123,7 @@ public class AboutBook extends Fragment {
                                 Toast.makeText(getContext(), exception.getMessage() , Toast.LENGTH_LONG).show();
                             }
                         });
+
                     }
 
                     @Override
