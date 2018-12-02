@@ -214,7 +214,7 @@ public class DownloadFromCloud extends Fragment {
 
     private void checked() {
         mRef = FirebaseDatabase.getInstance().getReference();
-
+        // слушатель ListView
         listTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
