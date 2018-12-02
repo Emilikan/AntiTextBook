@@ -153,7 +153,7 @@ public class Cloud extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(counterFor == 1) {
                     dbCounter = dataSnapshot.child("counter").getValue(String.class);
-                    Toast.makeText(getActivity(), dbCounter, Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(getActivity(), dbCounter, Toast.LENGTH_SHORT).show();
                     int intCounter = Integer.parseInt(dbCounter);
                     intCounter++;
                     String stringCounter = Integer.toString(intCounter);

@@ -45,6 +45,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // устанавливаем начальный фрагмент - Home
+        Fragment fragment = null;
+        Class fragmentClass = Home.class;
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        assert fragment != null;
+        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
     }
 
     @Override
@@ -158,16 +172,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.library) {
-        fragmentClass = Library.class;
+            fragmentClass = Library.class;
         }
         else if (id == R.id.settings) {
-        fragmentClass = Settings.class;
+            fragmentClass = Settings.class;
         }
         else if (id == R.id.server) {
-        fragmentClass = Server.class;
+            fragmentClass = Server.class;
         }
         else if (id == R.id.nav_send) {
-        fragmentClass = Send.class;
+            fragmentClass = Send.class;
         }
         else if (id == R.id.home) {
             fragmentClass = Home.class;

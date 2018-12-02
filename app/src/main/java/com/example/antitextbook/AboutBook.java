@@ -72,12 +72,6 @@ public class AboutBook extends Fragment {
 
     private DatabaseReference mRef;
 
-
-
-    FirebaseAuth mAuth;
-    FirebaseUser mUser;
-
-    private StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
     private StorageReference islandRef;
 
     @Override
@@ -119,7 +113,7 @@ public class AboutBook extends Fragment {
                                 + "_" + dataSnapshot.child("Books").child(conterOfFragment).child("Subject").getValue(String.class) + "_" + dataSnapshot.child("Books").child(conterOfFragment).child("Part").getValue(String.class)
                                 + "_" + dataSnapshot.child("Books").child(conterOfFragment).child("Year").getValue(String.class);
 
-                        localFile = saveFile(Objects.requireNonNull(getContext()).getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "download/" + nameOfFileInTelephone + ".pdf");
+                        localFile = saveFile(Objects.requireNonNull(getContext()).getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/" + nameOfFileInTelephone + ".pdf");
 
                         assert localFile != null;
                         islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
@@ -147,9 +141,7 @@ public class AboutBook extends Fragment {
                                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                             }
                         });
-
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         Toast.makeText(getContext(), "ERROR" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
@@ -171,9 +163,9 @@ public class AboutBook extends Fragment {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference storageRef = storage.getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(conterOfFragment).child("Icon").getValue(String.class)));
-
                 storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
@@ -226,7 +218,6 @@ public class AboutBook extends Fragment {
                 fileHandle.getParentFile().mkdirs();
             //Если файл существует, то он будет перезаписан:
             fileHandle.createNewFile();
-            FileOutputStream fOut = new FileOutputStream(fileHandle);
             return fileHandle;
         }
         catch (IOException e)

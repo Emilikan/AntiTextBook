@@ -1,8 +1,6 @@
 package com.example.antitextbook;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -10,7 +8,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +19,6 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
-
 
 public class Storage extends Fragment {
     private ListView listBooks;
@@ -45,19 +41,23 @@ public class Storage extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
                 pdfUri = arrPdfUri.get(position);
-                Toast.makeText(getContext(), pdfUri, Toast.LENGTH_LONG).show();
+
+                //Toast.makeText(getContext(), pdfUri, Toast.LENGTH_LONG).show();
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("URI", pdfUri);
                 editor.apply();
+
                 Fragment fragment = new Home();
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
             }
         });
+
         File rootFolder = Objects.requireNonNull(getContext()).getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
         assert rootFolder != null;
         File[] filesArray = rootFolder.listFiles();
+
         int count = 0;
         for (File f: filesArray) {
             // возможно нужен count
@@ -66,8 +66,8 @@ public class Storage extends Fragment {
 
             //count++;
         }
-        updateUI();
 
+        updateUI();
         return rootView;
     }
     public void updateUI() {

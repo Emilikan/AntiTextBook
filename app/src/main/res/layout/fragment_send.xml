@@ -16,10 +16,29 @@
             android:layout_height="wrap_content"
             android:text="Эмиль:" />
 
-        <TextView
+        <EditText
+            android:id="@+id/nameOfFeedback"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="email: emi...@gmail.com" />
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="Загаловок"
+            />
+
+        <EditText
+            android:id="@+id/describingOfFeedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Описание"
+            android:inputType="textMultiLine" />
+
+        <Button
+            android:id="@+id/sendFeedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Отправить" />
+
     </LinearLayout>
 
 </FrameLayout>
