@@ -1,10 +1,13 @@
 package com.example.antitextbook;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -15,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Toast;
+
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnDrawListener;
@@ -52,11 +56,16 @@ public class Home extends Fragment {
         }
 
         File file = new File(fullPath);
-
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String uriOfPdf = preferences.getString("URI", "");
+        if(!uriOfPdf.equalsIgnoreCase(""))
+        {
+            uriOfPdf = uriOfPdf + "";  /* Edit the value here*/
+        }
         // открытие pdf файла
         PDFView pdfView = rootView1.findViewById(R.id.pdfView);
         if("TRUE".equals(dark)) {
-            pdfView.fromFile(localFile)
+            pdfView.fromUri(Uri.parse(uriOfPdf))
                     .enableSwipe(true) // allows to block changing pages using swipe
                     .swipeHorizontal(true)
                     .enableDoubletap(true)
@@ -76,7 +85,7 @@ public class Home extends Fragment {
                     .pageFitPolicy(FitPolicy.WIDTH)
                     .load();
         } else {
-            pdfView.fromFile(localFile)
+            pdfView.fromUri(Uri.parse(uriOfPdf))
                     .enableSwipe(true) // allows to block changing pages using swipe
                     .swipeHorizontal(true)
                     .enableDoubletap(true)
