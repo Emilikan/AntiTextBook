@@ -26,7 +26,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     @Override
@@ -34,16 +33,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         // устанавливаем начальный фрагмент - Home
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -94,72 +93,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         return super.onOptionsItemSelected(item);
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public boolean lessonOrNo(){
-        boolean couples = false;
-        String folderName = "temp/ATB/settings", fileName = "checkedBox.txt";
-        String path = "/" + folderName + "/" + fileName;
-        String couplesAfterFile = readFile(path);
-
-        Toast.makeText(this, couplesAfterFile, Toast.LENGTH_SHORT).show();
-        if(couplesAfterFile == "1"){
-            couples = true;
-        }
-        else if(couplesAfterFile == "2"){
-            couples = false;
-        }
-        else{
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle("Error")
-                    .setMessage("ошибка в значении в файле с обозначением пар или уроков. Выставлены уроки.")
-                    .setCancelable(false)
-                    .setNegativeButton("Ок, закрыть",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-            AlertDialog alert = builder.create();
-            alert.show();
-            couples = false;
-        }
-        return couples;
-    }
-
-    public String readFile (String path){
-        File sdcard = Environment.getExternalStorageDirectory();
-        //получает текстовый файл
-        File file = new File(sdcard,"/" + path);
-        //читаем текстовый файл
-        StringBuilder text = new StringBuilder();
-
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String line;
-            String resultText = "";
-
-            while ((line = br.readLine()) != null) {
-                resultText += line;
-                return resultText;
-            }
-            br.close();
-        }
-        catch (IOException e) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle("Error")
-                    .setMessage(e.getMessage())
-                    .setCancelable(false)
-                    .setNegativeButton("Ок, закрыть",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-        return null;
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressWarnings("StatementWithEmptyBody")
@@ -186,12 +119,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if (id == R.id.home) {
             fragmentClass = Home.class;
         }
-        else if (id == R.id.schedule && lessonOrNo()) {
+        else if (id == R.id.schedule) {
             fragmentClass = Schedule2.class;
         }
-        else if(id == R.id.schedule && !lessonOrNo()){
+        /*
+        else if(id == R.id.schedule){
             fragmentClass = Schedule.class;
         }
+        */
         else if (id == R.id.exit) {
             FirebaseAuth.getInstance().signOut();
         }
@@ -214,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             // Выводим выбранный пункт в заголовке
             setTitle(item.getTitle());
 
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            DrawerLayout drawer = findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         }
         return true;

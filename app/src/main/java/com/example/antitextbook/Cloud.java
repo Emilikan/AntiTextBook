@@ -1,9 +1,12 @@
 package com.example.antitextbook;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -51,7 +54,6 @@ public class Cloud extends Fragment {
     private String mSubject;
     private String mPart;
 
-    private String name;
     private String pdfUri;
     private String imgUri;
 
@@ -66,19 +68,35 @@ public class Cloud extends Fragment {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_cloud, container, false);
 
-        imageView = (ImageView) rootView.findViewById(R.id.checkImage);
+        if(!isOnline(Objects.requireNonNull(getContext()))){
+            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+            builder.setTitle("Warning")
+                    .setMessage("Нет доступа в интернет. Проверьте наличие связи")
+                    .setCancelable(false)
+                    .setNegativeButton("Ок, закрыть",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
 
-        Button sendOnCloud = (Button) rootView.findViewById(R.id.buttonSendToCloud);//Кнопка отправить
+        imageView = rootView.findViewById(R.id.checkImage);
+
+        Button sendOnCloud = rootView.findViewById(R.id.buttonSendToCloud);//Кнопка отправить
         sendOnCloud.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                mAuthor = ((EditText) getActivity().findViewById(R.id.textAuthorCloud)).getText().toString();
+                mAuthor = ((EditText) Objects.requireNonNull(getActivity()).findViewById(R.id.textAuthorCloud)).getText().toString();
                 mClass = ((EditText) getActivity().findViewById(R.id.textClassCloud)).getText().toString();
                 mYear = ((EditText) getActivity().findViewById(R.id.textYearCloud)).getText().toString();
                 mSubject = ((EditText) getActivity().findViewById(R.id.textSubjectCloud)).getText().toString();
@@ -126,7 +144,7 @@ public class Cloud extends Fragment {
             }
         });
 
-        Button choosePdf = (Button) rootView.findViewById(R.id.buttonChoosePDF);//Кнопка загрузки pdf
+        Button choosePdf = rootView.findViewById(R.id.buttonChoosePDF);//Кнопка загрузки pdf
         choosePdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,7 +152,7 @@ public class Cloud extends Fragment {
             }
         });
 
-        Button choiceImages = (Button) rootView.findViewById(R.id.buttonDownloadImage);//Кнопка загрузки Изображения
+        Button choiceImages = rootView.findViewById(R.id.buttonDownloadImage);//Кнопка загрузки Изображения
         choiceImages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,6 +172,7 @@ public class Cloud extends Fragment {
                 if(counterFor == 1) {
                     dbCounter = dataSnapshot.child("counter").getValue(String.class);
                     // Toast.makeText(getActivity(), dbCounter, Toast.LENGTH_SHORT).show();
+                    assert dbCounter != null;
                     int intCounter = Integer.parseInt(dbCounter);
                     intCounter++;
                     String stringCounter = Integer.toString(intCounter);
@@ -257,7 +276,7 @@ public class Cloud extends Fragment {
                             progressDialog.dismiss();
                             filePath = null;
                             filePdfPath = null;
-                            ((EditText) getActivity().findViewById(R.id.textAuthorCloud)).setText("");
+                            ((EditText) Objects.requireNonNull(getActivity()).findViewById(R.id.textAuthorCloud)).setText("");
                             ((EditText) getActivity().findViewById(R.id.textClassCloud)).setText("");
                             ((EditText) getActivity().findViewById(R.id.textYearCloud)).setText("");
                             ((EditText) getActivity().findViewById(R.id.textSubjectCloud)).setText("");
@@ -313,6 +332,12 @@ public class Cloud extends Fragment {
         }
     }
 
-
+    // проверка на доступ интернета
+    private static boolean isOnline (Context context)
+    {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
 
 }

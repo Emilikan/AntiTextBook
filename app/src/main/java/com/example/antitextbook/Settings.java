@@ -36,11 +36,11 @@ public class Settings extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        Button buttonInfoApp = (Button) rootView.findViewById(R.id.infoApp);
+        Button buttonInfoApp = rootView.findViewById(R.id.infoApp);
         buttonInfoApp.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -83,7 +83,7 @@ public class Settings extends Fragment {
         }
 
         // сохраняет значение checkBox
-        CheckBox checkBox = (CheckBox) rootView.findViewById(R.id.checkBox);
+        CheckBox checkBox = rootView.findViewById(R.id.checkBox);
         checkBox.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -93,7 +93,7 @@ public class Settings extends Fragment {
                     requestStoragePermission();
                 }
 
-                CheckBox checkBox = (CheckBox) Objects.requireNonNull(getView()).findViewById(R.id.checkBox);
+                CheckBox checkBox = Objects.requireNonNull(getView()).findViewById(R.id.checkBox);
                 String folderName = "AntiTextBook/ATB/settings", fileName = "checkedBox.txt";
                 String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName + "/" + fileName;
 
@@ -108,7 +108,7 @@ public class Settings extends Fragment {
             }
         });
 
-        CheckBox darkBox = (CheckBox) rootView.findViewById(R.id.darkBox);
+        CheckBox darkBox = rootView.findViewById(R.id.darkBox);
         darkBox.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -118,7 +118,7 @@ public class Settings extends Fragment {
                     requestStoragePermission();
                 }
 
-                CheckBox checkBox = (CheckBox) Objects.requireNonNull(getView()).findViewById(R.id.darkBox);
+                CheckBox checkBox = Objects.requireNonNull(getView()).findViewById(R.id.darkBox);
                 String folderName1 = "AntiTextBook/ATB/settings", fileName = "darkBox.txt";
                 String fullPathForDarkTheme = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName1 + "/" + fileName;
                 Toast.makeText(getContext(), fullPathForDarkTheme, Toast.LENGTH_LONG).show();
@@ -160,11 +160,7 @@ public class Settings extends Fragment {
     public boolean isExternalStorageWritable()
     {
         String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state))
-        {
-            return true;
-        }
-        return false;
+        return Environment.MEDIA_MOUNTED.equals(state);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -173,21 +169,14 @@ public class Settings extends Fragment {
         int result = ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.READ_EXTERNAL_STORAGE);
 
         //If permission is granted returning true
-        if (result == PackageManager.PERMISSION_GRANTED)
-            return false;
-
-        //If permission is not granted returning false
-        return true;
+        return result != PackageManager.PERMISSION_GRANTED;
     }
 
     //Requesting permission
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void requestStoragePermission(){
 
-        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.READ_EXTERNAL_STORAGE)){
-            //If the user has denied the permission previously your code will come to this block
-            //Here you can explain why you need this permission
-            //Explain here why you need this permission
-        }
+        ActivityCompat.shouldShowRequestPermissionRationale(Objects.requireNonNull(getActivity()), Manifest.permission.READ_EXTERNAL_STORAGE);
 
         //And finally ask for the permission
         ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},STORAGE_PERMISSION_CODE);

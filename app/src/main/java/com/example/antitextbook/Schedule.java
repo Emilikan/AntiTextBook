@@ -21,7 +21,7 @@ public class Schedule extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
 
-        Button changingSchedule =  (Button) rootView.findViewById(R.id.buttonChangeSchedule);
+        Button changingSchedule =  rootView.findViewById(R.id.buttonChangeSchedule);
         changingSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,7 +34,7 @@ public class Schedule extends Fragment {
     }
 
     public void changeTextView(View view){
-        EditText editText = (EditText) view.findViewById(R.id.lesson_mon1);
+        EditText editText = view.findViewById(R.id.lesson_mon1);
         editText.setEnabled(false);
         editText.setCursorVisible(false);
         editText.setBackgroundColor(Color.TRANSPARENT);

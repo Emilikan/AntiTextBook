@@ -19,7 +19,7 @@ public class Library extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_library, container, false);
 
-        Button choose = (Button) rootView.findViewById(R.id.choose);
+        Button choose = rootView.findViewById(R.id.choose);
         choose.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             public void onClick(View v) {
@@ -37,7 +37,7 @@ public class Library extends Fragment {
             }
         });
 
-        Button download = (Button) rootView.findViewById(R.id.download);
+        Button download = rootView.findViewById(R.id.download);
         download.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             public void onClick(View v) {

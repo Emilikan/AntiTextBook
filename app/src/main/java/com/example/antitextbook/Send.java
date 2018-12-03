@@ -25,7 +25,6 @@ import java.util.Objects;
 public class Send extends Fragment {
     private EditText nameOfFeedback;
     private EditText describingOfFeedback;
-    private Button sendFeedback;
 
     String mNameOfFeedback;
     String mDescribingOfFeedback;
@@ -38,10 +37,10 @@ public class Send extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_send, container, false);
 
-        nameOfFeedback = (EditText) rootView.findViewById(R.id.nameOfFeedback);
-        describingOfFeedback = (EditText) rootView.findViewById(R.id.describingOfFeedback);
-        sendFeedback = (Button) rootView.findViewById(R.id.sendFeedback);
+        nameOfFeedback = rootView.findViewById(R.id.nameOfFeedback);
+        describingOfFeedback = rootView.findViewById(R.id.describingOfFeedback);
 
+        Button sendFeedback = rootView.findViewById(R.id.sendFeedback);
         sendFeedback.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override

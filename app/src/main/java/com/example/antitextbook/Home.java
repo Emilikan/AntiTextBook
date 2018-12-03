@@ -35,12 +35,10 @@ public class Home extends Fragment {
                              Bundle savedInstanceState) {
         View rootView1 = inflater.inflate(R.layout.fragment_home, container, false);
 
-        int numberOfPicturesMin = 0;
         String folderName = "AntiTextBook/ATB", fileName = "numberOfPictures.txt";// название файла, где хранится номер данной картинки
 
         String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName + "/" + fileName;
         String folderName1 = "AntiTextBook/ATB/settings", fileName1 = "darkBox.txt";
-        String fullPath1 = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName1 + "/" + fileName1;
         //String dark = readTxtFile(fullPath1);
 
         File file = new File(fullPath);
@@ -125,18 +123,6 @@ public class Home extends Fragment {
             //mImageView.setImageResource(holderInt); // используем это для изменения КАРТИНКИ
         }
         catch (NumberFormatException e){
-            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-            builder.setTitle("Error")
-                    .setMessage(e.getMessage())
-                    .setCancelable(false)
-                    .setNegativeButton("Ок, закрыть",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-            AlertDialog alert = builder.create();
-            alert.show();
         } */
         return rootView1;
 
@@ -147,82 +133,6 @@ public class Home extends Fragment {
     {
         String state = Environment.getExternalStorageState();
         return Environment.MEDIA_MOUNTED.equals(state);
-    }
-
-    // Функция, которая сохраняет файл, принимая полный путь до файла filePath и сохраняемый текст FileContent (так же используется для создания файла)
-    //* написать функцию подобно этой, но без перезаписывания файла
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void saveFile (String filePath, String FileContent)
-    {
-        //Создание объекта файла.
-        File fileHandle = new File(filePath);
-        try
-        {
-            //Если нет директорий в пути, то они будут созданы:
-            if (!fileHandle.getParentFile().exists())
-                fileHandle.getParentFile().mkdirs();
-            //Если файл существует, то он будет перезаписан:
-            fileHandle.createNewFile();
-            FileOutputStream fOut = new FileOutputStream(fileHandle);
-            OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
-            myOutWriter.write(FileContent);
-            myOutWriter.close();
-            fOut.close();
-        }
-        catch (IOException e)
-        {
-            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-            builder.setTitle("Error")
-                    .setMessage(e.getMessage())
-                    .setCancelable(false)
-                    .setNegativeButton("Ок, закрыть",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-    }
-
-    // Функция, которая читает файл по определенному адресу, возвращает то, что в файле (Если там более одного слова, то вернет все "слипшееся". В идеале заменить строку на массив (список),
-    // а то функцию почти нигде не получится использовать)
-    //* Переписать ее для того, чтобы можно было использовать свой адресс (а не встроенный)
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public String readTxtFile(String path){
-        File sdcard = Environment.getExternalStorageDirectory();
-        //получает текстовый файл
-        File file = new File(sdcard,path);
-        //читаем текстовый файл
-        StringBuilder text = new StringBuilder();
-
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String line;
-            StringBuilder resultText = new StringBuilder();
-
-            while ((line = br.readLine()) != null) {
-                resultText.append(line);
-            }
-            br.close();
-            return resultText.toString();
-        }
-        catch (IOException e) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-            builder.setTitle("Error")
-                    .setMessage(e.getMessage())
-                    .setCancelable(false)
-                    .setNegativeButton("Ок, закрыть",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-        return null;
     }
 
 }

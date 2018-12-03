@@ -1,6 +1,9 @@
 package com.example.antitextbook;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,24 +32,37 @@ public class Server extends Fragment {
     private String mLogin;
     private String mPassword;
 
-    private FirebaseAuth mAuth;
-    private FirebaseUser mUser;
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_server, container, false);
+
+        if(!isOnline(Objects.requireNonNull(getContext()))){
+            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+            builder.setTitle("Warning")
+                    .setMessage("Нет доступа в интернет. Проверьте наличие связи")
+                    .setCancelable(false)
+                    .setNegativeButton("Ок, закрыть",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null){
             Fragment fragment = new Cloud();
             FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-            DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+            DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         }
         else {
-            Button singIn = (Button) rootView.findViewById(R.id.singIn); // кнопка авторизации
+            Button singIn = rootView.findViewById(R.id.singIn); // кнопка авторизации
             singIn.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
@@ -76,9 +92,10 @@ public class Server extends Fragment {
         return rootView;
     }
 
+    // авторизация пользователей
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void singInUser(){
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.signInWithEmailAndPassword(mLogin, mPassword).addOnCompleteListener(Objects.requireNonNull(getActivity()), new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -87,7 +104,7 @@ public class Server extends Fragment {
                     Fragment fragment = new Cloud();
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-                    DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+                    DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
                     drawer.closeDrawer(GravityCompat.START);
 
                 }
@@ -108,4 +125,13 @@ public class Server extends Fragment {
             }
         });
     }
+
+    // проверка на доступ к интернету
+    private static boolean isOnline (Context context)
+    {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
 }

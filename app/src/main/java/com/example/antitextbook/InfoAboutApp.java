@@ -2,6 +2,7 @@ package com.example.antitextbook;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,11 +21,11 @@ public class InfoAboutApp extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_info_about_app, container, false);
 
-        Button backOnFragmentOfSettings = (Button) rootView.findViewById(R.id.backOnFragmentOfSettings); // кнопка назад
+        Button backOnFragmentOfSettings = rootView.findViewById(R.id.backOnFragmentOfSettings); // кнопка назад
         backOnFragmentOfSettings.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
