@@ -1,18 +1,13 @@
 package com.example.antitextbook;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.renderscript.Sampler;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -26,13 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.barteksc.pdfviewer.PDFView;
-import com.github.barteksc.pdfviewer.listener.OnDrawListener;
-import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,17 +32,11 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
-import android.content.SharedPreferences;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Date;
 import java.util.Objects;
 
-import static android.content.Context.MODE_PRIVATE;
-import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static java.lang.String.valueOf;
 
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -65,14 +49,15 @@ public class AboutBook extends Fragment {
     private TextView mYear2;
     private ImageView imageView;
 
-
-    public String conterOfFragment;
+    private String conterOfFragment;
+    private String dbCounter1;
     private File localFile = null;
     private Uri pdfFilePath = null;
+    private int i = 0;
 
     private DatabaseReference mRef;
 
-    private StorageReference islandRef;
+    private StorageReference pdfRef;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,26 +74,38 @@ public class AboutBook extends Fragment {
             conterOfFragment = bundle.getString("Value", "0");
         }
 
-        imageView = (ImageView) rootView.findViewById(R.id.imageView3);
-        mPart2 = (TextView) rootView.findViewById(R.id.Part2);
-        mAuthor2 = (TextView) rootView.findViewById(R.id.Author2);
-        mProject2 = (TextView) rootView.findViewById(R.id.Project2);
-        mClass2 = (TextView) rootView.findViewById(R.id.Class2);
-        mYear2 = (TextView) rootView.findViewById(R.id.Year2);
+        imageView = rootView.findViewById(R.id.imageView3);
+        mPart2 = rootView.findViewById(R.id.Part2);
+        mAuthor2 = rootView.findViewById(R.id.Author2);
+        mProject2 = rootView.findViewById(R.id.Project2);
+        mClass2 = rootView.findViewById(R.id.Class2);
+        mYear2 = rootView.findViewById(R.id.Year2);
 
-        Button upload2 = (Button) rootView.findViewById(R.id.upload2); // кнопка скачать книгу
+        Button upload2 = rootView.findViewById(R.id.upload2); // кнопка скачать книгу
         upload2.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-            // скачивание книги
-
+                i = 1;
                 mRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(conterOfFragment).child("Pdf").getValue(String.class)));
 
-                        //localFile = getAlbumStorageDir(getApplicationContext(), "uploads1");
+                        // изменяем топ
+                        /*if(i == 1) {
+                            dbCounter1 = dataSnapshot.child("Books").child(conterOfFragment).child("TopDownloads").getValue(String.class);
+                            assert dbCounter1 != null;
+                            int intCounter = Integer.parseInt(dbCounter1);
+                            intCounter++;
+                            String stringCounter1 = Integer.toString(intCounter);
+                            mRef.child("Books").child(conterOfFragment).child("TopDownloads").setValue(stringCounter1);
+                            i = 0;
+                        }
+                        */
+
+                        // скачивание книги
+                        pdfRef = FirebaseStorage.getInstance().getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(conterOfFragment).child("Pdf").getValue(String.class)));
+
                         String nameOfFileInTelephone = dataSnapshot.child("Books").child(conterOfFragment).child("Author").getValue(String.class) + "_" +  dataSnapshot.child("Books").child(conterOfFragment).child("Class").getValue(String.class)
                                 + "_" + dataSnapshot.child("Books").child(conterOfFragment).child("Subject").getValue(String.class) + "_" + dataSnapshot.child("Books").child(conterOfFragment).child("Part").getValue(String.class)
                                 + "_" + dataSnapshot.child("Books").child(conterOfFragment).child("Year").getValue(String.class);
@@ -116,7 +113,8 @@ public class AboutBook extends Fragment {
                         localFile = saveFile(Objects.requireNonNull(getContext()).getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/" + nameOfFileInTelephone + ".pdf");
 
                         assert localFile != null;
-                        islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+
+                        pdfRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                                 Toast.makeText(getContext(), "Файл скачан", Toast.LENGTH_LONG).show();
@@ -142,6 +140,7 @@ public class AboutBook extends Fragment {
                             }
                         });
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         Toast.makeText(getContext(), "ERROR" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
@@ -155,6 +154,7 @@ public class AboutBook extends Fragment {
         return rootView;
     }
 
+    // метод, в котором получаем значения полей о книги
     @SuppressLint("WrongViewCast")
     public void changeText() {
         mRef = FirebaseDatabase.getInstance().getReference();
@@ -207,9 +207,9 @@ public class AboutBook extends Fragment {
 
     }
 
+    // метод сохранения файла, в котором будет pdf
     public File saveFile (String filePath)
     {
-        //Создание объекта файла.
         File fileHandle = new File(filePath);
         try
         {

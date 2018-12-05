@@ -12,14 +12,15 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -37,8 +38,11 @@ public class DownloadFromCloud extends Fragment {
     private DatabaseReference mRef;
     private List<String> mTasks;
     private String counter = "-1";
+    private String dbCounter1;
+    private int mPosition;
+    private int i = 0;
 
-    private ListView listTasks;
+    private ListView listBooks;
 
     public ImageView imageView;
 
@@ -62,24 +66,6 @@ public class DownloadFromCloud extends Fragment {
             AlertDialog alert = builder.create();
             alert.show();
         }
-
-        Button search = rootView.findViewById(R.id.search); // кнопка поиска
-        search.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            public void onClick(View v) {
-                Fragment fragment = null;
-                Class fragmentClass;
-                fragmentClass = Search.class;
-                try {
-                    fragment = (Fragment) fragmentClass.newInstance();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                assert fragment != null;
-                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-            }
-        });
 
         mRef = FirebaseDatabase.getInstance().getReference();
         mRef.addValueEventListener(new ValueEventListener() {
@@ -114,22 +100,49 @@ public class DownloadFromCloud extends Fragment {
                 alert.show();
             }
         });
-        listTasks = rootView.findViewById(R.id.booksListView);
+        listBooks = rootView.findViewById(R.id.booksListView);
 
         return rootView;
     }
 
     // получаем все доступные книги с сервера, ставим слушателя на ListView
-    private void checked() {
+     private void checked() {
         mRef = FirebaseDatabase.getInstance().getReference();
         // слушатель ListView
-        listTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
-            public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View itemClicked, final int position, long id) {
+                mPosition = position;
+                i = 1;
                 Fragment fragment = new AboutBook();
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+
+                // изменяем топ
+
+                    mRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(i == 1) {
+                                dbCounter1 = dataSnapshot.child("Books").child(Integer.toString(mPosition)).child("TopViews").getValue(String.class);
+                                assert dbCounter1 != null;
+                                int intCounter = Integer.parseInt(dbCounter1);
+                                intCounter++;
+                                String stringCounter1 = Integer.toString(intCounter);
+                                mRef.child("Books").child(Integer.toString(mPosition)).child("TopViews").setValue(stringCounter1);
+                                i = 0;
+                            }
+                        }
+
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            // тут не выводим ошибку, т.к. user-у не надо знать, как мы собираем топ
+                        }
+                    });
+
+
 
                 Bundle bundle = new Bundle();
                 String valueOfReplace = position + "";
@@ -169,9 +182,10 @@ public class DownloadFromCloud extends Fragment {
     public void updateUI() {
         if (getActivity() != null) {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mTasks);
-            listTasks.setAdapter(adapter);
+            listBooks.setAdapter(adapter);
         }
     }
+
 
     //This method will be called when the user will tap on allow or deny
     @Override

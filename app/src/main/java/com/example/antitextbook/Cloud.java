@@ -74,21 +74,6 @@ public class Cloud extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_cloud, container, false);
 
-        if(!isOnline(Objects.requireNonNull(getContext()))){
-            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-            builder.setTitle("Warning")
-                    .setMessage("Нет доступа в интернет. Проверьте наличие связи")
-                    .setCancelable(false)
-                    .setNegativeButton("Ок, закрыть",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-
         imageView = rootView.findViewById(R.id.checkImage);
 
         Button sendOnCloud = rootView.findViewById(R.id.buttonSendToCloud);//Кнопка отправить
@@ -101,6 +86,21 @@ public class Cloud extends Fragment {
                 mYear = ((EditText) getActivity().findViewById(R.id.textYearCloud)).getText().toString();
                 mSubject = ((EditText) getActivity().findViewById(R.id.textSubjectCloud)).getText().toString();
                 mPart = ((EditText) getActivity().findViewById(R.id.textPartCloud)).getText().toString();
+
+                if(!isOnline(Objects.requireNonNull(getContext()))){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    builder.setTitle("Warning")
+                            .setMessage("Нет доступа в интернет. Проверьте наличие связи")
+                            .setCancelable(false)
+                            .setNegativeButton("Ок, закрыть",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
 
                 if("".equals(mAuthor)|| "".equals(mClass)|| "".equals(mYear) || "".equals(mSubject) || "".equals(mPart)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
@@ -171,7 +171,6 @@ public class Cloud extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(counterFor == 1) {
                     dbCounter = dataSnapshot.child("counter").getValue(String.class);
-                    // Toast.makeText(getActivity(), dbCounter, Toast.LENGTH_SHORT).show();
                     assert dbCounter != null;
                     int intCounter = Integer.parseInt(dbCounter);
                     intCounter++;
@@ -184,6 +183,8 @@ public class Cloud extends Fragment {
                     mRef.child("Books").child(stringCounter).child("Part").setValue(mPart);
                     mRef.child("Books").child(stringCounter).child("Pdf").setValue(pdfUri);
                     mRef.child("Books").child(stringCounter).child("Icon").setValue(imgUri);
+                    mRef.child("Books").child(stringCounter).child("TopViews").setValue("0");
+                    mRef.child("Books").child(stringCounter).child("TopDownloads").setValue("0");
                     mRef.child("Books").child(stringCounter).child("ThisCounter").setValue(stringCounter);
                     mRef.child("counter").setValue(stringCounter);
                     mRef.child("AllBooks").child(stringCounter).setValue(mSubject + " " + mAuthor + " " + mClass);

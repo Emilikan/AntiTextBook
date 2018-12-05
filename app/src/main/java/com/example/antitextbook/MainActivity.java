@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
