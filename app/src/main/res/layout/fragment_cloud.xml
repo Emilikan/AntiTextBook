@@ -46,33 +46,39 @@
 
             <EditText
                 android:id="@+id/textAuthorCloud"
-                android:layout_width="150dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:hint="Автор" />
 
             <EditText
                 android:id="@+id/textSubjectCloud"
-                android:layout_width="150dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:hint="Предмет" />
 
             <EditText
                 android:id="@+id/textClassCloud"
-                android:layout_width="150dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:hint="Класс" />
+                android:ems="10"
+                android:inputType="number"
+                android:hint="Класс"/>
 
             <EditText
                 android:id="@+id/textYearCloud"
-                android:layout_width="150dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:hint="Год" />
+                android:ems="10"
+                android:inputType="number"
+                android:hint="Год"/>
 
             <EditText
                 android:id="@+id/textPartCloud"
-                android:layout_width="150dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:hint="Часть" />
+                android:ems="10"
+                android:inputType="number"
+                android:hint="Часть (по дефолту 1)"/>
 
             <Button
                 android:id="@+id/buttonSendToCloud"

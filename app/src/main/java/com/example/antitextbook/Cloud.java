@@ -184,7 +184,11 @@ public class Cloud extends Fragment {
                     mRef.child("Books").child(stringCounter).child("Part").setValue(mPart);
                     mRef.child("Books").child(stringCounter).child("Pdf").setValue(pdfUri);
                     mRef.child("Books").child(stringCounter).child("Icon").setValue(imgUri);
+                    mRef.child("Books").child(stringCounter).child("TopDownloads").setValue("0");
+                    mRef.child("Books").child(stringCounter).child("TopViews").setValue("0");
+                    mRef.child("Books").child(stringCounter).child("UserTop").setValue("0");
                     mRef.child("Books").child(stringCounter).child("ThisCounter").setValue(stringCounter);
+
                     mRef.child("counter").setValue(stringCounter);
                     mRef.child("AllBooks").child(stringCounter).setValue(mSubject + " " + mAuthor + " " + mClass);
 
@@ -222,9 +226,9 @@ public class Cloud extends Fragment {
     }
 
     private void showImageChooser() {
-        Intent intent = new Intent();
+        Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
+        //intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

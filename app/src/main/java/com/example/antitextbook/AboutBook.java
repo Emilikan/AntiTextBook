@@ -1,18 +1,13 @@
 package com.example.antitextbook;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.renderscript.Sampler;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -26,13 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.barteksc.pdfviewer.PDFView;
-import com.github.barteksc.pdfviewer.listener.OnDrawListener;
-import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,17 +32,11 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
-import android.content.SharedPreferences;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Date;
 import java.util.Objects;
 
-import static android.content.Context.MODE_PRIVATE;
-import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static java.lang.String.valueOf;
 
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -65,6 +49,8 @@ public class AboutBook extends Fragment {
     private TextView mYear2;
     private ImageView imageView;
 
+    //private int i = 0;
+    //private String dbCounter;
 
     public String conterOfFragment;
     private File localFile = null;
@@ -89,29 +75,30 @@ public class AboutBook extends Fragment {
             conterOfFragment = bundle.getString("Value", "0");
         }
 
-        imageView = (ImageView) rootView.findViewById(R.id.imageView3);
-        mPart2 = (TextView) rootView.findViewById(R.id.Part2);
-        mAuthor2 = (TextView) rootView.findViewById(R.id.Author2);
-        mProject2 = (TextView) rootView.findViewById(R.id.Project2);
-        mClass2 = (TextView) rootView.findViewById(R.id.Class2);
-        mYear2 = (TextView) rootView.findViewById(R.id.Year2);
+        imageView = rootView.findViewById(R.id.imageView3);
+        mPart2 = rootView.findViewById(R.id.Part2);
+        mAuthor2 = rootView.findViewById(R.id.Author2);
+        mProject2 = rootView.findViewById(R.id.Project2);
+        mClass2 = rootView.findViewById(R.id.Class2);
+        mYear2 = rootView.findViewById(R.id.Year2);
 
-        Button upload2 = (Button) rootView.findViewById(R.id.upload2); // кнопка скачать книгу
+        Button upload2 = rootView.findViewById(R.id.upload2); // кнопка скачать книгу
         upload2.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
             // скачивание книги
+                //i = 1;
+                //changeTop();
 
                 mRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(conterOfFragment).child("Pdf").getValue(String.class)));
-
                         //localFile = getAlbumStorageDir(getApplicationContext(), "uploads1");
-                        String nameOfFileInTelephone = dataSnapshot.child("Books").child(conterOfFragment).child("Author").getValue(String.class) + "_" +  dataSnapshot.child("Books").child(conterOfFragment).child("Class").getValue(String.class)
-                                + "_" + dataSnapshot.child("Books").child(conterOfFragment).child("Subject").getValue(String.class) + "_" + dataSnapshot.child("Books").child(conterOfFragment).child("Part").getValue(String.class)
-                                + "_" + dataSnapshot.child("Books").child(conterOfFragment).child("Year").getValue(String.class);
+                        String nameOfFileInTelephone = dataSnapshot.child("Books").child(conterOfFragment).child("Author").getValue(String.class) + " " +  dataSnapshot.child("Books").child(conterOfFragment).child("Class").getValue(String.class)
+                                + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Subject").getValue(String.class) + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Part").getValue(String.class)
+                                + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Year").getValue(String.class);
 
                         localFile = saveFile(Objects.requireNonNull(getContext()).getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/" + nameOfFileInTelephone + ".pdf");
 
@@ -119,26 +106,34 @@ public class AboutBook extends Fragment {
                         islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                Toast.makeText(getContext(), "Файл скачан", Toast.LENGTH_LONG).show();
-                                // в переменной pdfFilePath хранится Uri скаченного файла. Передавать его в Home.class, записывать его в файл настроек или SharedPreferences
-                                pdfFilePath = Uri.parse(localFile.toURI()+"");
+                                if(getActivity() != null && getContext() != null) {
+                                    Toast.makeText(getActivity(), "Файл скачан", Toast.LENGTH_LONG).show();
+                                    // в переменной pdfFilePath хранится Uri скаченного файла. Передавать его в Home.class, записывать его в файл настроек или SharedPreferences
+                                    if(localFile.toURI() != null) {
+                                        pdfFilePath = Uri.parse(localFile.toURI() + "");
 
-                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-                                SharedPreferences.Editor editor = preferences.edit();
-                                editor.putString("URI",valueOf(pdfFilePath));
-                                editor.apply();
+                                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                                        SharedPreferences.Editor editor = preferences.edit();
+                                        editor.putString("URI", valueOf(pdfFilePath));
+                                        editor.apply();
+                                    }
+                                    localFile = null;
+                                    pdfFilePath = null;
+                                    islandRef = null;
+                                    mRef = null;
 
-                                Fragment fragment = null;
-                                Class fragmentClass;
-                                fragmentClass = Home.class;
-                                try {
-                                    fragment = (Fragment) fragmentClass.newInstance();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                    Fragment fragment = null;
+                                    Class fragmentClass;
+                                    fragmentClass = Home.class;
+                                    try {
+                                        fragment = (Fragment) fragmentClass.newInstance();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                                    assert fragment != null;
+                                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                                 }
-                                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                                assert fragment != null;
-                                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                             }
                         });
                     }
@@ -154,6 +149,31 @@ public class AboutBook extends Fragment {
 
         return rootView;
     }
+
+    /*private void changeTop(){
+        mRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(i == 1){
+                    dbCounter = dataSnapshot.child("Books").child(conterOfFragment).child("TopDownloads").getValue(String.class);
+                    // Toast.makeText(getActivity(), dbCounter, Toast.LENGTH_SHORT).show();
+                    assert dbCounter != null;
+                    int intCounter = Integer.parseInt(dbCounter);
+                    intCounter++;
+                    String stringCounter = Integer.toString(intCounter);
+                    mRef.child("Books").child(conterOfFragment).child("TopDownloads").setValue(stringCounter);
+                    i = 0;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+    */
+
 
     @SuppressLint("WrongViewCast")
     public void changeText() {
