@@ -63,24 +63,6 @@ public class DownloadFromCloud extends Fragment {
             alert.show();
         }
 
-        Button search = rootView.findViewById(R.id.search); // кнопка поиска
-        search.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            public void onClick(View v) {
-                Fragment fragment = null;
-                Class fragmentClass;
-                fragmentClass = Search.class;
-                try {
-                    fragment = (Fragment) fragmentClass.newInstance();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                assert fragment != null;
-                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-            }
-        });
-
         mRef = FirebaseDatabase.getInstance().getReference();
         mRef.addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
