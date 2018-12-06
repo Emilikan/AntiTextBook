@@ -18,7 +18,7 @@
         <item
             android:id="@+id/server"
 
-            android:title="Авторизация" />
+            android:title="Админка" />
         <item
             android:id="@+id/settings"
 
