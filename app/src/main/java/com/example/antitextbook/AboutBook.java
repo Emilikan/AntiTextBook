@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -74,6 +75,8 @@ public class AboutBook extends Fragment {
         if(bundle != null){
             conterOfFragment = bundle.getString("Value", "0");
         }
+
+        FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
 
         imageView = rootView.findViewById(R.id.imageView3);
         mPart2 = rootView.findViewById(R.id.Part2);

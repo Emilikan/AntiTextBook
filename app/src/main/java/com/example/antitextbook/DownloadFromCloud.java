@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
 import java.util.Objects;
@@ -61,6 +62,8 @@ public class DownloadFromCloud extends Fragment {
             AlertDialog alert = builder.create();
             alert.show();
         }
+
+        FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
 
         mRef = FirebaseDatabase.getInstance().getReference();
         mRef.addValueEventListener(new ValueEventListener() {
