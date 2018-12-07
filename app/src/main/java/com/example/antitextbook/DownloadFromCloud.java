@@ -152,7 +152,7 @@ public class DownloadFromCloud extends Fragment {
     // выводим книги с сервера на экран
     public void updateUI() {
         if (getActivity() != null) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mTasks);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.list_text_view, mTasks);
             listTasks.setAdapter(adapter);
         }
     }

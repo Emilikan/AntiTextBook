@@ -13,6 +13,9 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginRight="32dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
@@ -20,38 +23,61 @@
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="200dp"
-                android:layout_height="200dp" />
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="32dp" />
 
             <TextView
                 android:id="@+id/Project2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_medium"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/Author2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/rubik"
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/Class2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/rubik"
+                android:textSize="16dp"/>
 
             <TextView
                 android:id="@+id/Year2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/rubik"
+                android:textSize="16dp"/>
 
             <TextView
                 android:id="@+id/Part2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/rubik"
+                android:textSize="16dp"/>
 
             <Button
                 android:id="@+id/upload2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/download" />
+                android:layout_marginTop="32dp"
+                android:background="@drawable/button_gradient"
+                android:fontFamily="@font/rubik_medium"
+                android:padding="24dp"
+                android:text="@string/download"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <com.github.barteksc.pdfviewer.PDFView
                 android:id="@+id/pdfView1"

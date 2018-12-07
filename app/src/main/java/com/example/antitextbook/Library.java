@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,8 @@ public class Library extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_library, container, false);
 
-        Button choose = rootView.findViewById(R.id.choose);
-        choose.setOnClickListener(new View.OnClickListener() {
+        CardView download = rootView.findViewById(R.id.choose);
+        download.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             public void onClick(View v) {
                 Fragment fragment = null;
@@ -37,8 +38,8 @@ public class Library extends Fragment {
             }
         });
 
-        Button download = rootView.findViewById(R.id.download);
-        download.setOnClickListener(new View.OnClickListener() {
+        CardView choose = rootView.findViewById(R.id.download);
+        choose.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             public void onClick(View v) {
                 Fragment fragment = null;
