@@ -98,6 +98,25 @@ public class DownloadFromCloud extends Fragment {
                 alert.show();
             }
         });
+
+        ImageView back = rootView.findViewById(R.id.back3);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = null;
+                Class fragmentClass;
+                fragmentClass = Library.class;
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                assert fragment != null;
+                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+            }
+        });
+
         listTasks = rootView.findViewById(R.id.booksListView);
 
         return rootView;

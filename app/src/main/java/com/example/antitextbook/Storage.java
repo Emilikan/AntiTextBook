@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -66,6 +67,24 @@ public class Storage extends Fragment {
 
             //count++;
         }
+
+        ImageView back = rootView.findViewById(R.id.back4);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = null;
+                Class fragmentClass;
+                fragmentClass = Library.class;
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                assert fragment != null;
+                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+            }
+        });
 
         updateUI();
         return rootView;

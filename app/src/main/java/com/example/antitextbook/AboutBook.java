@@ -148,6 +148,24 @@ public class AboutBook extends Fragment {
             }
         });
 
+        ImageView back = rootView.findViewById(R.id.back2);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = null;
+                Class fragmentClass;
+                fragmentClass = DownloadFromCloud.class;
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                assert fragment != null;
+                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+            }
+        });
+
         changeText();
 
         return rootView;

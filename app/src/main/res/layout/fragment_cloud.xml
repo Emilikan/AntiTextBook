@@ -22,26 +22,42 @@
                 android:orientation="vertical"
                 android:padding="32dp">
 
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/rubik_medium"
-                    android:text="@string/cloud_desribing"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/button6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/button_light"
-                    android:fontFamily="@font/rubik"
-                    android:padding="16dp"
-                    android:text="@string/help" />
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/rubik_medium"
+                        android:text="@string/cloud_desribing"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+
+                    <Button
+                        android:id="@+id/buttonHelp"
+                        android:layout_width="108dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_light"
+                        android:fontFamily="@font/rubik"
+                        android:text="@string/help"
+                        tools:ignore="RtlHardcoded" />
+                </LinearLayout>
+
+
+                <ImageView
+                    android:id="@+id/checkImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="141dp"
+                    android:layout_marginBottom="16dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -72,14 +88,10 @@
                         android:text="@string/cloud_choose_img" />
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/checkImage"
-                    android:layout_width="80dp"
-                    android:layout_height="63dp" />
 
                 <EditText
                     android:id="@+id/textAuthorCloud"
-                    android:layout_width="200dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/rubik_medium"
@@ -89,49 +101,49 @@
 
                 <EditText
                     android:id="@+id/textSubjectCloud"
-                    android:layout_width="200dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/rubik"
                     android:hint="Предмет"
-                    android:textColor="@android:color/black"/>
+                    android:textColor="@android:color/black" />
 
                 <EditText
                     android:id="@+id/textClassCloud"
-                    android:layout_width="200dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@android:color/transparent"
                     android:ems="10"
                     android:fontFamily="@font/rubik"
                     android:hint="Класс"
-                    android:textColor="@android:color/black"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:textColor="@android:color/black" />
 
                 <EditText
                     android:id="@+id/textYearCloud"
-                    android:layout_width="200dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@android:color/transparent"
                     android:ems="10"
                     android:fontFamily="@font/rubik"
                     android:hint="Год"
-                    android:textColor="@android:color/black"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:textColor="@android:color/black" />
 
                 <EditText
                     android:id="@+id/textPartCloud"
-                    android:layout_width="200dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@android:color/transparent"
                     android:ems="10"
                     android:fontFamily="@font/rubik"
                     android:hint="Часть (по дефолту 1)"
-                    android:textColor="@android:color/black"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:textColor="@android:color/black" />
 
                 <Button
                     android:id="@+id/buttonSendToCloud"

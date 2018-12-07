@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_margin="32dp"
-                android:src="@drawable/ic_lock_icon" />
+                app:srcCompat="@drawable/ic_lock_icon" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -33,6 +33,16 @@
                 android:textAlignment="center"
                 android:textColor="@android:color/black"
                 android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/textView03"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_bold"
+                android:text="В настоящее время авторизация доступна только для админов.\n По всем вопросам обращайтесь в службу поддержки"
+                android:textAlignment="center"
+                android:textColor="@color/colorRed"
+                android:textSize="10sp" />
 
             <EditText
                 android:id="@+id/login"
@@ -70,7 +80,7 @@
                 android:layout_marginTop="30sp"
                 android:layout_marginRight="40sp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/button_light"
+                android:background="@drawable/button_gradient"
                 android:fontFamily="@font/rubik"
                 android:padding="24dp"
                 android:text="Войти"
