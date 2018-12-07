@@ -95,4 +95,12 @@
     <string name="downloadBooks">Скачать книгу</string>
     <string name="chooseBook">Выбрать книгу</string>
     <string name="txt_success">Success</string>
+
+    <string-array name="filter">
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+    </string-array>
+
 </resources>

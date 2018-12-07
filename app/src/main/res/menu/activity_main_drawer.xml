@@ -6,26 +6,27 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/home"
-
+            android:icon="@drawable/ic_home_icon_silhouette"
             android:title="Домашняя" />
         <item
             android:id="@+id/library"
-
+            android:icon="@drawable/ic_book"
             android:title="Библиотека" />
         <item
             android:id="@+id/schedule"
+            android:icon="@drawable/ic_calendar"
             android:title="Расписание" />
         <item
             android:id="@+id/server"
-
+            android:icon="@drawable/ic_man_user"
             android:title="Админка" />
         <item
             android:id="@+id/settings"
-
+            android:icon="@drawable/ic_settings_work_tool"
             android:title="Настройки" />
         <item
             android:id="@+id/exit"
-
+            android:icon="@drawable/ic_logout"
             android:title="Выйти" />
 
     </group>
