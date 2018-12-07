@@ -72,7 +72,7 @@ public class Storage extends Fragment {
     }
     public void updateUI() {
         if (getActivity() != null) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mBooks);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.list_text_view, mBooks);
             listBooks.setAdapter(adapter);
         }
     }
