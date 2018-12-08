@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,6 +27,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,8 +43,6 @@ public class Storage extends Fragment {
     private ArrayList<String> arrPdfUri = new ArrayList<String>();
     private String pdfUri;
 
-    private Uri filePdfPath = null;
-  
     private LinearLayout linearLayout;
 
     @Override
@@ -52,7 +52,7 @@ public class Storage extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_storage, container, false);
 
@@ -128,8 +128,8 @@ public class Storage extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == PICK_PDF_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
-            filePdfPath = data.getData();
-            Toast.makeText(getContext(),filePdfPath + "",Toast.LENGTH_SHORT).show();
+            Uri filePdfPath = data.getData();
+
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("URI", String.valueOf(filePdfPath));
