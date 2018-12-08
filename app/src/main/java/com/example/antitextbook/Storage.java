@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,6 +26,8 @@ public class Storage extends Fragment {
     private ArrayList<String> mBooks = new ArrayList<String>();
     private ArrayList<String> arrPdfUri = new ArrayList<String>();
     private String pdfUri;
+
+    private LinearLayout linearLayout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,10 @@ public class Storage extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_storage, container, false);
+
+        linearLayout = rootView.findViewById(R.id.storage);
+        setTheme();
+
         listBooks = (ListView) rootView.findViewById(R.id.booksListView2);
         listBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -93,6 +99,20 @@ public class Storage extends Fragment {
         if (getActivity() != null) {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.list_text_view, mBooks);
             listBooks.setAdapter(adapter);
+        }
+    }
+
+    // метод изменения темы
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void setTheme(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String dark = preferences.getString("Theme", "0");
+
+        if("TRUE".equals(dark)) {
+            linearLayout.setBackgroundResource(R.drawable.dark_bg);
+
+            //chooseText.setTextColor(R.color.colorDarkBlue);
+            //downloadText.setTextColor(R.color.colorDarkText);
         }
     }
 

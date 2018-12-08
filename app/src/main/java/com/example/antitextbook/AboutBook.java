@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,8 +59,10 @@ public class AboutBook extends Fragment {
     private Uri pdfFilePath = null;
 
     private DatabaseReference mRef;
-
     private StorageReference islandRef;
+
+    private FrameLayout frameLayout;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,6 +78,10 @@ public class AboutBook extends Fragment {
         if(bundle != null){
             conterOfFragment = bundle.getString("Value", "0");
         }
+
+        frameLayout = rootView.findViewById(R.id.aboutBook);
+
+        setTheme();
 
         FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
 
@@ -268,6 +275,16 @@ public class AboutBook extends Fragment {
         return fileHandle;
     }
 
+    // метод изменения темы
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void setTheme(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String dark = preferences.getString("Theme", "0");
 
+        if("TRUE".equals(dark)) {
+            frameLayout.setBackgroundResource(R.drawable.dark_bg);
+
+        }
+    }
 
 }

@@ -44,13 +44,6 @@ public class Home extends Fragment {
                              Bundle savedInstanceState) {
         View rootView1 = inflater.inflate(R.layout.fragment_home, container, false);
 
-        String folderName = "AntiTextBook/ATB", fileName = "numberOfPictures.txt";// название файла, где хранится номер данной картинки
-
-        String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName + "/" + fileName;
-        String folderName1 = "AntiTextBook/ATB/settings", fileName1 = "darkBox.txt";
-        //String dark = readTxtFile(fullPath1);
-
-        File file = new File(fullPath);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String uriOfPdf = preferences.getString("URI", "");
         assert uriOfPdf != null;
@@ -59,9 +52,12 @@ public class Home extends Fragment {
             uriOfPdf = uriOfPdf + "";  /* Edit the value here*/
         }
 
+        String dark = preferences.getString("Theme", "0");
+
+
         // открытие pdf файла
         PDFView pdfView = rootView1.findViewById(R.id.pdfView);
-        /*if("TRUE".equals(dark)) {
+        if("TRUE".equals(dark)) {
             pdfView.fromUri(Uri.parse(uriOfPdf))
                     .enableSwipe(true) // allows to block changing pages using swipe
                     .swipeHorizontal(true)
@@ -82,7 +78,6 @@ public class Home extends Fragment {
                     .pageFitPolicy(FitPolicy.WIDTH)
                     .load();
         } else {
-        */
             pdfView.fromUri(Uri.parse(uriOfPdf))
                     .enableSwipe(true) // allows to block changing pages using swipe
                     .swipeHorizontal(true)
@@ -101,26 +96,6 @@ public class Home extends Fragment {
                     .spacing(0)
                     .pageFitPolicy(FitPolicy.WIDTH)
                     .load();
-        //}
-
-        // проверяем наличие cd-card
-        if(!file.exists()) {
-            if (isExternalStorageWritable()) {
-                //saveFile(fullPath, String.valueOf(numberOfPicturesMin));
-            } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                builder.setTitle("Error")
-                        .setMessage("не установлена cd-card. Для корректной работы приложения необходима cd-card")
-                        .setCancelable(false)
-                        .setNegativeButton("Ок, закрыть",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
         }
 
         /* String numberString = readTxtFile(fullPath);
@@ -137,13 +112,6 @@ public class Home extends Fragment {
         //setTitleName();
         return rootView1;
 
-    }
-
-    // Функция, которая проверяет, доступно ли external storage(cd-card) для чтения и записи
-    public boolean isExternalStorageWritable()
-    {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

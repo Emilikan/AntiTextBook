@@ -1,7 +1,10 @@
 package com.example.antitextbook;
 
+import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -11,14 +14,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.TextView;
+import android.widget.Toolbar;
 
 import java.util.Objects;
 
 public class Library extends Fragment {
+
+    private FrameLayout frameLayout;
+    private CardView download;
+    private CardView choose;
+    private TextView chooseText;
+    private TextView downloadText;
+
+    @SuppressLint("CutPasteId")
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_library, container, false);
+
+        frameLayout = rootView.findViewById(R.id.library);
+        choose = rootView.findViewById(R.id.choose);
+        download = rootView.findViewById(R.id.download);
+        chooseText = rootView.findViewById(R.id.textView5);
+        downloadText = rootView.findViewById(R.id.textView6);
+
+        setTheme();
 
         CardView download = rootView.findViewById(R.id.choose);
         download.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +79,23 @@ public class Library extends Fragment {
             }
         });
         return rootView;
+    }
+
+    // метод изменения темы
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void setTheme(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String dark = preferences.getString("Theme", "0");
+
+        if("TRUE".equals(dark)) {
+            frameLayout.setBackgroundResource(R.drawable.dark_bg);
+
+            choose.setBackgroundResource(R.drawable.dark_cards);
+            download.setBackgroundResource(R.drawable.dark_cards);
+
+            //chooseText.setTextColor(R.color.colorDarkBlue);
+            //downloadText.setTextColor(R.color.colorDarkText);
+        }
     }
 
 }

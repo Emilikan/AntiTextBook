@@ -1,8 +1,10 @@
 package com.example.antitextbook;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -34,9 +37,15 @@ public class Send extends Fragment {
     String mNameOfFeedback;
     String mDescribingOfFeedback;
 
+    FrameLayout frameLayout;
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_send, container, false);
+
+        frameLayout = rootView.findViewById(R.id.send);
+        setTheme();
 
         nameOfFeedback = rootView.findViewById(R.id.nameOfFeedback);
         describingOfFeedback = rootView.findViewById(R.id.describingOfFeedback);
@@ -116,6 +125,16 @@ public class Send extends Fragment {
                 });
 
         //send email if validation passes
+    }
 
+    // метод изменения темы
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void setTheme(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String dark = preferences.getString("Theme", "0");
+
+        if("TRUE".equals(dark)) {
+            frameLayout.setBackgroundResource(R.drawable.dark_bg);
+        }
     }
 }

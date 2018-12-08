@@ -4,12 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -64,6 +67,11 @@ public class Cloud extends Fragment {
 
     private DatabaseReference mRef;
 
+    private FrameLayout frameLayout;
+    private Button help;
+    private Button choosePdf;
+    private Button chooseImg;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +98,12 @@ public class Cloud extends Fragment {
             AlertDialog alert = builder.create();
             alert.show();
         }
+
+        frameLayout = rootView.findViewById(R.id.cloud);
+        choosePdf = rootView.findViewById(R.id.buttonChoosePDF);
+        chooseImg = rootView.findViewById(R.id.buttonDownloadImage);
+        help = rootView.findViewById(R.id.buttonHelp);
+        setTheme();
 
         FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
 
@@ -366,6 +380,20 @@ public class Cloud extends Fragment {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    // метод изменения темы
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void setTheme(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String dark = preferences.getString("Theme", "0");
+
+        if("TRUE".equals(dark)) {
+            frameLayout.setBackgroundResource(R.drawable.dark_bg);
+            chooseImg.setBackgroundResource(R.drawable.dark_cards);
+            choosePdf.setBackgroundResource(R.drawable.dark_cards);
+            help.setBackgroundResource(R.drawable.dark_cards);
+        }
     }
 
 }

@@ -2,11 +2,13 @@ package com.example.antitextbook;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -42,6 +45,8 @@ public class DownloadFromCloud extends Fragment {
 
     public ImageView imageView;
 
+    private FrameLayout frameLayout;
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -62,6 +67,9 @@ public class DownloadFromCloud extends Fragment {
             AlertDialog alert = builder.create();
             alert.show();
         }
+
+        frameLayout = rootView.findViewById(R.id.downloadFromCloud);
+        setTheme();
 
         FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
 
@@ -202,6 +210,20 @@ public class DownloadFromCloud extends Fragment {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    // метод изменения темы
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void setTheme(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String dark = preferences.getString("Theme", "0");
+
+        if("TRUE".equals(dark)) {
+            frameLayout.setBackgroundResource(R.drawable.dark_bg);
+
+            //chooseText.setTextColor(R.color.colorDarkBlue);
+            //downloadText.setTextColor(R.color.colorDarkText);
+        }
     }
 
 }

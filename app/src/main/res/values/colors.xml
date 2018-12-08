@@ -20,4 +20,9 @@
     <color name="colorSkyblue">#87CEEB</color>
     <color name="colorRed">#FF0000</color>
 
+    <color name="colorDark1">#424242</color>
+    <color name="colorDark2">#303030</color>
+    <color name="colorDark3">#212121</color>
+    <color name="colorDarkText">#FFC1BCBC</color>
+
 </resources>
