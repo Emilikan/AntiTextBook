@@ -1,8 +1,10 @@
 package com.example.antitextbook;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -12,15 +14,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.Objects;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static java.net.HttpURLConnection.HTTP_OK;
 
 public class Send extends Fragment {
     private EditText nameOfFeedback;
@@ -28,14 +36,16 @@ public class Send extends Fragment {
 
     String mNameOfFeedback;
     String mDescribingOfFeedback;
-    private String dbCounter;
-    private int counterFor = 0;
 
-    private DatabaseReference mRef;
+    FrameLayout frameLayout;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_send, container, false);
+
+        frameLayout = rootView.findViewById(R.id.send);
+        setTheme();
 
         nameOfFeedback = rootView.findViewById(R.id.nameOfFeedback);
         describingOfFeedback = rootView.findViewById(R.id.describingOfFeedback);
@@ -63,61 +73,68 @@ public class Send extends Fragment {
                     alert.show();
                 }
                 else{
-                    saveDataToDatabase();
-                    counterFor = 1;
+                    sendEmail();
                 }
 
             }
         });
+
         return rootView;
     }
 
-    private void saveDataToDatabase(){
-        mRef = FirebaseDatabase.getInstance().getReference();
+    // метод отправки письма через Mailgun
+    private void sendEmail() {
+        String to = "justlike3210@gmail.com";
+        String from = "meFeedback@gmail.com";
+        String subject = nameOfFeedback.getText().toString().trim();
+        String message = describingOfFeedback.getText().toString().trim();
 
-        mRef.addValueEventListener(new ValueEventListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(counterFor == 1) {
-                    dbCounter = dataSnapshot.child("counterOfFeedback").getValue(String.class);
-                    Toast.makeText(getActivity(), dbCounter, Toast.LENGTH_SHORT).show();
-                    int intCounter = Integer.parseInt(dbCounter);
-                    intCounter++;
-                    String stringCounter = Integer.toString(intCounter);
+        if (subject.isEmpty()) {
+            nameOfFeedback.setError("Subject required");
+            nameOfFeedback.requestFocus();
+            return;
+        }
 
-                    mRef.child("Feedback").child(stringCounter).child("Describing").setValue(mDescribingOfFeedback);
-                    mRef.child("Feedback").child(stringCounter).child("NameOf").setValue(mNameOfFeedback);
-                    mRef.child("Feedback").child(stringCounter).child("ThisCounter").setValue(stringCounter);
-                    mRef.child("counterOfFeedback").setValue(stringCounter);
+        if (message.isEmpty()) {
+            describingOfFeedback.setError("Message required");
+            describingOfFeedback.requestFocus();
+            return;
+        }
 
+        RetrofitClient.getInstance()
+                .getApi()
+                .sendEmail(from, to, subject, message)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                        if (response.code() == HTTP_OK) {
+                            try {
+                                assert response.body() != null;
+                                JSONObject obj = new JSONObject(response.body().string());
+                                Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_LONG).show();
+                            } catch (JSONException | IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
 
-                    ((EditText) Objects.requireNonNull(getActivity()).findViewById(R.id.nameOfFeedback)).setText("");
-                    ((EditText) getActivity().findViewById(R.id.describingOfFeedback)).setText("");
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
 
-                    counterFor = 0;
-                    Toast.makeText(getActivity(), "Оправлено", Toast.LENGTH_SHORT).show();
-                }
-            }
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                builder.setTitle("Error")
-                        .setMessage(databaseError.getMessage())
-                        .setCancelable(false)
-                        .setNegativeButton("Ок, закрыть",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
-        });
+        //send email if validation passes
+    }
 
+    // метод изменения темы
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void setTheme(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String dark = preferences.getString("Theme", "0");
 
-
+        if("TRUE".equals(dark)) {
+            frameLayout.setBackgroundResource(R.drawable.dark_bg);
+        }
     }
 }

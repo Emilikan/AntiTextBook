@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/send"
     tools:context=".Send">
 
     <!-- TODO: Update blank fragment layout -->
@@ -14,30 +15,39 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Эмиль:" />
+            android:text="@string/send_mainText"
+            android:textColor="#000"
+            android:fontFamily="@font/rubik_medium"
+            android:textSize="24sp"/>
 
         <EditText
             android:id="@+id/nameOfFeedback"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginTop="12dp"
+            android:background="@android:color/transparent"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="Загаловок"
-            />
+            android:fontFamily="@font/rubik_medium"
+            android:hint="@string/send_title"
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/describingOfFeedback"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="148dp"
+            android:layout_marginTop="12dp"
+            android:background="@android:color/transparent"
             android:ems="10"
-            android:hint="Описание"
+            android:hint="@string/send_describing"
             android:inputType="textMultiLine" />
 
         <Button
             android:id="@+id/sendFeedback"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Отправить" />
+            android:layout_marginTop="32dp"
+            android:background="@drawable/button_gradient"
+            android:text="@string/send_sendLater" />
 
     </LinearLayout>
 

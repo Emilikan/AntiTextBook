@@ -4,60 +4,89 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".server">
+    android:id="@+id/server"
+    tools:context=".Server">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:src="@drawable/icon_autorization" />
-
-        <TextView
-            android:id="@+id/textView3"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Авторизация"
-            android:textAlignment="center"
-            android:textColor="@color/colorChartreuse"
-            android:textSize="24sp" />
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40sp"
-            android:layout_marginTop="20sp"
-            android:layout_marginRight="40sp"
-            android:ems="10"
-            android:hint="Логин"
-            android:inputType="textEmailAddress" />
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_margin="32dp"
+                app:srcCompat="@drawable/ic_lock_icon" />
 
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40sp"
-            android:layout_marginTop="20sp"
-            android:layout_marginRight="40sp"
-            android:ems="10"
-            android:hint="Пароль"
-            android:inputType="textPassword" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_bold"
+                android:text="@string/server_title"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
 
-        <Button
-            android:id="@+id/singIn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40sp"
-            android:layout_marginTop="30sp"
-            android:layout_marginRight="40sp"
-            android:text="Войти" />
+            <TextView
+                android:id="@+id/textView03"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_bold"
+                android:text="@string/server_note"
+                android:textAlignment="center"
+                android:textColor="@color/colorRed"
+                android:textSize="10sp" />
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40sp"
+                android:layout_marginTop="20sp"
+                android:layout_marginRight="40sp"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:fontFamily="@font/rubik_medium"
+                android:hint="@string/server_log"
+                android:inputType="textEmailAddress"
+                android:textColor="@android:color/black" />
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40sp"
+                android:layout_marginTop="20sp"
+                android:layout_marginRight="40sp"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:fontFamily="@font/rubik_medium"
+                android:hint="@string/server_password"
+                android:inputType="textPassword"
+                android:textColor="@android:color/black" />
+
+            <Button
+                android:id="@+id/singIn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40sp"
+                android:layout_marginTop="30sp"
+                android:layout_marginRight="40sp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/button_gradient"
+                android:fontFamily="@font/rubik"
+                android:padding="24dp"
+                android:text="@string/server_sign_in"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>

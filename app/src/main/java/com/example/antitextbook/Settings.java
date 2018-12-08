@@ -2,10 +2,12 @@ package com.example.antitextbook;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
@@ -18,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -26,8 +29,13 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.Objects;
 
+import static java.lang.String.valueOf;
+
 public class Settings extends Fragment {
     private int STORAGE_PERMISSION_CODE = 23;
+
+    private FrameLayout frameLayout;
+    private Button aboutApp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,6 +47,10 @@ public class Settings extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
+
+        frameLayout = rootView.findViewById(R.id.settings);
+        aboutApp = rootView.findViewById(R.id.infoApp);
+        setTheme();
 
         Button buttonInfoApp = rootView.findViewById(R.id.infoApp);
         buttonInfoApp.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +120,7 @@ public class Settings extends Fragment {
             }
         });
 
-        CheckBox darkBox = rootView.findViewById(R.id.darkBox);
+        CheckBox darkBox = rootView.findViewById(R.id.darkBox); // темная тема
         darkBox.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -119,16 +131,11 @@ public class Settings extends Fragment {
                 }
 
                 CheckBox checkBox = Objects.requireNonNull(getView()).findViewById(R.id.darkBox);
-                String folderName1 = "AntiTextBook/ATB/settings", fileName = "darkBox.txt";
-                String fullPathForDarkTheme = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName1 + "/" + fileName;
-                Toast.makeText(getContext(), fullPathForDarkTheme, Toast.LENGTH_LONG).show();
                 if(checkBox.isChecked()){
-                    String i = "TRUE";
-                    saveFile(fullPathForDarkTheme, i);
+                    setThemeDark();
                 }
                 else {
-                   String i = "FALSE";
-                    saveFile(fullPathForDarkTheme, i);
+                   setThemeNormal();
                 }
             }
         });
@@ -201,7 +208,32 @@ public class Settings extends Fragment {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void setTheme(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String dark = preferences.getString("Theme", "0");
 
+        if("TRUE".equals(dark)) {
+            frameLayout.setBackgroundResource(R.drawable.dark_bg);
+            aboutApp.setBackgroundResource(R.drawable.dark_cards);
+        }
+    }
 
+    // метод изменения темы на темную
+    public void setThemeDark(){
+        String i = "TRUE";
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("Theme", i);
+        editor.apply();
+    }
+    // метод изменения темы на светлую
+    public void setThemeNormal(){
+        String i = "FALSE";
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("Theme", i);
+        editor.apply();
+    }
 
 }

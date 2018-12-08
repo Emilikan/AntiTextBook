@@ -3,48 +3,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/infoAboutAppMain"
     tools:context=".InfoAboutApp">
 
     <!-- TODO: Update blank fragment layout -->
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="32dp"
         android:orientation="vertical">
+
         <TextView
-            android:id="@+id/textView0"
+            android:id="@+id/textView01"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Приложение AntiTextBook (ATB) разработано с целью..." />
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Приложение AntiTextBook разработанно программистами и, по совместительству, учащимися:" />
-        <TextView
-            android:id="@+id/textViewOurNames1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="1. Эмилькой;" />
-        <TextView
-            android:id="@+id/textViewOurNames2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="2. Данилой Суворовым;" />
-        <TextView
-            android:id="@+id/textViewOurNames3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="3. Дмитрием Севастьяновым." />
-        <TextView
-            android:id="@+id/textViewOurNames4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="При финансовой поддержке Платцера Максима" />
+            android:fontFamily="@font/rubik"
+            android:text="@string/about_app1"
+            android:textColor="@android:color/black" />
+
         <Button
             android:id="@+id/backOnFragmentOfSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/button_light"
+            android:fontFamily="@font/rubik_medium"
             android:text="@string/back" />
     </LinearLayout>
+    </ScrollView>
 </FrameLayout>

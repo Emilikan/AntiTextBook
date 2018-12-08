@@ -1,8 +1,8 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">AntiTextBook</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Имя</string>
+    <string name="nav_header_title">User</string>
     <string name="nav_header_subtitle">example.android.com</string>
     <string name="nav_header_desc">Меню</string>
     <string name="action_menu">О приложении</string>
@@ -87,12 +87,53 @@
 
     <string name="cloud_choose_pdf">Выбрать PDF файл</string>
     <string name="cloud_choose_img">Выбрать img файл</string>
-    <string name="help">Помощь</string>
     <string name="cloud_upload">Отправить</string>
-    <string name="cloud_desribing">Загрузка книги</string>
+    <string name="cloud_title">Загрузка книги</string>
+    <string name="cloud_help">Помощь</string>
+    <string name="cloud_author">Автор</string>
+    <string name="cloud_subject">Предмет</string>
+    <string name="cloud_class">Класс</string>
+    <string name="cloud_year">Год</string>
+    <string name="cloud_part">Часть (по дефолту 1)</string>
+
     <string name="search">Поиск</string>
     <string name="back">Назад</string>
     <string name="downloadBooks">Скачать книгу</string>
     <string name="chooseBook">Выбрать книгу</string>
     <string name="txt_success">Success</string>
+
+    <string-array name="filter">
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+    </string-array>
+
+    <string name="menu_home">Домашняя</string>
+    <string name="menu_library">Библиотека</string>
+    <string name="menu_shedule">Расписание</string>
+    <string name="menu_admin">Админка</string>
+    <string name="menu_settings">Настройки</string>
+    <string name="menu_signOut">Выйти</string>
+    <string name="menu_connection">Связь</string>
+    <string name="menu_feedback">Служба поддержки</string>
+
+    <string name="send_mainText">Служба поддержки:</string>
+    <string name="send_title">Загаловок</string>
+    <string name="send_describing">Письмо</string>
+    <string name="send_sendLater">Отправить</string>
+
+    <string name="server_title">Авторизация</string>
+    <string name="server_note">В настоящее время авторизация доступна только для админов.\n По всем вопросам обращайтесь в службу поддержки</string>
+    <string name="server_log">Логин</string>
+    <string name="server_password">Пароль</string>
+    <string name="server_sign_in">Войти</string>
+
+    <string name="settings_schedule">Пары вместо уроков?</string>
+    <string name="settings_dark_theme">Темная тема</string>
+    <string name="settings_about_app">О приложении</string>
+
+    <string name="about_app1">Приложение AntiTextBook (ATB) разработано с целью помочь школьникам (в дальнейшем и студентам) в учебе, разгрузить их спины, сделать жизнь лучше :)\n\nПриложение AntiTextBook основано:\n1. Эмилькой;\n2. Данилой Суворовым;\n3. Дмитрием Севастьяновым\n\nОтдельная благодарность Славе за дизайн\nПри финансовой поддержке Платцера Максима</string>
+
+
 </resources>

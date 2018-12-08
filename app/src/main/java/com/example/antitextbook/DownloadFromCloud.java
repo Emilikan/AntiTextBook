@@ -2,11 +2,13 @@ package com.example.antitextbook;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -27,6 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
 import java.util.Objects;
@@ -40,6 +44,8 @@ public class DownloadFromCloud extends Fragment {
     private ListView listTasks;
 
     public ImageView imageView;
+
+    private FrameLayout frameLayout;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -61,6 +67,11 @@ public class DownloadFromCloud extends Fragment {
             AlertDialog alert = builder.create();
             alert.show();
         }
+
+        frameLayout = rootView.findViewById(R.id.downloadFromCloud);
+        setTheme();
+
+        FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
 
         mRef = FirebaseDatabase.getInstance().getReference();
         mRef.addValueEventListener(new ValueEventListener() {
@@ -95,6 +106,25 @@ public class DownloadFromCloud extends Fragment {
                 alert.show();
             }
         });
+
+        ImageView back = rootView.findViewById(R.id.back3);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = null;
+                Class fragmentClass;
+                fragmentClass = Library.class;
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                assert fragment != null;
+                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+            }
+        });
+
         listTasks = rootView.findViewById(R.id.booksListView);
 
         return rootView;
@@ -149,7 +179,7 @@ public class DownloadFromCloud extends Fragment {
     // выводим книги с сервера на экран
     public void updateUI() {
         if (getActivity() != null) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mTasks);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.list_text_view, mTasks);
             listTasks.setAdapter(adapter);
         }
     }
@@ -180,6 +210,20 @@ public class DownloadFromCloud extends Fragment {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    // метод изменения темы
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void setTheme(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String dark = preferences.getString("Theme", "0");
+
+        if("TRUE".equals(dark)) {
+            frameLayout.setBackgroundResource(R.drawable.dark_bg);
+
+            //chooseText.setTextColor(R.color.colorDarkBlue);
+            //downloadText.setTextColor(R.color.colorDarkText);
+        }
     }
 
 }

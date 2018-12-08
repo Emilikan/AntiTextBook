@@ -4,12 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -20,6 +22,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -30,6 +34,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -62,6 +67,11 @@ public class Cloud extends Fragment {
 
     private DatabaseReference mRef;
 
+    private FrameLayout frameLayout;
+    private Button help;
+    private Button choosePdf;
+    private Button chooseImg;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +98,14 @@ public class Cloud extends Fragment {
             AlertDialog alert = builder.create();
             alert.show();
         }
+
+        frameLayout = rootView.findViewById(R.id.cloud);
+        choosePdf = rootView.findViewById(R.id.buttonChoosePDF);
+        chooseImg = rootView.findViewById(R.id.buttonDownloadImage);
+        help = rootView.findViewById(R.id.buttonHelp);
+        setTheme();
+
+        FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
 
         imageView = rootView.findViewById(R.id.checkImage);
 
@@ -144,7 +162,7 @@ public class Cloud extends Fragment {
             }
         });
 
-        Button choosePdf = rootView.findViewById(R.id.buttonChoosePDF);//Кнопка загрузки pdf
+        Button choosePdf = rootView.findViewById(R.id.buttonChoosePDF); //Кнопка загрузки pdf
         choosePdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,11 +170,30 @@ public class Cloud extends Fragment {
             }
         });
 
-        Button choiceImages = rootView.findViewById(R.id.buttonDownloadImage);//Кнопка загрузки Изображения
+        Button choiceImages = rootView.findViewById(R.id.buttonDownloadImage); //Кнопка загрузки Изображения
         choiceImages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showImageChooser();
+            }
+        });
+
+        Button help = rootView.findViewById(R.id.buttonHelp); // кнопка помощи
+        help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                builder.setTitle("Info")
+                        .setMessage("Для загрузки:\n1) выберите файл книги в pdf формате;\n2) выберите изображение обложки (скриншот);\n3) заполните все поля, начиная каждое поле со слова с большой буквы;\n4) нажмите кнопку 'отправить'.\n\nПри возникновении вопросов: напишите в службу поддержки, указав данные, по которым админ сможет с вами связаться (почта).")
+                        .setCancelable(false)
+                        .setNegativeButton("Ок, закрыть",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
 
@@ -260,6 +297,7 @@ public class Cloud extends Fragment {
         }
         else if(requestCode == PICK_PDF_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
             filePdfPath = data.getData();
+            Toast.makeText(getContext(), "Pdf афйл выбран", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -342,6 +380,20 @@ public class Cloud extends Fragment {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    // метод изменения темы
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void setTheme(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String dark = preferences.getString("Theme", "0");
+
+        if("TRUE".equals(dark)) {
+            frameLayout.setBackgroundResource(R.drawable.dark_bg);
+            chooseImg.setBackgroundResource(R.drawable.dark_cards);
+            choosePdf.setBackgroundResource(R.drawable.dark_cards);
+            help.setBackgroundResource(R.drawable.dark_cards);
+        }
     }
 
 }
