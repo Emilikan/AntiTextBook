@@ -8,6 +8,13 @@
     android:id="@+id/storage"
     android:padding="16dp">
 
+
+    <Button
+        android:id="@+id/buttonChooseBook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose PDF" />
+
     <ImageView
         android:id="@+id/back4"
         android:layout_width="80dp"
@@ -15,6 +22,7 @@
         android:layout_marginTop="7dp"
         android:layout_marginBottom="16dp"
         app:srcCompat="@drawable/ic_left_arrow" />
+
 
     <ListView
         android:layout_width="match_parent"
