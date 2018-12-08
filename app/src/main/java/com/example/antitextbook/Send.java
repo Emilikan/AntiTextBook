@@ -33,22 +33,20 @@ import static java.net.HttpURLConnection.HTTP_OK;
 public class Send extends Fragment {
     private EditText nameOfFeedback;
     private EditText describingOfFeedback;
+    private FrameLayout frameLayout;
 
-    String mNameOfFeedback;
-    String mDescribingOfFeedback;
-
-    FrameLayout frameLayout;
+    private String mNameOfFeedback;
+    private String mDescribingOfFeedback;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_send, container, false);
 
-        frameLayout = rootView.findViewById(R.id.send);
-        setTheme();
-
         nameOfFeedback = rootView.findViewById(R.id.nameOfFeedback);
         describingOfFeedback = rootView.findViewById(R.id.describingOfFeedback);
+        frameLayout = rootView.findViewById(R.id.send);
+        setTheme();
 
         Button sendFeedback = rootView.findViewById(R.id.sendFeedback);
         sendFeedback.setOnClickListener(new View.OnClickListener() {

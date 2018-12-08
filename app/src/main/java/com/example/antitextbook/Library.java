@@ -43,8 +43,8 @@ public class Library extends Fragment {
 
         setTheme();
 
-        CardView download = rootView.findViewById(R.id.choose);
-        download.setOnClickListener(new View.OnClickListener() {
+        choose = rootView.findViewById(R.id.choose);
+        choose.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             public void onClick(View v) {
                 Fragment fragment = null;
@@ -61,8 +61,8 @@ public class Library extends Fragment {
             }
         });
 
-        CardView choose = rootView.findViewById(R.id.download);
-        choose.setOnClickListener(new View.OnClickListener() {
+        download = rootView.findViewById(R.id.download);
+        download.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             public void onClick(View v) {
                 Fragment fragment = null;

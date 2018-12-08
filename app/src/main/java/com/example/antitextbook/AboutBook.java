@@ -50,6 +50,8 @@ public class AboutBook extends Fragment {
     private TextView mClass2;
     private TextView mYear2;
     private ImageView imageView;
+    private FrameLayout frameLayout;
+    private Button upload2;
 
     //private int i = 0;
     //private String dbCounter;
@@ -61,9 +63,6 @@ public class AboutBook extends Fragment {
     private DatabaseReference mRef;
     private StorageReference islandRef;
 
-    private FrameLayout frameLayout;
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +72,10 @@ public class AboutBook extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_about_book, container, false);
 
+        // подписываем пользователя на тему (для получаения push уведомлений)
+        FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
+
+        // получаем значение о том, на какую книгу мы перешли (из Bundle)
         Bundle bundle = getArguments();
         conterOfFragment = "0";
         if(bundle != null){
@@ -80,19 +83,18 @@ public class AboutBook extends Fragment {
         }
 
         frameLayout = rootView.findViewById(R.id.aboutBook);
-
-        setTheme();
-
-        FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
-
         imageView = rootView.findViewById(R.id.imageView3);
         mPart2 = rootView.findViewById(R.id.Part2);
         mAuthor2 = rootView.findViewById(R.id.Author2);
         mProject2 = rootView.findViewById(R.id.Project2);
         mClass2 = rootView.findViewById(R.id.Class2);
         mYear2 = rootView.findViewById(R.id.Year2);
+        upload2 = rootView.findViewById(R.id.upload2);
+        ImageView back = rootView.findViewById(R.id.back2);
 
-        Button upload2 = rootView.findViewById(R.id.upload2); // кнопка скачать книгу
+        setTheme();
+
+         // кнопка скачать книгу
         upload2.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -155,7 +157,7 @@ public class AboutBook extends Fragment {
             }
         });
 
-        ImageView back = rootView.findViewById(R.id.back2);
+        // изображение-кнопка назад
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -202,7 +204,7 @@ public class AboutBook extends Fragment {
     }
     */
 
-
+    // изменяем текст на тот, который получили из бд
     @SuppressLint("WrongViewCast")
     public void changeText() {
         mRef = FirebaseDatabase.getInstance().getReference();
@@ -278,12 +280,13 @@ public class AboutBook extends Fragment {
     // метод изменения темы
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void setTheme(){
+        // получаем значение из SharedPreferences
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String dark = preferences.getString("Theme", "0");
 
         if("TRUE".equals(dark)) {
             frameLayout.setBackgroundResource(R.drawable.dark_bg);
-
+            upload2.setBackgroundResource(R.drawable.dark_cards);
         }
     }
 

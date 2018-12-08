@@ -5,6 +5,7 @@
 
 package com.example.antitextbook;
 
+import android.support.annotation.NonNull;
 import android.util.Base64;
 
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class RetrofitClient {
                 .addInterceptor(
                         new Interceptor() {
                             @Override
-                            public Response intercept(Chain chain) throws IOException {
+                            public Response intercept(@NonNull Chain chain) throws IOException {
                                 Request original = chain.request();
 
                                 //Adding basic auth

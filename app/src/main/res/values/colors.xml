@@ -6,6 +6,7 @@
     <color name="colorAccent">#00645d</color>
     <color name="colorAdditional">#2BDA8E</color>
     <color name="colorItemLight">#EEEEEE</color>
+    <color name="colorWhite">#FFFFFF</color>
 
     <color name="colorAqua">#00FFFF</color>
     <color name="colorChartreuse">#1a2be9</color>

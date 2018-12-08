@@ -36,22 +36,23 @@ import java.util.List;
 import java.util.Objects;
 
 public class DownloadFromCloud extends Fragment {
+    public ImageView imageView;
+    private FrameLayout frameLayout;
+    private ListView listTasks;
 
-    private DatabaseReference mRef;
     private List<String> mTasks;
     private String counter = "-1";
 
-    private ListView listTasks;
-
-    public ImageView imageView;
-
-    private FrameLayout frameLayout;
+    private DatabaseReference mRef;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_download_from_cloud, container, false);
+
+        // подписываем пользователя на тему (для получаения push уведомлений)
+        FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
 
         if(!isOnline(Objects.requireNonNull(getContext()))){
             AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
@@ -69,9 +70,8 @@ public class DownloadFromCloud extends Fragment {
         }
 
         frameLayout = rootView.findViewById(R.id.downloadFromCloud);
+        ImageView back = rootView.findViewById(R.id.back3);
         setTheme();
-
-        FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
 
         mRef = FirebaseDatabase.getInstance().getReference();
         mRef.addValueEventListener(new ValueEventListener() {
@@ -107,7 +107,6 @@ public class DownloadFromCloud extends Fragment {
             }
         });
 
-        ImageView back = rootView.findViewById(R.id.back3);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

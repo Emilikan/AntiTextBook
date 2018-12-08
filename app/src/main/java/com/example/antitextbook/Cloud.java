@@ -23,7 +23,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -49,9 +48,18 @@ public class Cloud extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 234;
     private static final int PICK_PDF_REQUEST = 345;
 
+    private FrameLayout frameLayout;
+    private ImageView imageView;
+    private Button help;
+    private Button choosePdf;
+    private Button chooseImg;
+    private Button sendOnCloud;
+
     private Uri filePath = null;
     private Uri filePdfPath = null;
-    private ImageView imageView;
+
+    private String pdfUri;
+    private String imgUri;
 
     private String mAuthor;
     private String mClass;
@@ -59,18 +67,10 @@ public class Cloud extends Fragment {
     private String mSubject;
     private String mPart;
 
-    private String pdfUri;
-    private String imgUri;
-
     private int counterFor = 0;
     private String dbCounter;
 
     private DatabaseReference mRef;
-
-    private FrameLayout frameLayout;
-    private Button help;
-    private Button choosePdf;
-    private Button chooseImg;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,6 +83,9 @@ public class Cloud extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_cloud, container, false);
+
+        // подписываем пользователя на тему (для получаения push уведомлений)
+        FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
 
         if(!isOnline(Objects.requireNonNull(getContext()))){
             AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
@@ -102,14 +105,12 @@ public class Cloud extends Fragment {
         frameLayout = rootView.findViewById(R.id.cloud);
         choosePdf = rootView.findViewById(R.id.buttonChoosePDF);
         chooseImg = rootView.findViewById(R.id.buttonDownloadImage);
+        imageView = rootView.findViewById(R.id.checkImage);
         help = rootView.findViewById(R.id.buttonHelp);
+        sendOnCloud = rootView.findViewById(R.id.buttonSendToCloud);
         setTheme();
 
-        FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
-
-        imageView = rootView.findViewById(R.id.checkImage);
-
-        Button sendOnCloud = rootView.findViewById(R.id.buttonSendToCloud);//Кнопка отправить
+        //Кнопка отправить
         sendOnCloud.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -162,7 +163,7 @@ public class Cloud extends Fragment {
             }
         });
 
-        Button choosePdf = rootView.findViewById(R.id.buttonChoosePDF); //Кнопка загрузки pdf
+        //Кнопка загрузки pdf
         choosePdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,15 +171,15 @@ public class Cloud extends Fragment {
             }
         });
 
-        Button choiceImages = rootView.findViewById(R.id.buttonDownloadImage); //Кнопка загрузки Изображения
-        choiceImages.setOnClickListener(new View.OnClickListener() {
+        //Кнопка загрузки Изображения
+        chooseImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showImageChooser();
+                imageChooser();
             }
         });
 
-        Button help = rootView.findViewById(R.id.buttonHelp); // кнопка помощи
+        // кнопка помощи
         help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -262,12 +263,13 @@ public class Cloud extends Fragment {
         startActivityForResult(Intent.createChooser(intent, "Select PDF"), PICK_PDF_REQUEST);
     }
 
-    private void showImageChooser() {
+    private void imageChooser() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         //intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -357,7 +359,7 @@ public class Cloud extends Fragment {
                         }
                     });
         }
-        //if there is not any file
+        // если нет файлов
         else {
             AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
             builder.setTitle("Error")

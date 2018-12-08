@@ -34,10 +34,10 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Objects;
 
 public class Server extends Fragment {
+    private FrameLayout frameLayout;
+
     private String mLogin;
     private String mPassword;
-
-    private FrameLayout frameLayout;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
