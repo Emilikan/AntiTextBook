@@ -16,17 +16,17 @@
             android:id="@+id/checkBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Пары вместо уроков?" />
+            android:text="@string/settings_schedule" />
         <CheckBox
             android:id="@+id/darkBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Темная тема" />
+            android:text="@string/settings_dark_theme" />
 
         <Button
             android:id="@+id/infoApp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="О приложении" />
+            android:text="@string/settings_about_app" />
     </LinearLayout>
 </FrameLayout>

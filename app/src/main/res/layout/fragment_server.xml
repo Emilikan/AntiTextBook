@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".server">
+    tools:context=".Server">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -14,7 +14,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <ImageView
@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/rubik_bold"
-                android:text="Авторизация"
+                android:text="@string/server_title"
                 android:textAlignment="center"
                 android:textColor="@android:color/black"
                 android:textSize="24sp" />
@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/rubik_bold"
-                android:text="В настоящее время авторизация доступна только для админов.\n По всем вопросам обращайтесь в службу поддержки"
+                android:text="@string/server_note"
                 android:textAlignment="center"
                 android:textColor="@color/colorRed"
                 android:textSize="10sp" />
@@ -54,7 +54,7 @@
                 android:background="@android:color/transparent"
                 android:ems="10"
                 android:fontFamily="@font/rubik_medium"
-                android:hint="Логин"
+                android:hint="@string/server_log"
                 android:inputType="textEmailAddress"
                 android:textColor="@android:color/black" />
 
@@ -68,7 +68,7 @@
                 android:background="@android:color/transparent"
                 android:ems="10"
                 android:fontFamily="@font/rubik_medium"
-                android:hint="Пароль"
+                android:hint="@string/server_password"
                 android:inputType="textPassword"
                 android:textColor="@android:color/black" />
 
@@ -83,7 +83,7 @@
                 android:background="@drawable/button_gradient"
                 android:fontFamily="@font/rubik"
                 android:padding="24dp"
-                android:text="Войти"
+                android:text="@string/server_sign_in"
                 android:textSize="16sp" />
 
         </LinearLayout>

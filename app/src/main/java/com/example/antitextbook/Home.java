@@ -1,5 +1,6 @@
 package com.example.antitextbook;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
@@ -15,10 +16,14 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnDrawListener;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,6 +34,10 @@ import java.io.OutputStreamWriter;
 import java.util.Objects;
 
 public class Home extends Fragment {
+
+
+
+    @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -124,6 +133,8 @@ public class Home extends Fragment {
         }
         catch (NumberFormatException e){
         } */
+
+        //setTitleName();
         return rootView1;
 
     }
@@ -133,6 +144,16 @@ public class Home extends Fragment {
     {
         String state = Environment.getExternalStorageState();
         return Environment.MEDIA_MOUNTED.equals(state);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @SuppressLint("SetTextI18n")
+    private void setTitleName(){
+        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(mUser != null){
+            TextView mainTitle = Objects.requireNonNull(getActivity()).findViewById(R.id.title_name);
+            mainTitle.setText("Admin");
+        }
     }
 
 }

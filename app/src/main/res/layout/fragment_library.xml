@@ -29,7 +29,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:layout_margin="32dp"
-                android:src="@drawable/ic_folder_white_shape"
+                app:srcCompat="@drawable/ic_folder_white_shape"
                 android:translationX="120dp" />
 
             <TextView
@@ -59,7 +59,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:layout_margin="32dp"
-                android:src="@drawable/ic_cloud_computing"
+                app:srcCompat="@drawable/ic_cloud_computing"
                 android:translationX="120dp" />
 
             <TextView
