@@ -113,6 +113,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    public boolean onPairSelected(){
+    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    String pair = preferences.getString("Checked", "0");
+
+        if("pair".equals(pair)) {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -154,7 +166,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentClass = Home.class;
         }
         else if (id == R.id.schedule) {
-            fragmentClass = Schedule2.class;
+
+            if(onPairSelected() == true) {
+                fragmentClass = Schedule2.class;
+            }
+            else{
+                fragmentClass = Schedule.class;
+            }
         }
         /*
         else if(id == R.id.schedule){
