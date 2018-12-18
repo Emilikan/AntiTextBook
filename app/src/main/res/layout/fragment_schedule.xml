@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Schedule">
+    tools:context=".Schedule"
+    android:id="@+id/schedule">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -30,8 +31,8 @@
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/colorGreen">
+                    android:layout_height="wrap_content">
+                    <!-- app:cardBackgroundColor="@color/colorGreen"-->
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -98,7 +99,8 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/colorGreen">
+                    >
+                    <!-- app:cardBackgroundColor="@color/colorGreen"-->
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -164,7 +166,8 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/colorGreen">
+                    >
+                    <!-- app:cardBackgroundColor="@color/colorGreen"-->
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -230,7 +233,8 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/colorGreen">
+                    >
+                    <!-- app:cardBackgroundColor="@color/colorGreen"-->
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -296,7 +300,8 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/colorGreen">
+                    >
+                    <!-- app:cardBackgroundColor="@color/colorGreen"-->
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -362,7 +367,8 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/colorGreen">
+                    >
+                    <!-- app:cardBackgroundColor="@color/colorGreen"-->
 
                     <RelativeLayout
                         android:layout_width="match_parent"

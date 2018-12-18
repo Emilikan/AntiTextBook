@@ -154,7 +154,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentClass = Home.class;
         }
         else if (id == R.id.schedule) {
-            fragmentClass = Schedule2.class;
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            String pair = preferences.getString("Checked", "0");
+
+            if("pair".equals(pair)) {
+                fragmentClass = Schedule2.class;
+            }
+            else{
+                fragmentClass = Schedule.class;
+            }
         }
         /*
         else if(id == R.id.schedule){
