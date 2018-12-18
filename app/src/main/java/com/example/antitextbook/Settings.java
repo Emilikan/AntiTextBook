@@ -41,12 +41,6 @@ public class Settings extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    public void onClick(View view){
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("Checked", "pair");
-        editor.apply();
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -100,12 +94,22 @@ public class Settings extends Fragment {
             }
         }
 
+
+
         // сохраняет значение checkBox
         CheckBox checkBox = rootView.findViewById(R.id.checkBox);
         checkBox.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
+
+                //сохранение значения в shared prefrences
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("Checked", "pair");
+                editor.apply();
+
+
                 // проверка на доступ к памяти
                 if(isReadStorageAllowed()){
                     requestStoragePermission();
