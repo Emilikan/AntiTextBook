@@ -101,6 +101,17 @@
                     android:textSize="22sp" />
 
                 <EditText
+                    android:id="@+id/describingBook"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/rubik"
+                    android:hint="Название"
+                    android:inputType="textPersonName"/>
+
+                <EditText
                     android:id="@+id/textSubjectCloud"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

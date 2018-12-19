@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -63,6 +64,22 @@ public class Server extends Fragment {
         frameLayout = rootView.findViewById(R.id.server);
         setTheme();
 
+        /*CheckBox admin = rootView.findViewById(R.id.admin);
+        admin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                CheckBox checkBox = Objects.requireNonNull(getView()).findViewById(R.id.admin);
+                if(checkBox.isChecked()){
+
+                }
+                else {
+
+                }
+            }
+        });
+        */
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null){
             Fragment fragment = new Cloud();
@@ -79,6 +96,7 @@ public class Server extends Fragment {
                 public void onClick(View v) {
                     mLogin = ((EditText) Objects.requireNonNull(getActivity()).findViewById(R.id.login)).getText().toString();
                     mPassword = ((EditText) getActivity().findViewById(R.id.password)).getText().toString();
+                    CheckBox checkBox = Objects.requireNonNull(getView()).findViewById(R.id.admin);
                     if ("".equals(mLogin) || "".equals(mPassword)) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
                         builder.setTitle("Error")
@@ -92,19 +110,38 @@ public class Server extends Fragment {
                                         });
                         AlertDialog alert = builder.create();
                         alert.show();
-                    } else {
+                    } else if (checkBox.isChecked()) {
+                        singInAdmin();
+                    } else if (!checkBox.isChecked()){
                         singInUser();
                     }
 
+                }
+            });
+
+            Button singUp = rootView.findViewById(R.id.singUp);
+            singUp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Fragment fragment = new Regestration();
+                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                    DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
                 }
             });
         }
         return rootView;
     }
 
-    // авторизация пользователей
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    // авторизация пользователя локально
     private void singInUser(){
+        // код для локальной авторизации пользователей
+    }
+
+    // авторизация админки
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void singInAdmin(){
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.signInWithEmailAndPassword(mLogin, mPassword).addOnCompleteListener(Objects.requireNonNull(getActivity()), new OnCompleteListener<AuthResult>() {
             @SuppressLint("SetTextI18n")

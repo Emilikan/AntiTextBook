@@ -45,6 +45,12 @@
                 android:textColor="@color/colorRed"
                 android:textSize="10sp" />
 
+            <CheckBox
+                android:id="@+id/admin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Нажми, если ты админ" />
+
             <EditText
                 android:id="@+id/login"
                 android:layout_width="match_parent"
@@ -86,6 +92,16 @@
                 android:padding="24dp"
                 android:text="@string/server_sign_in"
                 android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/singUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="200sp"
+                android:layout_marginRight="50sp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/button_gradient"
+                android:text="Зарегестрироваться" />
 
         </LinearLayout>
     </ScrollView>

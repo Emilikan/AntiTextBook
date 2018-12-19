@@ -66,6 +66,7 @@ public class Cloud extends Fragment {
     private String mYear;
     private String mSubject;
     private String mPart;
+    private String mDescribing;
 
     private int counterFor = 0;
     private String dbCounter;
@@ -120,8 +121,9 @@ public class Cloud extends Fragment {
                 mYear = ((EditText) getActivity().findViewById(R.id.textYearCloud)).getText().toString();
                 mSubject = ((EditText) getActivity().findViewById(R.id.textSubjectCloud)).getText().toString();
                 mPart = ((EditText) getActivity().findViewById(R.id.textPartCloud)).getText().toString();
+                mDescribing = ((EditText) getActivity().findViewById(R.id.describingBook)).getText().toString();
 
-                if("".equals(mAuthor)|| "".equals(mClass)|| "".equals(mYear) || "".equals(mSubject) || "".equals(mPart)) {
+                if("".equals(mAuthor)|| "".equals(mClass)|| "".equals(mYear) || "".equals(mSubject) || "".equals(mPart) || "".equals(mDescribing)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
                     builder.setTitle("Предупреждение")
                             .setMessage("Одно из полей не заполненно. Пожалуйста, заполните все поля и повторите отправку")
@@ -222,9 +224,11 @@ public class Cloud extends Fragment {
                     mRef.child("Books").child(stringCounter).child("Part").setValue(mPart);
                     mRef.child("Books").child(stringCounter).child("Pdf").setValue(pdfUri);
                     mRef.child("Books").child(stringCounter).child("Icon").setValue(imgUri);
+                    mRef.child("Books").child(stringCounter).child("Describing").setValue(mDescribing);
                     mRef.child("Books").child(stringCounter).child("TopDownloads").setValue("0");
                     mRef.child("Books").child(stringCounter).child("TopViews").setValue("0");
                     mRef.child("Books").child(stringCounter).child("UserTop").setValue("0");
+                    mRef.child("Books").child(stringCounter).child("School").setValue("0");
                     mRef.child("Books").child(stringCounter).child("ThisCounter").setValue(stringCounter);
 
                     mRef.child("counter").setValue(stringCounter);

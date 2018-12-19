@@ -1,6 +1,7 @@
 package com.example.antitextbook;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,7 +34,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -115,39 +119,51 @@ public class AboutBook extends Fragment {
                         localFile = saveFile(Objects.requireNonNull(getContext()).getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/" + nameOfFileInTelephone + ".pdf");
 
                         assert localFile != null;
+                        final ProgressDialog progressDialog = new ProgressDialog(getContext());
+                        progressDialog.setTitle("Downloading");
+                        progressDialog.show();
                         islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                if(getActivity() != null && getContext() != null) {
-                                    Toast.makeText(getActivity(), "Файл скачан", Toast.LENGTH_LONG).show();
-                                    // в переменной pdfFilePath хранится Uri скаченного файла. Передавать его в Home.class, записывать его в файл настроек или SharedPreferences
-                                    if(localFile.toURI() != null) {
-                                        pdfFilePath = Uri.parse(localFile.toURI() + "");
+                                progressDialog.dismiss();
 
-                                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-                                        SharedPreferences.Editor editor = preferences.edit();
-                                        editor.putString("URI", valueOf(pdfFilePath));
-                                        editor.apply();
-                                    }
-                                    localFile = null;
-                                    pdfFilePath = null;
-                                    islandRef = null;
-                                    mRef = null;
+                                // в переменной pdfFilePath хранится Uri скаченного файла. Передавать его в Home.class, записывать его в файл настроек или SharedPreferences
+                                if(localFile.toURI() != null) {
+                                    pdfFilePath = Uri.parse(localFile.toURI() + "");
 
-                                    Fragment fragment = null;
-                                    Class fragmentClass;
-                                    fragmentClass = Home.class;
-                                    try {
-                                        fragment = (Fragment) fragmentClass.newInstance();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                                    assert fragment != null;
-                                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                                    SharedPreferences.Editor editor = preferences.edit();
+                                    editor.putString("URI", valueOf(pdfFilePath));
+                                    editor.apply();
                                 }
+                                localFile = null;
+                                pdfFilePath = null;
+                                islandRef = null;
+                                mRef = null;
+
+                                Fragment fragment = null;
+                                Class fragmentClass;
+                                fragmentClass = Home.class;
+                                try {
+                                    fragment = (Fragment) fragmentClass.newInstance();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                                assert fragment != null;
+                                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                Toast.makeText(getActivity(), "Файл скачан", Toast.LENGTH_LONG).show();
+                            }
+                        }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                //calculating progress percentage
+                                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                                //displaying percentage in progress dialog
+                                progressDialog.setMessage("Downloaded " + ((int) progress) + "%...");
                             }
                         });
+
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
