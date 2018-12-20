@@ -41,10 +41,6 @@ public class Regestration extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_regestration, container, false);
 
-        userName = ((EditText) rootView.findViewById(R.id.userName)).getText().toString();
-        userSchool = ((EditText) rootView.findViewById(R.id.userSchool)).getText().toString();
-        userClass = ((EditText) rootView.findViewById(R.id.userClass)).getText().toString();
-
         RadioGroup radioGroup = rootView.findViewById(R.id.radioGroup);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -72,7 +68,26 @@ public class Regestration extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                if(Integer.parseInt(userClass) > 8 && studentOrSchooler.equals("Student")){
+
+                userName = ((EditText) Objects.requireNonNull(getActivity()).findViewById(R.id.userName)).getText().toString();
+                userSchool = ((EditText) getActivity().findViewById(R.id.userSchool)).getText().toString();
+                userClass = ((EditText) getActivity().findViewById(R.id.userClass)).getText().toString();
+
+                if("".equals(userClass) || "".equals(userName) || "".equals(userSchool) || "".equals(studentOrSchooler) || "".equals(studentOrSchooler)){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    builder.setTitle("Warning")
+                            .setMessage("Не все поля заполненны, пожалуйста, заполните все поля")
+                            .setCancelable(false)
+                            .setNegativeButton("Ок, закрыть",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+                else if(Integer.parseInt(userClass) > 8 && studentOrSchooler.equals("Student")){
                     AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
                     builder.setTitle("Warning")
                             .setMessage("Вы не можете быть больше 8 курса. Выберите 'школьник' или напишите в службу поддержки.")
@@ -90,20 +105,6 @@ public class Regestration extends Fragment {
                     AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
                     builder.setTitle("Warning")
                             .setMessage("Вы не можете быть больше 12 класса. Выберите 'студент' или напишите в службу поддержки.")
-                            .setCancelable(false)
-                            .setNegativeButton("Ок, закрыть",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.cancel();
-                                        }
-                                    });
-                    AlertDialog alert = builder.create();
-                    alert.show();
-                }
-                else if("".equals(userClass) || "".equals(userName) || "".equals(userSchool) || "".equals(studentOrSchooler)){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                    builder.setTitle("Warning")
-                            .setMessage("Не все поля заполненны, пожалуйста, заполните все поля")
                             .setCancelable(false)
                             .setNegativeButton("Ок, закрыть",
                                     new DialogInterface.OnClickListener() {
