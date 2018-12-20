@@ -27,6 +27,7 @@
             android:inputType="textMultiLine" />
 
         <RadioGroup
+            android:id="@+id/radioGroup"
             android:layout_width="match_parent"
             android:layout_height="67dp" >
 
@@ -38,7 +39,7 @@
                 android:text="Школьник/лицеист/кадет" />
 
             <RadioButton
-                android:id="@+id/hightSchoolBoy"
+                android:id="@+id/heightSchoolBoy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

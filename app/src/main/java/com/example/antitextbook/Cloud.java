@@ -153,7 +153,7 @@ public class Cloud extends Fragment {
                 }
                 else{
                     // код отправки на сервер
-                    pdfUri = "gs://antitextbook.appspot.com/" + mSubject + "_" + mClass + "_" + mAuthor + "_" + mPart + "_" + mYear + "/"  + mSubject +
+                    pdfUri = "gs://antitextbook.appspot.com/" + mSubject + "_" + mClass + "_" + mAuthor + "_" + mDescribing + "_" + mPart + "_" + mYear + "/"  + mSubject +
                             "_" + mClass + "_" + mAuthor + "_" + mPart + "_" + mYear+"_pdf"; // путь до учебника
                     imgUri = "gs://antitextbook.appspot.com/images/" + mSubject + "_" + mClass + "_" + mAuthor + "_" + mPart + "_" + mYear +"_img"; // путь до обложки
 
@@ -232,7 +232,7 @@ public class Cloud extends Fragment {
                     mRef.child("Books").child(stringCounter).child("ThisCounter").setValue(stringCounter);
 
                     mRef.child("counter").setValue(stringCounter);
-                    mRef.child("AllBooks").child(stringCounter).setValue(mSubject + " " + mAuthor + " " + mClass);
+                    mRef.child("AllBooks").child(stringCounter).setValue(mSubject + " " + mAuthor + " " + mDescribing + " " + mClass);
 
                     counterFor = 0;
                     Toast.makeText(getActivity(), "Загружено", Toast.LENGTH_SHORT).show();
@@ -303,7 +303,7 @@ public class Cloud extends Fragment {
         }
         else if(requestCode == PICK_PDF_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
             filePdfPath = data.getData();
-            Toast.makeText(getContext(), "Pdf афйл выбран", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Pdf файл выбран", Toast.LENGTH_LONG).show();
         }
     }
 

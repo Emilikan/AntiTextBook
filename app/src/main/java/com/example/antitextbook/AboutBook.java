@@ -112,7 +112,7 @@ public class AboutBook extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(conterOfFragment).child("Pdf").getValue(String.class)));
                         //localFile = getAlbumStorageDir(getApplicationContext(), "uploads1");
-                        String nameOfFileInTelephone = dataSnapshot.child("Books").child(conterOfFragment).child("Author").getValue(String.class) + " " +  dataSnapshot.child("Books").child(conterOfFragment).child("Class").getValue(String.class)
+                        String nameOfFileInTelephone = dataSnapshot.child("Books").child(conterOfFragment).child("Author").getValue(String.class) + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Describing").getValue(String.class) + " " +  dataSnapshot.child("Books").child(conterOfFragment).child("Class").getValue(String.class)
                                 + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Subject").getValue(String.class) + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Part").getValue(String.class)
                                 + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Year").getValue(String.class);
 
@@ -237,7 +237,8 @@ public class AboutBook extends Fragment {
                     public void onSuccess(Uri uri) {
                         Picasso.with(getContext()).load(uri).into(imageView);
                     }
-                }).addOnFailureListener(new OnFailureListener() {
+                })
+                        .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
                         Toast toast = Toast.makeText(getContext(), "Ошибка!", Toast.LENGTH_SHORT);

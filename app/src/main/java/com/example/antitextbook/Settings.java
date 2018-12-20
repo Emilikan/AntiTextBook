@@ -1,6 +1,7 @@
 package com.example.antitextbook;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -42,6 +43,7 @@ public class Settings extends Fragment {
     }
 
 
+    @SuppressLint("CutPasteId")
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -52,7 +54,7 @@ public class Settings extends Fragment {
         aboutApp = rootView.findViewById(R.id.infoApp);
         setTheme();
 
-        Button buttonInfoApp = rootView.findViewById(R.id.infoApp);
+        @SuppressLint("CutPasteId") Button buttonInfoApp = rootView.findViewById(R.id.infoApp);
         buttonInfoApp.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
