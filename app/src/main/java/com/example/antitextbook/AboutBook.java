@@ -106,8 +106,8 @@ public class AboutBook extends Fragment {
             // скачивание книги
                 //i = 1;
                 //changeTop();
-
-                mRef.addValueEventListener(new ValueEventListener() {
+                mRef = FirebaseDatabase.getInstance().getReference();
+                mRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(conterOfFragment).child("Pdf").getValue(String.class)));
@@ -136,10 +136,10 @@ public class AboutBook extends Fragment {
                                     editor.putString("URI", valueOf(pdfFilePath));
                                     editor.apply();
                                 }
-                                localFile = null;
+                                //localFile = null;
                                 pdfFilePath = null;
                                 islandRef = null;
-                                mRef = null;
+                                // mRef = null;
 
                                 Fragment fragment = null;
                                 Class fragmentClass;
@@ -305,6 +305,14 @@ public class AboutBook extends Fragment {
             frameLayout.setBackgroundResource(R.drawable.dark_bg);
             upload2.setBackgroundResource(R.drawable.dark_cards);
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Toast.makeText(getContext(), "2", Toast.LENGTH_LONG).show();
+        mRef = null;
+        localFile = null;
     }
 
 }

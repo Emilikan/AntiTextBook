@@ -248,4 +248,9 @@ public class Settings extends Fragment {
         editor.apply();
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
 }

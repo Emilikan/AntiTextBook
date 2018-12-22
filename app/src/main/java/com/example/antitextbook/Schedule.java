@@ -60,4 +60,9 @@ public class Schedule extends Fragment {
             changingSchedule.setBackgroundResource(R.drawable.dark_cards);
         }
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
 }

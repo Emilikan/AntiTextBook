@@ -74,7 +74,7 @@ public class DownloadFromCloud extends Fragment {
         setTheme();
 
         mRef = FirebaseDatabase.getInstance().getReference();
-        mRef.addValueEventListener(new ValueEventListener() {
+        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -223,6 +223,12 @@ public class DownloadFromCloud extends Fragment {
             //chooseText.setTextColor(R.color.colorDarkBlue);
             //downloadText.setTextColor(R.color.colorDarkText);
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mRef = null;
     }
 
 }

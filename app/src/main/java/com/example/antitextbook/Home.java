@@ -111,4 +111,9 @@ public class Home extends Fragment {
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
 }

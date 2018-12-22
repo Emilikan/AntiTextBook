@@ -8,19 +8,17 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.util.Objects;
-
-import static java.lang.String.valueOf;
 
 
 public class Regestration extends Fragment {
@@ -61,7 +59,6 @@ public class Regestration extends Fragment {
                 }
             }
         });
-
 
         Button save = rootView.findViewById(R.id.saveInfoAboutUser);
         save.setOnClickListener(new View.OnClickListener() {
@@ -119,11 +116,24 @@ public class Regestration extends Fragment {
                     // сохранение данных о пользователе в SharedPreference
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                     SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("Users", "1");
                     editor.putString("UserName", userName);
                     editor.putString("UserClass", userClass);
                     editor.putString("UserSchool", userSchool);
                     editor.putString("UserStudentOrSchoolBoy", studentOrSchooler);
                     editor.apply();
+
+                    Fragment fragment = null;
+                    Class fragmentClass;
+                    fragmentClass = Profile.class;
+                    try {
+                        fragment = (Fragment) fragmentClass.newInstance();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                    assert fragment != null;
+                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                     Toast.makeText(getActivity(), "Сохраннено", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -132,4 +142,8 @@ public class Regestration extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
 }

@@ -165,4 +165,9 @@ public class Storage extends Fragment {
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
 }

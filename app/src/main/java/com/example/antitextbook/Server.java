@@ -89,6 +89,19 @@ public class Server extends Fragment {
             drawer.closeDrawer(GravityCompat.START);
         }
         else {
+
+            Button singInSchool = rootView.findViewById(R.id.singInSchool);
+            singInSchool.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Fragment fragment = new Regestration();
+                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                    DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                }
+            });
+
             Button singIn = rootView.findViewById(R.id.singIn); // кнопка авторизации
             singIn.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -96,7 +109,6 @@ public class Server extends Fragment {
                 public void onClick(View v) {
                     mLogin = ((EditText) Objects.requireNonNull(getActivity()).findViewById(R.id.login)).getText().toString();
                     mPassword = ((EditText) getActivity().findViewById(R.id.password)).getText().toString();
-                    CheckBox checkBox = Objects.requireNonNull(getView()).findViewById(R.id.admin);
                     if ("".equals(mLogin) || "".equals(mPassword)) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
                         builder.setTitle("Error")
@@ -110,12 +122,10 @@ public class Server extends Fragment {
                                         });
                         AlertDialog alert = builder.create();
                         alert.show();
-                    } else if (checkBox.isChecked()) {
-                        singInAdmin();
-                    } else if (!checkBox.isChecked()){
-                        singInUser();
                     }
-
+                    else {
+                        singInAdmin();
+                    }
                 }
             });
 
@@ -132,11 +142,6 @@ public class Server extends Fragment {
             });
         }
         return rootView;
-    }
-
-    // авторизация пользователя локально
-    private void singInUser(){
-        // код для локальной авторизации пользователей
     }
 
     // авторизация админки
@@ -195,6 +200,11 @@ public class Server extends Fragment {
         if("TRUE".equals(dark)) {
             frameLayout.setBackgroundResource(R.drawable.dark_bg);
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
 }

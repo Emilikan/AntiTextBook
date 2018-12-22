@@ -68,4 +68,9 @@ public class InfoAboutApp extends Fragment {
             back.setBackgroundResource(R.drawable.dark_cards);
         }
     }
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
 }

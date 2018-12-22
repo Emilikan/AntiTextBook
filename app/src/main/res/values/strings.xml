@@ -124,7 +124,7 @@
     <string name="send_sendLater">Отправить</string>
 
     <string name="server_title">Авторизация</string>
-    <string name="server_note">В настоящее время авторизация доступна только для админов.\n По всем вопросам обращайтесь в службу поддержки</string>
+    <string name="server_note">В настоящее время авторизация доступна только для админов и представителей учебных заведений.\n По всем вопросам обращайтесь в службу поддержки</string>
     <string name="server_log">Логин</string>
     <string name="server_password">Пароль</string>
     <string name="server_sign_in">Войти</string>

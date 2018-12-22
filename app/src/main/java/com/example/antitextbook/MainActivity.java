@@ -165,17 +165,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragmentClass = Schedule.class;
             }
         }
-        /*
-        else if(id == R.id.schedule){
-            fragmentClass = Schedule.class;
-        }
-        */
         else if (id == R.id.exit) {
             FirebaseAuth.getInstance().signOut();
+        }
+        else if (id == R.id.profile){
+            fragmentClass = Profile.class;
         }
         else {
             fragmentClass = Home.class;
         }
+
         if(fragmentClass != null) {
         // ловим ошибки
         try {

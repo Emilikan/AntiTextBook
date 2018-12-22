@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +18,27 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Objects;
 
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static java.net.HttpURLConnection.HTTP_OK;
 
@@ -37,6 +49,8 @@ public class Send extends Fragment {
 
     private String mNameOfFeedback;
     private String mDescribingOfFeedback;
+
+    private DatabaseReference mRef;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -71,7 +85,21 @@ public class Send extends Fragment {
                     alert.show();
                 }
                 else{
-                    sendEmail();
+                    mRef = FirebaseDatabase.getInstance().getReference();
+                    mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            String url = dataSnapshot.child("mailgun").child("url").getValue(String.class);
+                            String pass = dataSnapshot.child("mailgun").child("pass").getValue(String.class);
+                            sendEmail(url, pass);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
                 }
 
             }
@@ -81,9 +109,9 @@ public class Send extends Fragment {
     }
 
     // метод отправки письма через Mailgun
-    private void sendEmail() {
-        String to = "justlike3210@gmail.com";
-        String from = "meFeedback@gmail.com";
+    private void sendEmail(String url, String pass) {
+        String to = "atbusersmail@gmail.com";
+        String from = "myFeedback@gmail.com";
         String subject = nameOfFeedback.getText().toString().trim();
         String message = describingOfFeedback.getText().toString().trim();
 
@@ -99,7 +127,7 @@ public class Send extends Fragment {
             return;
         }
 
-        RetrofitClient.getInstance()
+        RetrofitClient.getInstance(url, pass)
                 .getApi()
                 .sendEmail(from, to, subject, message)
                 .enqueue(new Callback<ResponseBody>() {
@@ -134,5 +162,10 @@ public class Send extends Fragment {
         if("TRUE".equals(dark)) {
             frameLayout.setBackgroundResource(R.drawable.dark_bg);
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 }
