@@ -44,7 +44,7 @@ import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 
-public class Cloud extends Fragment {
+public class UploadBookOfSchool extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 234;
     private static final int PICK_PDF_REQUEST = 345;
 
@@ -72,18 +72,17 @@ public class Cloud extends Fragment {
 
     private DatabaseReference mRef;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_cloud, container, false);
-
+        View rootView = inflater.inflate(R.layout.fragment_upload_book_of_school, container, false);
         // подписываем пользователя на тему (для получаения push уведомлений)
         FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
 
@@ -102,12 +101,12 @@ public class Cloud extends Fragment {
             alert.show();
         }
 
-        frameLayout = rootView.findViewById(R.id.cloud);
-        choosePdf = rootView.findViewById(R.id.buttonChoosePDF);
-        chooseImg = rootView.findViewById(R.id.buttonDownloadImage);
-        imageView = rootView.findViewById(R.id.checkImage);
-        help = rootView.findViewById(R.id.buttonHelp);
-        Button sendOnCloud = rootView.findViewById(R.id.buttonSendToCloud);
+        frameLayout = rootView.findViewById(R.id.cloudSchool);
+        choosePdf = rootView.findViewById(R.id.buttonChoosePDFSchool);
+        chooseImg = rootView.findViewById(R.id.buttonDownloadImageSchool);
+        imageView = rootView.findViewById(R.id.checkImageSchool);
+        help = rootView.findViewById(R.id.buttonHelpSchool);
+        Button sendOnCloud = rootView.findViewById(R.id.buttonSendToCloudSchool);
         setTheme();
 
         //Кнопка отправить
@@ -115,12 +114,12 @@ public class Cloud extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                mAuthor = ((EditText) Objects.requireNonNull(getActivity()).findViewById(R.id.textAuthorCloud)).getText().toString();
-                mClass = ((EditText) getActivity().findViewById(R.id.textClassCloud)).getText().toString();
-                mYear = ((EditText) getActivity().findViewById(R.id.textYearCloud)).getText().toString();
-                mSubject = ((EditText) getActivity().findViewById(R.id.textSubjectCloud)).getText().toString();
-                mPart = ((EditText) getActivity().findViewById(R.id.textPartCloud)).getText().toString();
-                mDescribing = ((EditText) getActivity().findViewById(R.id.describingBook)).getText().toString();
+                mAuthor = ((EditText) Objects.requireNonNull(getActivity()).findViewById(R.id.textAuthorCloudSchool)).getText().toString();
+                mClass = ((EditText) getActivity().findViewById(R.id.textClassCloudSchool)).getText().toString();
+                mYear = ((EditText) getActivity().findViewById(R.id.textYearCloudSchool)).getText().toString();
+                mSubject = ((EditText) getActivity().findViewById(R.id.textSubjectCloudSchool)).getText().toString();
+                mPart = ((EditText) getActivity().findViewById(R.id.textPartCloudSchool)).getText().toString();
+                mDescribing = ((EditText) getActivity().findViewById(R.id.describingBookSchool)).getText().toString();
 
                 if("".equals(mAuthor)|| "".equals(mClass)|| "".equals(mYear) || "".equals(mSubject) || "".equals(mPart) || "".equals(mDescribing)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
@@ -198,10 +197,8 @@ public class Cloud extends Fragment {
                 alert.show();
             }
         });
-
         return rootView;
     }
-
     private void saveDataToDatabase(){
         mRef = FirebaseDatabase.getInstance().getReference();
 
@@ -227,6 +224,7 @@ public class Cloud extends Fragment {
                     mRef.child("Books").child(stringCounter).child("TopDownloads").setValue("0");
                     mRef.child("Books").child(stringCounter).child("UserTop").setValue("0");
                     mRef.child("Books").child(stringCounter).child("SchoolCounter").setValue("-1");
+                    //* сразу устанавливать школу, которая загружала эту книгу
                     mRef.child("Books").child(stringCounter).child("School").setValue("0");
                     mRef.child("Books").child(stringCounter).child("ThisCounter").setValue(stringCounter);
 
@@ -308,6 +306,8 @@ public class Cloud extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void uploadFile(String path, Uri pathOfFile) {
+
+        //* переписать на добавление книги в отдельную папку, создание отдельной ветки в бд, сохранение имени того, кто добавлял книгу. Все это для того, чтобы админ потом мог принят или отклонить добавление книги
         if (pathOfFile != null) {
             final ProgressDialog progressDialog = new ProgressDialog(getContext());
             progressDialog.setTitle("Загрузка");

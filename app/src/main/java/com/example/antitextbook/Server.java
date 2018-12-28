@@ -94,7 +94,7 @@ public class Server extends Fragment {
             singInSchool.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Fragment fragment = new Regestration();
+                    Fragment fragment = new AdminForSchool();
                     FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                     DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);

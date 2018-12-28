@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/cloudSchool"
+    tools:context=".UploadBookOfSchool">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="32dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView2School"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/rubik_medium"
+                        android:text="@string/cloud_title"
+                        android:layout_weight="3"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+
+                    <Button
+                        android:id="@+id/buttonHelpSchool"
+                        android:layout_width="108dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_light"
+                        android:fontFamily="@font/rubik"
+                        android:text="@string/cloud_help"
+                        tools:ignore="RtlHardcoded" />
+                </LinearLayout>
+
+
+                <ImageView
+                    android:id="@+id/checkImageSchool"
+                    android:layout_width="match_parent"
+                    android:layout_height="141dp"
+                    android:layout_marginBottom="16dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonChoosePDFSchool"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_weight="50"
+                        android:background="@drawable/button_light"
+                        android:fontFamily="@font/rubik"
+                        android:padding="16dp"
+                        android:text="@string/cloud_choose_pdf" />
+
+                    <Button
+                        android:id="@+id/buttonDownloadImageSchool"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_weight="50"
+                        android:background="@drawable/button_light"
+                        android:fontFamily="@font/rubik"
+                        android:padding="16dp"
+                        android:text="@string/cloud_choose_img" />
+                </LinearLayout>
+
+
+                <EditText
+                    android:id="@+id/textAuthorCloudSchool"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/rubik_medium"
+                    android:hint="@string/cloud_author"
+                    android:textColor="@android:color/black"
+                    android:textSize="22sp" />
+
+                <EditText
+                    android:id="@+id/describingBookSchool"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/rubik"
+                    android:hint="Название"
+                    android:inputType="textPersonName"/>
+
+                <EditText
+                    android:id="@+id/textSubjectCloudSchool"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/rubik"
+                    android:hint="@string/cloud_subject"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:id="@+id/textClassCloudSchool"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:fontFamily="@font/rubik"
+                    android:hint="@string/cloud_class"
+                    android:inputType="number"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:id="@+id/textYearCloudSchool"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:fontFamily="@font/rubik"
+                    android:hint="@string/cloud_year"
+                    android:inputType="number"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:id="@+id/textPartCloudSchool"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:fontFamily="@font/rubik"
+                    android:hint="@string/cloud_part"
+                    android:inputType="number"
+                    android:textColor="@android:color/black" />
+
+                <Button
+                    android:id="@+id/buttonSendToCloudSchool"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="32dp"
+                    android:background="@drawable/button_gradient"
+                    android:fontFamily="@font/rubik_medium"
+                    android:padding="16dp"
+                    android:text="@string/cloud_upload"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

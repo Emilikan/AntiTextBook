@@ -104,14 +104,15 @@ public class AboutBook extends Fragment {
             @Override
             public void onClick(View v) {
             // скачивание книги
-                //i = 1;
-                //changeTop();
                 mRef = FirebaseDatabase.getInstance().getReference();
+                // получаем данные только 1 раз (не следит за изменениями)
+                // это сделано, чтобы не вылетало, когда в бд добавляются книги
                 mRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        changeTop();
                         islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(conterOfFragment).child("Pdf").getValue(String.class)));
-                        //localFile = getAlbumStorageDir(getApplicationContext(), "uploads1");
+
                         String nameOfFileInTelephone = dataSnapshot.child("Books").child(conterOfFragment).child("Author").getValue(String.class) + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Describing").getValue(String.class) + " " +  dataSnapshot.child("Books").child(conterOfFragment).child("Class").getValue(String.class)
                                 + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Subject").getValue(String.class) + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Part").getValue(String.class)
                                 + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Year").getValue(String.class);
@@ -136,10 +137,8 @@ public class AboutBook extends Fragment {
                                     editor.putString("URI", valueOf(pdfFilePath));
                                     editor.apply();
                                 }
-                                //localFile = null;
                                 pdfFilePath = null;
                                 islandRef = null;
-                                // mRef = null;
 
                                 Fragment fragment = null;
                                 Class fragmentClass;
@@ -196,20 +195,17 @@ public class AboutBook extends Fragment {
         return rootView;
     }
 
-    /*private void changeTop(){
-        mRef.addValueEventListener(new ValueEventListener() {
+    // устанавливаем большее значение в топе загрузок
+    private void changeTop(){
+        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(i == 1){
-                    dbCounter = dataSnapshot.child("Books").child(conterOfFragment).child("TopDownloads").getValue(String.class);
-                    // Toast.makeText(getActivity(), dbCounter, Toast.LENGTH_SHORT).show();
+                    String dbCounter = dataSnapshot.child("Books").child(conterOfFragment).child("TopDownloads").getValue(String.class);
                     assert dbCounter != null;
                     int intCounter = Integer.parseInt(dbCounter);
                     intCounter++;
                     String stringCounter = Integer.toString(intCounter);
                     mRef.child("Books").child(conterOfFragment).child("TopDownloads").setValue(stringCounter);
-                    i = 0;
-                }
             }
 
             @Override
@@ -218,7 +214,7 @@ public class AboutBook extends Fragment {
             }
         });
     }
-    */
+
 
     // изменяем текст на тот, который получили из бд
     @SuppressLint("WrongViewCast")
@@ -310,7 +306,6 @@ public class AboutBook extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        Toast.makeText(getContext(), "2", Toast.LENGTH_LONG).show();
         mRef = null;
         localFile = null;
     }

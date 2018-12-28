@@ -2,7 +2,11 @@ package com.example.antitextbook;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -54,7 +58,8 @@ public class Settings extends Fragment {
         aboutApp = rootView.findViewById(R.id.infoApp);
         setTheme();
 
-        @SuppressLint("CutPasteId") Button buttonInfoApp = rootView.findViewById(R.id.infoApp);
+
+        Button buttonInfoApp = rootView.findViewById(R.id.infoApp); // кнопка информации о приложении
         buttonInfoApp.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -79,7 +84,7 @@ public class Settings extends Fragment {
         File file = new File(fullPath);
         if(!file.exists()) {
             if (isExternalStorageWritable()) {
-                saveFile(fullPath, String.valueOf("false"));
+
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
                 builder.setTitle("Error")
@@ -111,24 +116,11 @@ public class Settings extends Fragment {
                 editor.putString("Checked", "pair");
                 editor.apply();
 
-
                 // проверка на доступ к памяти
                 if(isReadStorageAllowed()){
                     requestStoragePermission();
                 }
 
-                CheckBox checkBox = Objects.requireNonNull(getView()).findViewById(R.id.checkBox);
-                String folderName = "AntiTextBook/ATB/settings", fileName = "checkedBox.txt";
-                String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName + "/" + fileName;
-
-                if(checkBox.isChecked()){
-                    int i = 1;
-                    saveFile(fullPath,String.valueOf(i));
-                }
-                else {
-                    int i = 2;
-                    saveFile(fullPath, String.valueOf(i));
-                }
             }
         });
 
@@ -137,44 +129,37 @@ public class Settings extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                // проверка на доступ к памяти
-                if(isReadStorageAllowed()){
-                    requestStoragePermission();
-                }
+                AlertDialog.Builder ad;
 
-                CheckBox checkBox = Objects.requireNonNull(getView()).findViewById(R.id.darkBox);
-                if(checkBox.isChecked()){
-                    setThemeDark();
-                }
-                else {
-                   setThemeNormal();
-                }
+                ad = new AlertDialog.Builder(getContext());
+                ad.setTitle("Смена темы");  // заголовок
+                ad.setMessage("Для смены темы приложение будет перезагружено"); // сообщение
+                ad.setPositiveButton("Ок, перезагрузить", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+
+                        CheckBox checkBox = Objects.requireNonNull(getView()).findViewById(R.id.darkBox);
+                        if(checkBox.isChecked()){
+                            setThemeDark();
+                        }
+                        else {
+                            setThemeNormal();
+                        }
+                    }
+                });
+                ad.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        dialog.cancel();
+
+                    }
+                });
+                ad.setCancelable(true);
+                ad.show();
+
             }
         });
         return rootView;
     }
-    public void saveFile (String filePath, String FileContent)
-    {
-        //Создание объекта файла.
-        File fileHandle = new File(filePath);
-        try
-        {
-            //Если нет директорий в пути, то они будут созданы:
-            if (!fileHandle.getParentFile().exists())
-                fileHandle.getParentFile().mkdirs();
-            //Если файл существует, то он будет перезаписан:
-            fileHandle.createNewFile();
-            FileOutputStream fOut = new FileOutputStream(fileHandle);
-            OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
-            myOutWriter.write(FileContent);
-            myOutWriter.close();
-            fOut.close();
-        }
-        catch (IOException e)
-        {
-            Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
+
 
     public boolean isExternalStorageWritable()
     {
@@ -232,20 +217,70 @@ public class Settings extends Fragment {
     }
 
     // метод изменения темы на темную
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void setThemeDark(){
         String i = "TRUE";
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("Theme", i);
         editor.apply();
+
+
+        doRestart(getActivity());
     }
     // метод изменения темы на светлую
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void setThemeNormal(){
         String i = "FALSE";
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("Theme", i);
         editor.apply();
+
+        doRestart(getActivity());
+    }
+
+    public static void doRestart(Context c) {
+
+        // костыль
+        // ждем для перезагрузки приложения (чтобы инфа о смене темы добавилась в SharedPreference)
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if (c != null) {
+                PackageManager pm = c.getPackageManager();
+
+                if (pm != null) {
+
+                    Intent mStartActivity = pm.getLaunchIntentForPackage(
+                            c.getPackageName()
+                    );
+                    if (mStartActivity != null) {
+                        mStartActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                        int mPendingIntentId = 223344;
+                        PendingIntent mPendingIntent = PendingIntent.getActivity(c, mPendingIntentId, mStartActivity,
+                                PendingIntent.FLAG_CANCEL_CURRENT);
+                        AlarmManager mgr = (AlarmManager) c.getSystemService(Context.ALARM_SERVICE);
+                        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1, mPendingIntent);
+                        
+                        System.exit(0);
+                    } else {
+                        Toast.makeText(c,"Was not able to restart application, mStartActivity null",Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(c,"Was not able to restart application, PM null",Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(c,"Was not able to restart application, Context null",Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception ex) {
+            Toast.makeText(c,"Was not able to restart application",Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

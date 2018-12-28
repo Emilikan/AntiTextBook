@@ -145,6 +145,8 @@ public class DownloadFromCloud extends Fragment {
                 String valueOfReplace = position + "";
                 bundle.putString("Value", valueOfReplace);
                 fragment.setArguments(bundle);
+
+
             }
         });
 
@@ -183,21 +185,16 @@ public class DownloadFromCloud extends Fragment {
         }
     }
 
-    //This method will be called when the user will tap on allow or deny
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        //Checking the request code of our request
         int STORAGE_PERMISSION_CODE = 23;
         if(requestCode == STORAGE_PERMISSION_CODE){
 
-            //If permission is granted
             if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
 
-                //Displaying a toast
                 Toast.makeText(getContext(),"Permission granted now you can read the storage",Toast.LENGTH_LONG).show();
             }else{
-                //Displaying another toast if permission is not granted
                 Toast.makeText(getContext(),"Oops you just denied the permission",Toast.LENGTH_LONG).show();
             }
         }
