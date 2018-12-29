@@ -116,7 +116,7 @@ public class Send extends Fragment {
         String message = describingOfFeedback.getText().toString().trim();
 
         if (subject.isEmpty()) {
-            nameOfFeedback.setError("Subject required");
+            nameOfFeedback.setError("Поле 'Имя' не заполненно. Пожалуйста, заполните все поля");
             nameOfFeedback.requestFocus();
             return;
         }
@@ -138,6 +138,8 @@ public class Send extends Fragment {
                                 assert response.body() != null;
                                 JSONObject obj = new JSONObject(response.body().string());
                                 Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_LONG).show();
+                                nameOfFeedback.setText("");
+                                describingOfFeedback.setText("");
                             } catch (JSONException | IOException e) {
                                 e.printStackTrace();
                             }
