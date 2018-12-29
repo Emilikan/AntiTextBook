@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -45,6 +47,25 @@ public class AdminForSchool extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_admin_for_school, container, false);
 
+        ImageView back = rootView.findViewById(R.id.back334); // кнопка назад
+        back.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = null;
+                Class fragmentClass;
+                fragmentClass = Server.class;
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                assert fragment != null;
+                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+            }
+        });
+
         Button singIn = rootView.findViewById(R.id.singInSchoolOfCode);
         singIn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -61,6 +82,11 @@ public class AdminForSchool extends Fragment {
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             dialog.cancel();
+
+                                            Fragment fragment = new Server();
+                                            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                                            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                            Toast.makeText(getActivity(), "Нет книг", Toast.LENGTH_SHORT).show();
                                         }
                                     });
                     AlertDialog alert = builder.create();

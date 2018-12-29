@@ -36,8 +36,8 @@ public class InfoAboutApp extends Fragment {
         back = rootView.findViewById(R.id.backOnFragmentOfSettings);
         setTheme();
 
-        Button backOnFragmentOfSettings = rootView.findViewById(R.id.backOnFragmentOfSettings); // кнопка назад
-        backOnFragmentOfSettings.setOnClickListener(new View.OnClickListener() {
+        // кнопка назад
+        back.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {

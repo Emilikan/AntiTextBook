@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/downloadFromCloud"
-    tools:context=".DownloadFromCloud">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ChooseTrueBooks">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,27 +17,19 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/back3"
+                android:id="@+id/back3ForAdmin"
                 android:layout_width="90dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="12dp"
                 app:srcCompat="@drawable/ic_left_arrow" />
 
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="52dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="36dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:entries="@array/filter" />
         </LinearLayout>
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/booksListView"
+            android:id="@+id/booksListViewForAdmin"
             />
     </LinearLayout>
 

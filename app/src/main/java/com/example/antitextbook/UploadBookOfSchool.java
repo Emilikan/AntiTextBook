@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -66,6 +68,7 @@ public class UploadBookOfSchool extends Fragment {
     private String mSubject;
     private String mPart;
     private String mDescribing;
+    private String mSchoolNumber;
 
     private int counterFor = 0;
     private String dbCounter;
@@ -80,11 +83,30 @@ public class UploadBookOfSchool extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_upload_book_of_school, container, false);
+
         // подписываем пользователя на тему (для получаения push уведомлений)
         FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
+
+        ImageView back = rootView.findViewById(R.id.back211);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = null;
+                Class fragmentClass;
+                fragmentClass = Subscribe.class;
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                assert fragment != null;
+                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+            }
+        });
 
         if(!isOnline(Objects.requireNonNull(getContext()))){
             AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
@@ -95,36 +117,121 @@ public class UploadBookOfSchool extends Fragment {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();
+
+                                    Fragment fragment = new Subscribe();
+                                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                    Toast.makeText(getActivity(), "Нет книг", Toast.LENGTH_SHORT).show();
                                 }
                             });
             AlertDialog alert = builder.create();
             alert.show();
         }
+        else {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+            mSchoolNumber = preferences.getString("dbSchool", "Ошибка");
+            frameLayout = rootView.findViewById(R.id.cloudSchool);
+            choosePdf = rootView.findViewById(R.id.buttonChoosePDFSchool);
+            chooseImg = rootView.findViewById(R.id.buttonDownloadImageSchool);
+            imageView = rootView.findViewById(R.id.checkImageSchool);
+            help = rootView.findViewById(R.id.buttonHelpSchool);
+            Button sendOnCloud = rootView.findViewById(R.id.buttonSendToCloudSchool);
+            setTheme();
 
-        frameLayout = rootView.findViewById(R.id.cloudSchool);
-        choosePdf = rootView.findViewById(R.id.buttonChoosePDFSchool);
-        chooseImg = rootView.findViewById(R.id.buttonDownloadImageSchool);
-        imageView = rootView.findViewById(R.id.checkImageSchool);
-        help = rootView.findViewById(R.id.buttonHelpSchool);
-        Button sendOnCloud = rootView.findViewById(R.id.buttonSendToCloudSchool);
-        setTheme();
+            //Кнопка отправить
+            sendOnCloud.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                @Override
+                public void onClick(View v) {
+                    mAuthor = ((EditText) Objects.requireNonNull(getActivity()).findViewById(R.id.textAuthorCloudSchool)).getText().toString();
+                    mClass = ((EditText) getActivity().findViewById(R.id.textClassCloudSchool)).getText().toString();
+                    mYear = ((EditText) getActivity().findViewById(R.id.textYearCloudSchool)).getText().toString();
+                    mSubject = ((EditText) getActivity().findViewById(R.id.textSubjectCloudSchool)).getText().toString();
+                    mPart = ((EditText) getActivity().findViewById(R.id.textPartCloudSchool)).getText().toString();
+                    mDescribing = ((EditText) getActivity().findViewById(R.id.describingBookSchool)).getText().toString();
 
-        //Кнопка отправить
-        sendOnCloud.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onClick(View v) {
-                mAuthor = ((EditText) Objects.requireNonNull(getActivity()).findViewById(R.id.textAuthorCloudSchool)).getText().toString();
-                mClass = ((EditText) getActivity().findViewById(R.id.textClassCloudSchool)).getText().toString();
-                mYear = ((EditText) getActivity().findViewById(R.id.textYearCloudSchool)).getText().toString();
-                mSubject = ((EditText) getActivity().findViewById(R.id.textSubjectCloudSchool)).getText().toString();
-                mPart = ((EditText) getActivity().findViewById(R.id.textPartCloudSchool)).getText().toString();
-                mDescribing = ((EditText) getActivity().findViewById(R.id.describingBookSchool)).getText().toString();
+                    if ("".equals(mAuthor) || "".equals(mClass) || "".equals(mYear) || "".equals(mSubject) || "".equals(mPart) || "".equals(mDescribing)) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                        builder.setTitle("Предупреждение")
+                                .setMessage("Одно из полей не заполненно. Пожалуйста, заполните все поля и повторите отправку")
+                                .setCancelable(false)
+                                .setNegativeButton("Ок, закрыть",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    } else if (filePath == null) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                        builder.setTitle("Предупреждение")
+                                .setMessage("Не выбран файл загрузки")
+                                .setCancelable(false)
+                                .setNegativeButton("Ок, закрыть",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+                    else if(mSchoolNumber.equals("Ошибка")){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                        builder.setTitle("Error")
+                                .setMessage("Неизвестная ошибка. Не получено название школы. Напишите в службу поддержки")
+                                .setCancelable(false)
+                                .setNegativeButton("Ок, закрыть",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+                    else {
+                        // код отправки на сервер
+                        pdfUri = "gs://antitextbook.appspot.com/forChecking/" + mSubject + "_" + mClass + "_" + mAuthor + "_" + mDescribing + "_" + mPart + "_" + mYear + "/" + mSubject +
+                                "_" + mClass + "_" + mAuthor + "_" + mDescribing + "_" + mPart + "_" + mYear + "_pdf"; // путь до учебника
+                        imgUri = "gs://antitextbook.appspot.com/forChecking/images/" + mSubject + "_" + mClass + "_" + mDescribing + "_" + mAuthor + "_" + mPart + "_" + mYear + "_img"; // путь до обложки
 
-                if("".equals(mAuthor)|| "".equals(mClass)|| "".equals(mYear) || "".equals(mSubject) || "".equals(mPart) || "".equals(mDescribing)) {
+                        saveDataToDatabase();
+                        uploadFile(pdfUri, filePdfPath);
+                        uploadFile(imgUri, filePath);
+                        counterFor = 1;
+                    }
+                }
+            });
+
+            //Кнопка загрузки pdf
+            choosePdf.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pdfChooser();
+                }
+            });
+
+            //Кнопка загрузки Изображения
+            chooseImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    imageChooser();
+                }
+            });
+
+            // кнопка помощи
+            help.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                    builder.setTitle("Предупреждение")
-                            .setMessage("Одно из полей не заполненно. Пожалуйста, заполните все поля и повторите отправку")
+                    builder.setTitle("Info")
+                            .setMessage("Для загрузки:\n1) выберите файл книги в pdf формате;\n2) выберите изображение обложки (скриншот);\n" +
+                                    "3) заполните все поля, начиная каждое поле со слова с большой буквы;\n5) описание заполнять не обязательно." +
+                                    " В описание пишем продолжение названия учебника (например, у нас есть книга: 'М.М. Астахов Конспект ленций по электричеству'." +
+                                    " В описание мы пишем 'Конспект лекций по электричеству')\n4) нажмите кнопку 'отправить'.\n\n" +
+                                    "При возникновении вопросов: напишите в службу поддержки, указав данные, по которым админ сможет с вами связаться (почта).")
                             .setCancelable(false)
                             .setNegativeButton("Ок, закрыть",
                                     new DialogInterface.OnClickListener() {
@@ -135,68 +242,8 @@ public class UploadBookOfSchool extends Fragment {
                     AlertDialog alert = builder.create();
                     alert.show();
                 }
-                else if(filePath == null){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                    builder.setTitle("Предупреждение")
-                            .setMessage("Не выбран файл загрузки")
-                            .setCancelable(false)
-                            .setNegativeButton("Ок, закрыть",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.cancel();
-                                        }
-                                    });
-                    AlertDialog alert = builder.create();
-                    alert.show();
-                }
-                else{
-                    // код отправки на сервер
-                    pdfUri = "gs://antitextbook.appspot.com/" + mSubject + "_" + mClass + "_" + mAuthor + "_" + mDescribing + "_" + mPart + "_" + mYear + "/"  + mSubject +
-                            "_" + mClass + "_" + mAuthor + "_" + mPart + "_" + mYear+"_pdf"; // путь до учебника
-                    imgUri = "gs://antitextbook.appspot.com/images/" + mSubject + "_" + mClass + "_" + mAuthor + "_" + mPart + "_" + mYear +"_img"; // путь до обложки
-
-                    saveDataToDatabase();
-                    uploadFile(pdfUri, filePdfPath);
-                    uploadFile(imgUri, filePath);
-                    counterFor = 1;
-                }
-            }
-        });
-
-        //Кнопка загрузки pdf
-        choosePdf.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pdfChooser();
-            }
-        });
-
-        //Кнопка загрузки Изображения
-        chooseImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageChooser();
-            }
-        });
-
-        // кнопка помощи
-        help.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                builder.setTitle("Info")
-                        .setMessage("Для загрузки:\n1) выберите файл книги в pdf формате;\n2) выберите изображение обложки (скриншот);\n3) заполните все поля, начиная каждое поле со слова с большой буквы;\n4) нажмите кнопку 'отправить'.\n\nПри возникновении вопросов: напишите в службу поддержки, указав данные, по которым админ сможет с вами связаться (почта).")
-                        .setCancelable(false)
-                        .setNegativeButton("Ок, закрыть",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
-        });
+            });
+        }
         return rootView;
     }
     private void saveDataToDatabase(){
@@ -206,30 +253,30 @@ public class UploadBookOfSchool extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(counterFor == 1) {
-                    dbCounter = dataSnapshot.child("counter").getValue(String.class);
+                    dbCounter = dataSnapshot.child("forChecking").child("counter").getValue(String.class);
                     // Toast.makeText(getActivity(), dbCounter, Toast.LENGTH_SHORT).show();
                     assert dbCounter != null;
                     int intCounter = Integer.parseInt(dbCounter);
                     intCounter++;
                     String stringCounter = Integer.toString(intCounter);
 
-                    mRef.child("Books").child(stringCounter).child("Class").setValue(mClass);
-                    mRef.child("Books").child(stringCounter).child("Author").setValue(mAuthor);
-                    mRef.child("Books").child(stringCounter).child("Year").setValue(mYear);
-                    mRef.child("Books").child(stringCounter).child("Subject").setValue(mSubject);
-                    mRef.child("Books").child(stringCounter).child("Part").setValue(mPart);
-                    mRef.child("Books").child(stringCounter).child("Pdf").setValue(pdfUri);
-                    mRef.child("Books").child(stringCounter).child("Icon").setValue(imgUri);
-                    mRef.child("Books").child(stringCounter).child("Describing").setValue(mDescribing);
-                    mRef.child("Books").child(stringCounter).child("TopDownloads").setValue("0");
-                    mRef.child("Books").child(stringCounter).child("UserTop").setValue("0");
-                    mRef.child("Books").child(stringCounter).child("SchoolCounter").setValue("-1");
-                    //* сразу устанавливать школу, которая загружала эту книгу
-                    mRef.child("Books").child(stringCounter).child("School").setValue("0");
-                    mRef.child("Books").child(stringCounter).child("ThisCounter").setValue(stringCounter);
+                    mRef.child("forChecking").child("Books").child(stringCounter).child("Class").setValue(mClass);
+                    mRef.child("forChecking").child("Books").child(stringCounter).child("Author").setValue(mAuthor);
+                    mRef.child("forChecking").child("Books").child(stringCounter).child("Year").setValue(mYear);
+                    mRef.child("forChecking").child("Books").child(stringCounter).child("Subject").setValue(mSubject);
+                    mRef.child("forChecking").child("Books").child(stringCounter).child("Part").setValue(mPart);
+                    mRef.child("forChecking").child("Books").child(stringCounter).child("Pdf").setValue(pdfUri);
+                    mRef.child("forChecking").child("Books").child(stringCounter).child("Icon").setValue(imgUri);
+                    mRef.child("forChecking").child("Books").child(stringCounter).child("Describing").setValue(mDescribing);
+                    mRef.child("forChecking").child("Books").child(stringCounter).child("TopDownloads").setValue("0");
+                    mRef.child("forChecking").child("Books").child(stringCounter).child("UserTop").setValue("0");
+                    mRef.child("forChecking").child("Books").child(stringCounter).child("SchoolCounter").setValue("-1");
+                    // сразу устанавливаем школу, которая загружала эту книгу
+                    mRef.child("forChecking").child("Books").child(stringCounter).child("School").child("0").setValue(mSchoolNumber);
+                    mRef.child("forChecking").child("Books").child(stringCounter).child("ThisCounter").setValue(stringCounter);
 
-                    mRef.child("counter").setValue(stringCounter);
-                    mRef.child("AllBooks").child(stringCounter).setValue(mSubject + " " + mAuthor + " " + mDescribing + " " + mClass);
+                    mRef.child("forChecking").child("counter").setValue(stringCounter);
+                    mRef.child("forChecking").child("AllBooks").child(stringCounter).setValue(mSubject + " " + mAuthor + " " + mDescribing + " " + mClass);
 
                     counterFor = 0;
                     Toast.makeText(getActivity(), "Загружено", Toast.LENGTH_SHORT).show();
@@ -307,7 +354,7 @@ public class UploadBookOfSchool extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void uploadFile(String path, Uri pathOfFile) {
 
-        //* переписать на добавление книги в отдельную папку, создание отдельной ветки в бд, сохранение имени того, кто добавлял книгу. Все это для того, чтобы админ потом мог принят или отклонить добавление книги
+        // переписано на добавление книги в отдельную папку, создание отдельной ветки в бд, сохранение имени того, кто добавлял книгу. Все это для того, чтобы админ потом мог принят или отклонить добавление книги
         if (pathOfFile != null) {
             final ProgressDialog progressDialog = new ProgressDialog(getContext());
             progressDialog.setTitle("Загрузка");
@@ -323,11 +370,12 @@ public class UploadBookOfSchool extends Fragment {
                             progressDialog.dismiss();
                             filePath = null;
                             filePdfPath = null;
-                            ((EditText) Objects.requireNonNull(getActivity()).findViewById(R.id.textAuthorCloud)).setText("");
-                            ((EditText) getActivity().findViewById(R.id.textClassCloud)).setText("");
-                            ((EditText) getActivity().findViewById(R.id.textYearCloud)).setText("");
-                            ((EditText) getActivity().findViewById(R.id.textSubjectCloud)).setText("");
-                            ((EditText) getActivity().findViewById(R.id.textPartCloud)).setText("");
+                            ((EditText) Objects.requireNonNull(getActivity()).findViewById(R.id.textAuthorCloudSchool)).setText("");
+                            ((EditText) getActivity().findViewById(R.id.textClassCloudSchool)).setText("");
+                            ((EditText) getActivity().findViewById(R.id.textYearCloudSchool)).setText("");
+                            ((EditText) getActivity().findViewById(R.id.textSubjectCloudSchool)).setText("");
+                            ((EditText) getActivity().findViewById(R.id.textPartCloudSchool)).setText("");
+                            ((EditText) getActivity().findViewById(R.id.describingBookSchool)).setText("");
                             imageView.setImageDrawable(null);
                             Toast.makeText(getActivity(), "Файл загружен ", Toast.LENGTH_LONG).show();
                         }

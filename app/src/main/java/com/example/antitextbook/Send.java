@@ -1,13 +1,17 @@
 package com.example.antitextbook;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -84,6 +88,20 @@ public class Send extends Fragment {
                     AlertDialog alert = builder.create();
                     alert.show();
                 }
+                else if(!isOnline(Objects.requireNonNull(getContext()))){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    builder.setTitle("Warning")
+                            .setMessage("Сообщение не отправлено. Нет доступа в интернет. Проверьте наличие связи")
+                            .setCancelable(false)
+                            .setNegativeButton("Ок, закрыть",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
                 else{
                     mRef = FirebaseDatabase.getInstance().getReference();
                     mRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -106,6 +124,14 @@ public class Send extends Fragment {
         });
 
         return rootView;
+    }
+
+    // проверяем налисие интернета
+    private static boolean isOnline (Context context)
+    {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
     // метод отправки письма через Mailgun

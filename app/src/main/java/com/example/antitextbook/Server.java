@@ -82,7 +82,7 @@ public class Server extends Fragment {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null){
-            Fragment fragment = new Cloud();
+            Fragment fragment = new AdminOfApp();
             FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
             DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
@@ -158,7 +158,7 @@ public class Server extends Fragment {
                     TextView mainTitle = getActivity().findViewById(R.id.title_name);
                     mainTitle.setText("Admin");
 
-                    Fragment fragment = new Cloud();
+                    Fragment fragment = new AdminOfApp();
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                     DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);

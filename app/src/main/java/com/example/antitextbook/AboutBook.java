@@ -2,8 +2,11 @@ package com.example.antitextbook;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -77,125 +80,157 @@ public class AboutBook extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_about_book, container, false);
 
-        // подписываем пользователя на тему (для получаения push уведомлений)
-        FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
+        if(!isOnline(Objects.requireNonNull(getContext()))){
+            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+            builder.setTitle("Warning")
+                    .setMessage("Нет доступа в интернет. Проверьте наличие связи")
+                    .setCancelable(false)
+                    .setNegativeButton("Ок, закрыть",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
 
-        // получаем значение о том, на какую книгу мы перешли (из Bundle)
-        Bundle bundle = getArguments();
-        conterOfFragment = "0";
-        if(bundle != null){
-            conterOfFragment = bundle.getString("Value", "0");
+                                    Fragment fragment = new Library();
+                                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                    Toast.makeText(getActivity(), "Нет книг", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
         }
+        else {
 
-        frameLayout = rootView.findViewById(R.id.aboutBook);
-        imageView = rootView.findViewById(R.id.imageView3);
-        mPart2 = rootView.findViewById(R.id.Part2);
-        mAuthor2 = rootView.findViewById(R.id.Author2);
-        mProject2 = rootView.findViewById(R.id.Project2);
-        mDescribing = rootView.findViewById(R.id.describingAboutBook);
-        mClass2 = rootView.findViewById(R.id.Class2);
-        mYear2 = rootView.findViewById(R.id.Year2);
-        upload2 = rootView.findViewById(R.id.upload2);
-        ImageView back = rootView.findViewById(R.id.back2);
+            // подписываем пользователя на тему (для получаения push уведомлений)
+            FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
 
-        setTheme();
-
-         // кнопка скачать книгу
-        upload2.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onClick(View v) {
-            // скачивание книги
-                mRef = FirebaseDatabase.getInstance().getReference();
-                // получаем данные только 1 раз (не следит за изменениями)
-                // это сделано, чтобы не вылетало, когда в бд добавляются книги
-                mRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        changeTop();
-                        islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(conterOfFragment).child("Pdf").getValue(String.class)));
-
-                        String nameOfFileInTelephone = dataSnapshot.child("Books").child(conterOfFragment).child("Author").getValue(String.class) + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Describing").getValue(String.class) + " " +  dataSnapshot.child("Books").child(conterOfFragment).child("Class").getValue(String.class)
-                                + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Subject").getValue(String.class) + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Part").getValue(String.class)
-                                + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Year").getValue(String.class);
-
-                        localFile = saveFile(Objects.requireNonNull(getContext()).getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/" + nameOfFileInTelephone + ".pdf");
-
-                        assert localFile != null;
-                        final ProgressDialog progressDialog = new ProgressDialog(getContext());
-                        progressDialog.setTitle("Downloading");
-                        progressDialog.show();
-                        islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                progressDialog.dismiss();
-
-                                // в переменной pdfFilePath хранится Uri скаченного файла. Передавать его в Home.class, записывать его в файл настроек или SharedPreferences
-                                if(localFile.toURI() != null) {
-                                    pdfFilePath = Uri.parse(localFile.toURI() + "");
-
-                                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-                                    SharedPreferences.Editor editor = preferences.edit();
-                                    editor.putString("URI", valueOf(pdfFilePath));
-                                    editor.apply();
-                                }
-                                pdfFilePath = null;
-                                islandRef = null;
-
-                                Fragment fragment = null;
-                                Class fragmentClass;
-                                fragmentClass = Home.class;
-                                try {
-                                    fragment = (Fragment) fragmentClass.newInstance();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                                assert fragment != null;
-                                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-                                Toast.makeText(getActivity(), "Файл скачан", Toast.LENGTH_LONG).show();
-                            }
-                        }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                //calculating progress percentage
-                                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                                //displaying percentage in progress dialog
-                                progressDialog.setMessage("Downloaded " + ((int) progress) + "%...");
-                            }
-                        });
-
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(getContext(), "ERROR" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
+            // получаем значение о том, на какую книгу мы перешли (из Bundle)
+            Bundle bundle = getArguments();
+            conterOfFragment = "0";
+            if (bundle != null) {
+                conterOfFragment = bundle.getString("Value", "0");
             }
-        });
 
-        // изображение-кнопка назад
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment fragment = null;
-                Class fragmentClass;
-                fragmentClass = DownloadFromCloud.class;
-                try {
-                    fragment = (Fragment) fragmentClass.newInstance();
-                } catch (Exception e) {
-                    e.printStackTrace();
+            frameLayout = rootView.findViewById(R.id.aboutBook);
+            imageView = rootView.findViewById(R.id.imageView3);
+            mPart2 = rootView.findViewById(R.id.Part2);
+            mAuthor2 = rootView.findViewById(R.id.Author2);
+            mProject2 = rootView.findViewById(R.id.Project2);
+            mDescribing = rootView.findViewById(R.id.describingAboutBook);
+            mClass2 = rootView.findViewById(R.id.Class2);
+            mYear2 = rootView.findViewById(R.id.Year2);
+            upload2 = rootView.findViewById(R.id.upload2);
+            ImageView back = rootView.findViewById(R.id.back2);
+
+            setTheme();
+
+            // кнопка скачать книгу
+            upload2.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                @Override
+                public void onClick(View v) {
+                    // скачивание книги
+                    mRef = FirebaseDatabase.getInstance().getReference();
+                    // получаем данные только 1 раз (не следит за изменениями)
+                    // это сделано, чтобы не вылетало, когда в бд добавляются книги
+                    mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            changeTop();
+                            islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(conterOfFragment).child("Pdf").getValue(String.class)));
+
+                            String nameOfFileInTelephone = dataSnapshot.child("Books").child(conterOfFragment).child("Author").getValue(String.class) + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Describing").getValue(String.class) + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Class").getValue(String.class)
+                                    + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Subject").getValue(String.class) + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Part").getValue(String.class)
+                                    + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Year").getValue(String.class);
+
+                            localFile = saveFile(Objects.requireNonNull(getContext()).getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/" + nameOfFileInTelephone + ".pdf");
+
+                            assert localFile != null;
+                            final ProgressDialog progressDialog = new ProgressDialog(getContext());
+                            progressDialog.setTitle("Downloading");
+                            progressDialog.show();
+                            islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                    progressDialog.dismiss();
+
+                                    // в переменной pdfFilePath хранится Uri скаченного файла. Передавать его в Home.class, записывать его в файл настроек или SharedPreferences
+                                    if (localFile.toURI() != null) {
+                                        pdfFilePath = Uri.parse(localFile.toURI() + "");
+
+                                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                                        SharedPreferences.Editor editor = preferences.edit();
+                                        editor.putString("URI", valueOf(pdfFilePath));
+                                        editor.apply();
+                                    }
+                                    pdfFilePath = null;
+                                    islandRef = null;
+
+                                    Fragment fragment = null;
+                                    Class fragmentClass;
+                                    fragmentClass = Home.class;
+                                    try {
+                                        fragment = (Fragment) fragmentClass.newInstance();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                                    assert fragment != null;
+                                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                    Toast.makeText(getActivity(), "Файл скачан", Toast.LENGTH_LONG).show();
+                                }
+                            }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
+                                @Override
+                                public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                    //calculating progress percentage
+                                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                                    //displaying percentage in progress dialog
+                                    progressDialog.setMessage("Downloaded " + ((int) progress) + "%...");
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Toast.makeText(getContext(), "ERROR" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
-                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                assert fragment != null;
-                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-            }
-        });
+            });
 
-        changeText();
+            // изображение-кнопка назад
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Fragment fragment = null;
+                    Class fragmentClass;
+                    fragmentClass = DownloadFromCloud.class;
+                    try {
+                        fragment = (Fragment) fragmentClass.newInstance();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                    assert fragment != null;
+                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                }
+            });
+
+            changeText();
+        }
 
         return rootView;
     }
+
+    // проверям наличие интернета
+    private static boolean isOnline (Context context)
+    {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
 
     // устанавливаем большее значение в топе загрузок
     private void changeTop(){

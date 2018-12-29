@@ -165,9 +165,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragmentClass = Schedule.class;
             }
         }
-        else if (id == R.id.exit) {
-            FirebaseAuth.getInstance().signOut();
-        }
         else if (id == R.id.profile){
             fragmentClass = Profile.class;
         }
@@ -175,25 +172,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentClass = Home.class;
         }
 
-        if(fragmentClass != null) {
         // ловим ошибки
         try {
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }
-            // Вставляем фрагмент, заменяя текущий фрагмент
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            assert fragment != null;
-            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-            // Выделяем выбранный пункт меню в шторке
-            item.setChecked(true);
-            // Выводим выбранный пункт в заголовке
-            setTitle(item.getTitle());
+        // Вставляем фрагмент, заменяя текущий фрагмент
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        assert fragment != null;
+        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+        // Выделяем выбранный пункт меню в шторке
+        item.setChecked(true);
+        // Выводим выбранный пункт в заголовке
+        setTitle(item.getTitle());
 
-            DrawerLayout drawer = findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
-        }
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 }

@@ -79,6 +79,10 @@ public class Subscribe extends Fragment {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();
+                                    Fragment fragment = new Server();
+                                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                    Toast.makeText(getActivity(), "Нет книг", Toast.LENGTH_SHORT).show();
                                 }
                             });
             AlertDialog alert = builder.create();
@@ -92,7 +96,7 @@ public class Subscribe extends Fragment {
                 public void onClick(View v) {
                     Fragment fragment = null;
                     Class fragmentClass;
-                    fragmentClass = Cloud.class;
+                    fragmentClass = UploadBookOfSchool.class;
                     try {
                         fragment = (Fragment) fragmentClass.newInstance();
                     } catch (Exception e) {

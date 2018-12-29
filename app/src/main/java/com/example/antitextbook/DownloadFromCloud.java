@@ -63,69 +63,74 @@ public class DownloadFromCloud extends Fragment {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();
+
+                                    Fragment fragment = new Library();
+                                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                    Toast.makeText(getActivity(), "Нет книг", Toast.LENGTH_SHORT).show();
                                 }
                             });
             AlertDialog alert = builder.create();
             alert.show();
         }
+        else {
+            frameLayout = rootView.findViewById(R.id.downloadFromCloud);
+            ImageView back = rootView.findViewById(R.id.back3);
+            setTheme();
 
-        frameLayout = rootView.findViewById(R.id.downloadFromCloud);
-        ImageView back = rootView.findViewById(R.id.back3);
-        setTheme();
+            mRef = FirebaseDatabase.getInstance().getReference();
+            mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    counter = dataSnapshot.child("counter").getValue(String.class);
+                    if ("-1".equals(counter)) {
+                        Fragment fragment = new Server();
+                        FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                        Toast.makeText(getActivity(), "Нет книг", Toast.LENGTH_SHORT).show();
+                    } else {
+                        checked();
+                    }
+                }
 
-        mRef = FirebaseDatabase.getInstance().getReference();
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                counter = dataSnapshot.child("counter").getValue(String.class);
-                if ("-1".equals(counter)) {
-                    Fragment fragment = new Server();
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    builder.setTitle("Error")
+                            .setMessage(databaseError.getMessage())
+                            .setCancelable(false)
+                            .setNegativeButton("Ок, закрыть",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+            });
+
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Fragment fragment = null;
+                    Class fragmentClass;
+                    fragmentClass = Library.class;
+                    try {
+                        fragment = (Fragment) fragmentClass.newInstance();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                    assert fragment != null;
                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-                    Toast.makeText(getActivity(), "Нет книг", Toast.LENGTH_SHORT).show();
-                } else {
-                    checked();
                 }
-            }
+            });
 
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                builder.setTitle("Error")
-                        .setMessage(databaseError.getMessage())
-                        .setCancelable(false)
-                        .setNegativeButton("Ок, закрыть",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
-        });
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment fragment = null;
-                Class fragmentClass;
-                fragmentClass = Library.class;
-                try {
-                    fragment = (Fragment) fragmentClass.newInstance();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                assert fragment != null;
-                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-            }
-        });
-
-        listTasks = rootView.findViewById(R.id.booksListView);
-
+            listTasks = rootView.findViewById(R.id.booksListView);
+        }
         return rootView;
     }
 
