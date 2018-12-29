@@ -53,6 +53,7 @@ public class AboutBook extends Fragment {
     private TextView mProject2;
     private TextView mClass2;
     private TextView mYear2;
+    private TextView mDescribing;
     private ImageView imageView;
     private FrameLayout frameLayout;
     private Button upload2;
@@ -91,6 +92,7 @@ public class AboutBook extends Fragment {
         mPart2 = rootView.findViewById(R.id.Part2);
         mAuthor2 = rootView.findViewById(R.id.Author2);
         mProject2 = rootView.findViewById(R.id.Project2);
+        mDescribing = rootView.findViewById(R.id.describingAboutBook);
         mClass2 = rootView.findViewById(R.id.Class2);
         mYear2 = rootView.findViewById(R.id.Year2);
         upload2 = rootView.findViewById(R.id.upload2);
@@ -247,6 +249,7 @@ public class AboutBook extends Fragment {
                 mProject2.setText("Предмет: " +dataSnapshot.child("Books").child(conterOfFragment).child("Subject").getValue(String.class));
                 mClass2.setText("Класс: " + dataSnapshot.child("Books").child(conterOfFragment).child("Class").getValue(String.class));
                 mYear2.setText("Год: " + dataSnapshot.child("Books").child(conterOfFragment).child("Year").getValue(String.class));
+                mDescribing.setText("Описание: " + dataSnapshot.child("Books").child(conterOfFragment).child("Describing").getValue(String.class));
             }
 
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)

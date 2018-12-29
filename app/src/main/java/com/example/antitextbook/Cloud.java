@@ -328,6 +328,7 @@ public class Cloud extends Fragment {
                             ((EditText) getActivity().findViewById(R.id.textYearCloud)).setText("");
                             ((EditText) getActivity().findViewById(R.id.textSubjectCloud)).setText("");
                             ((EditText) getActivity().findViewById(R.id.textPartCloud)).setText("");
+                            ((EditText) getActivity().findViewById(R.id.describingBook)).setText("");
                             imageView.setImageDrawable(null);
                             Toast.makeText(getActivity(), "Файл загружен ", Toast.LENGTH_LONG).show();
                         }
