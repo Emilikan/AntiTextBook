@@ -85,32 +85,46 @@ public class Regestration extends Fragment {
                     alert.show();
                 }
                 else if(Integer.parseInt(userClass) > 8 && studentOrSchooler.equals("Student")){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                    builder.setTitle("Warning")
-                            .setMessage("Вы не можете быть больше 8 курса. Выберите 'школьник' или напишите в службу поддержки.")
-                            .setCancelable(false)
-                            .setNegativeButton("Ок, закрыть",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.cancel();
-                                        }
-                                    });
-                    AlertDialog alert = builder.create();
-                    alert.show();
+
+                    AlertDialog.Builder ad;
+                    ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    ad.setTitle("Предупреждение");  // заголовок
+                    ad.setMessage("Вы не можете быть больше 8 курса. Выберите 'школьник' или напишите в службу поддержки."); // сообщение
+                    ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            Fragment fragment = new Send();
+                            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                        }
+                    });
+                    ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            dialog.cancel();
+                        }
+                    });
+                    ad.setCancelable(true);
+                    ad.show();
                 }
                 else if(Integer.parseInt(userClass) > 12 && studentOrSchooler.equals("SchoolBoy")){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                    builder.setTitle("Warning")
-                            .setMessage("Вы не можете быть больше 12 класса. Выберите 'студент' или напишите в службу поддержки.")
-                            .setCancelable(false)
-                            .setNegativeButton("Ок, закрыть",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.cancel();
-                                        }
-                                    });
-                    AlertDialog alert = builder.create();
-                    alert.show();
+
+                    AlertDialog.Builder ad;
+                    ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    ad.setTitle("Предупреждение");  // заголовок
+                    ad.setMessage("Вы не можете быть больше 12 класса. Выберите 'студент' или напишите в службу поддержки."); // сообщение
+                    ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            Fragment fragment = new Send();
+                            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                        }
+                    });
+                    ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            dialog.cancel();
+                        }
+                    });
+                    ad.setCancelable(true);
+                    ad.show();
                 }
                 else {
                     // сохранение данных о пользователе в SharedPreference

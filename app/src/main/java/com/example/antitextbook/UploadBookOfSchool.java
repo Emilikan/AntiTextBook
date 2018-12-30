@@ -1,6 +1,5 @@
 package com.example.antitextbook;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,7 +23,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -69,12 +67,6 @@ public class UploadBookOfSchool extends Fragment {
     private String mPart;
     private String mDescribing;
     private String mSchoolNumber;
-
-    private int counterFor = 0;
-    private String dbCounter;
-
-    private DatabaseReference mRef;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -178,32 +170,45 @@ public class UploadBookOfSchool extends Fragment {
                         alert.show();
                     }
                     else if(mSchoolNumber.equals("Ошибка")){
-                        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                        builder.setTitle("Error")
-                                .setMessage("Неизвестная ошибка. Не получено название школы. Напишите в службу поддержки")
-                                .setCancelable(false)
-                                .setNegativeButton("Ок, закрыть",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                dialog.cancel();
-                                            }
-                                        });
-                        AlertDialog alert = builder.create();
-                        alert.show();
+
+                        AlertDialog.Builder ad;
+                        ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                        ad.setTitle("Error");  // заголовок
+                        ad.setMessage("Неизвестная ошибка. Не получено название школы. Напишите в службу поддержки"); // сообщение
+                        ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int arg1) {
+                                Fragment fragment = new Send();
+                                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                            }
+                        });
+                        ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int arg1) {
+                                dialog.cancel();
+                            }
+                        });
+                        ad.setCancelable(true);
+                        ad.show();
                     }
                     else if(Integer.parseInt(mClass) > 12) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                        builder.setTitle("Предупреждение")
-                                .setMessage("Класс не может быть установлен больше 12. Если у вас в школе больше 12 классов, то напишите в службу поддержки")
-                                .setCancelable(false)
-                                .setNegativeButton("Ок, закрыть",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                dialog.cancel();
-                                            }
-                                        });
-                        AlertDialog alert = builder.create();
-                        alert.show();
+                        AlertDialog.Builder ad;
+                        ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                        ad.setTitle("Error");  // заголовок
+                        ad.setMessage("Класс не может быть установлен больше 12. Если у вас в школе больше 12 классов, то напишите в службу поддержки"); // сообщение
+                        ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int arg1) {
+                                Fragment fragment = new Send();
+                                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                            }
+                        });
+                        ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int arg1) {
+                                dialog.cancel();
+                            }
+                        });
+                        ad.setCancelable(true);
+                        ad.show();
                     }
                     else if(Integer.parseInt(mYear) > 2020 || Integer.parseInt(mYear) < 1980) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
@@ -279,18 +284,24 @@ public class UploadBookOfSchool extends Fragment {
                                     @Override
                                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(context));
-                                        builder.setTitle("Error")
-                                                .setMessage(databaseError.getMessage())
-                                                .setCancelable(false)
-                                                .setNegativeButton("Ок, закрыть",
-                                                        new DialogInterface.OnClickListener() {
-                                                            public void onClick(DialogInterface dialog, int id) {
-                                                                dialog.cancel();
-                                                            }
-                                                        });
-                                        AlertDialog alert = builder.create();
-                                        alert.show();
+                                        AlertDialog.Builder ad;
+                                        ad = new AlertDialog.Builder(Objects.requireNonNull(context));
+                                        ad.setTitle("Error");  // заголовок
+                                        ad.setMessage("Ошибка: " + databaseError.getMessage() + "\n Проблемы на серверной части. Можете сообщить в службу поддержки"); // сообщение
+                                        ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int arg1) {
+                                                Fragment fragment = new Send();
+                                                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                                                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                            }
+                                        });
+                                        ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int arg1) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                                        ad.setCancelable(true);
+                                        ad.show();
                                     }
                                 });
 
@@ -350,26 +361,32 @@ public class UploadBookOfSchool extends Fragment {
                                                 public void onFailure(@NonNull Exception exception) {
                                                     //*progressDialog.dismiss();
 
-                                                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(context));
-                                                    builder.setTitle("Error")
-                                                            .setMessage(exception.getMessage())
-                                                            .setCancelable(false)
-                                                            .setNegativeButton("Ок, закрыть",
-                                                                    new DialogInterface.OnClickListener() {
-                                                                        public void onClick(DialogInterface dialog, int id) {
-                                                                            dialog.cancel();
-                                                                        }
-                                                                    });
-                                                    AlertDialog alert = builder.create();
-                                                    alert.show();
+                                                    AlertDialog.Builder ad;
+                                                    ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                                                    ad.setTitle("Error");  // заголовок
+                                                    ad.setMessage("Ошибка: " + exception.getMessage()); // сообщение
+                                                    ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int arg1) {
+                                                            Fragment fragment = new Send();
+                                                            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                                                            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                                        }
+                                                    });
+                                                    ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int arg1) {
+                                                            dialog.cancel();
+                                                        }
+                                                    });
+                                                    ad.setCancelable(true);
+                                                    ad.show();
                                                 }
                                             })
                                             .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                                                 @Override
                                                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                                                    //calculating progress percentage
+                                                    // получаем проценты загрузки
                                                     double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                                                    //displaying percentage in progress dialog
+                                                    // отображаем диалог с процентами
 
                                                     //*progressDialog.setMessage("Загрузка " + ((int) progress) + "%...");
                                                 }
@@ -421,24 +438,7 @@ public class UploadBookOfSchool extends Fragment {
                                                     //filePath = null;
                                                     //imageView.setImageDrawable(null);
 
-                                                    if(getActivity() != null) {
-
                                                         Toast.makeText(context, "Файл изображения загружен ", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                    else {
-                                                        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(context));
-                                                        builder.setTitle("Информация")
-                                                                .setMessage("Файл изображения загружен")
-                                                                .setCancelable(false)
-                                                                .setNegativeButton("Ок, закрыть",
-                                                                        new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int id) {
-                                                                                dialog.cancel();
-                                                                            }
-                                                                        });
-                                                        AlertDialog alert = builder.create();
-                                                        alert.show();
-                                                    }
                                                 }
                                             })
                                             .addOnFailureListener(new OnFailureListener() {
@@ -447,18 +447,24 @@ public class UploadBookOfSchool extends Fragment {
                                                 public void onFailure(@NonNull Exception exception) {
                                                     //*progressDialog.dismiss();
 
-                                                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(context));
-                                                    builder.setTitle("Error")
-                                                            .setMessage(exception.getMessage())
-                                                            .setCancelable(false)
-                                                            .setNegativeButton("Ок, закрыть",
-                                                                    new DialogInterface.OnClickListener() {
-                                                                        public void onClick(DialogInterface dialog, int id) {
-                                                                            dialog.cancel();
-                                                                        }
-                                                                    });
-                                                    AlertDialog alert = builder.create();
-                                                    alert.show();
+                                                    AlertDialog.Builder ad;
+                                                    ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                                                    ad.setTitle("Error");  // заголовок
+                                                    ad.setMessage("Ошибка: " + exception.getMessage()); // сообщение
+                                                    ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int arg1) {
+                                                            Fragment fragment = new Send();
+                                                            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                                                            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                                        }
+                                                    });
+                                                    ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int arg1) {
+                                                            dialog.cancel();
+                                                        }
+                                                    });
+                                                    ad.setCancelable(true);
+                                                    ad.show();
                                                 }
                                             })
                                             .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

@@ -152,6 +152,7 @@ public class Server extends Fragment {
             @SuppressLint("SetTextI18n")
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+
                 if(task.isSuccessful()) {
                     Toast.makeText(getContext(), "Авторизация успешна", Toast.LENGTH_LONG).show();
 

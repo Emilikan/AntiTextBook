@@ -162,18 +162,25 @@ public class ChooseTrueBooks extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                builder.setTitle("Error")
-                        .setMessage(databaseError.getMessage())
-                        .setCancelable(false)
-                        .setNegativeButton("Ок, закрыть",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                AlertDialog alert = builder.create();
-                alert.show();
+
+                AlertDialog.Builder ad;
+                ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                ad.setTitle("Error");  // заголовок
+                ad.setMessage("Ошибка: " + databaseError.getMessage() + "\n Проблемы на серверной части. Можете сообщить в службу поддержки"); // сообщение
+                ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        Fragment fragment = new Send();
+                        FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                    }
+                });
+                ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        dialog.cancel();
+                    }
+                });
+                ad.setCancelable(true);
+                ad.show();
             }
         });
     }

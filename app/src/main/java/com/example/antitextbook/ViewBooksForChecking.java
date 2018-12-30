@@ -429,15 +429,16 @@ public class ViewBooksForChecking extends Fragment {
                         }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
                             @Override
                             public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                //calculating progress percentage
+                                // получаем проценты загрузки
                                 double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                                //displaying percentage in progress dialog
+                                // отображаем диалог с процентами
                                 progressDialog.setMessage("Downloaded " + ((int) progress) + "%...");
                             }
                         });
 
                     }
 
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));

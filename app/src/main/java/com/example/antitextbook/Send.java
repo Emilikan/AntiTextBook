@@ -11,9 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,25 +32,22 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Objects;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import static java.net.HttpURLConnection.HTTP_OK;
 
 public class Send extends Fragment {
     private EditText nameOfFeedback;
     private EditText describingOfFeedback;
+    private EditText email;
     private FrameLayout frameLayout;
 
     private String mNameOfFeedback;
     private String mDescribingOfFeedback;
+    private String mEmail;
 
     private DatabaseReference mRef;
 
@@ -64,6 +59,7 @@ public class Send extends Fragment {
         nameOfFeedback = rootView.findViewById(R.id.nameOfFeedback);
         describingOfFeedback = rootView.findViewById(R.id.describingOfFeedback);
         frameLayout = rootView.findViewById(R.id.send);
+        email = rootView.findViewById(R.id.emailOfFeedback);
         setTheme();
 
         Button sendFeedback = rootView.findViewById(R.id.sendFeedback);
@@ -73,6 +69,7 @@ public class Send extends Fragment {
             public void onClick(View v) {
                 mNameOfFeedback = nameOfFeedback.getText().toString();
                 mDescribingOfFeedback = describingOfFeedback.getText().toString();
+                mEmail = email.getText().toString();
 
                 if("".equals(mDescribingOfFeedback) || "".equals(mNameOfFeedback)){
                     AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
@@ -155,7 +152,7 @@ public class Send extends Fragment {
 
         RetrofitClient.getInstance(url, pass)
                 .getApi()
-                .sendEmail(from, to, subject, message)
+                .sendEmail(from, to, subject, "Почта: " + mEmail + "\n" + message)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {

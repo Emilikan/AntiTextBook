@@ -37,7 +37,7 @@ public class Home extends Fragment {
         assert uriOfPdf != null;
         if(!uriOfPdf.equalsIgnoreCase(""))
         {
-            uriOfPdf = uriOfPdf + "";  /* Edit the value here*/
+            uriOfPdf = uriOfPdf + "";
         }
 
         String dark = preferences.getString("Theme", "0");

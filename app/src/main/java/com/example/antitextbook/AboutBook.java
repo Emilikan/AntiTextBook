@@ -1,7 +1,6 @@
 package com.example.antitextbook;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,7 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,7 +39,6 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -62,15 +60,10 @@ public class AboutBook extends Fragment {
     private FrameLayout frameLayout;
     private Button upload2;
 
-    //private int i = 0;
-    //private String dbCounter;
-
     public String conterOfFragment;
-    private File localFile = null;
     private Uri pdfFilePath = null;
 
     private DatabaseReference mRef;
-    private StorageReference islandRef;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -154,21 +147,26 @@ public class AboutBook extends Fragment {
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                                    builder.setTitle("Error")
-                                            .setMessage(databaseError.getMessage())
-                                            .setCancelable(false)
-                                            .setNegativeButton("Ок, закрыть",
-                                                    new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int id) {
-                                                            dialog.cancel();
-                                                        }
-                                                    });
-                                    AlertDialog alert = builder.create();
-                                    alert.show();
+                                    AlertDialog.Builder ad;
+                                    ad = new AlertDialog.Builder(context);
+                                    ad.setTitle("Error");  // заголовок
+                                    ad.setMessage("Ошибка: " + databaseError.getMessage() + "\n Проблемы на серверной части. Можете сообщить в службу поддержки"); // сообщение
+                                    ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int arg1) {
+                                            Fragment fragment = new Send();
+                                            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                                            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                        }
+                                    });
+                                    ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int arg1) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                                    ad.setCancelable(true);
+                                    ad.show();
                                 }
                             });
-
 
                             // получаем данные только 1 раз (не следит за изменениями)
                             // это сделано, чтобы не вылетало, когда в бд добавляются книги
@@ -230,9 +228,9 @@ public class AboutBook extends Fragment {
                                     }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
                                         @Override
                                         public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                            //calculating progress percentage
+                                            // получаем проценты загрузки
                                             double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                                            //displaying percentage in progress dialog
+                                            // отображаем диалог с процентами
                                             progressDialog.setMessage("Downloaded " + ((int) progress) + "%...");
                                         }
                                     });
@@ -241,18 +239,24 @@ public class AboutBook extends Fragment {
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                                    builder.setTitle("Error")
-                                            .setMessage(databaseError.getMessage())
-                                            .setCancelable(false)
-                                            .setNegativeButton("Ок, закрыть",
-                                                    new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int id) {
-                                                            dialog.cancel();
-                                                        }
-                                                    });
-                                    AlertDialog alert = builder.create();
-                                    alert.show();
+                                    AlertDialog.Builder ad;
+                                    ad = new AlertDialog.Builder(context);
+                                    ad.setTitle("Error");  // заголовок
+                                    ad.setMessage("Ошибка: " + databaseError.getMessage() + "\n Проблемы на серверной части. Можете сообщить в службу поддержки"); // сообщение
+                                    ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int arg1) {
+                                            Fragment fragment = new Send();
+                                            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                                            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                        }
+                                    });
+                                    ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int arg1) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                                    ad.setCancelable(true);
+                                    ad.show();
                                 }
                             });
                         }
@@ -303,7 +307,6 @@ public class AboutBook extends Fragment {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference storageRef = storage.getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(conterOfFragment).child("Icon").getValue(String.class)));
                 storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -332,18 +335,24 @@ public class AboutBook extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // создаем диологовое окно с ошибкой
-                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                builder.setTitle("Error")
-                        .setMessage(databaseError.getMessage())
-                        .setCancelable(false)
-                        .setNegativeButton("Ок, закрыть",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                AlertDialog alert = builder.create();
-                alert.show();
+                AlertDialog.Builder ad;
+                ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                ad.setTitle("Error");  // заголовок
+                ad.setMessage("Ошибка: " + databaseError.getMessage() + "\n Проблемы на серверной части. Можете сообщить в службу поддержки"); // сообщение
+                ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        Fragment fragment = new Send();
+                        FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                    }
+                });
+                ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        dialog.cancel();
+                    }
+                });
+                ad.setCancelable(true);
+                ad.show();
             }
         });
 
@@ -365,6 +374,24 @@ public class AboutBook extends Fragment {
         }
         catch (IOException e)
         {
+            AlertDialog.Builder ad;
+            ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+            ad.setTitle("Error");  // заголовок
+            ad.setMessage("Ошибка: " + e.getMessage() + "\n Проблемы в создании файла. Можете сообщить в службу поддержки"); // сообщение
+            ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int arg1) {
+                    Fragment fragment = new Send();
+                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                }
+            });
+            ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int arg1) {
+                    dialog.cancel();
+                }
+            });
+            ad.setCancelable(true);
+            ad.show();
             Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
         return fileHandle;
@@ -387,7 +414,6 @@ public class AboutBook extends Fragment {
     public void onDetach() {
         super.onDetach();
         mRef = null;
-        localFile = null;
     }
 
 }
