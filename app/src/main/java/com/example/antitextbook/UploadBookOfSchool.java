@@ -191,16 +191,307 @@ public class UploadBookOfSchool extends Fragment {
                         AlertDialog alert = builder.create();
                         alert.show();
                     }
+                    else if(Integer.parseInt(mClass) > 12) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                        builder.setTitle("Предупреждение")
+                                .setMessage("Класс не может быть установлен больше 12. Если у вас в школе больше 12 классов, то напишите в службу поддержки")
+                                .setCancelable(false)
+                                .setNegativeButton("Ок, закрыть",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+                    else if(Integer.parseInt(mYear) > 2020 || Integer.parseInt(mYear) < 1980) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                        builder.setTitle("Предупреждение")
+                                .setMessage("Ошибка при установке даты. Дата слишком большая или слишком маленькая. Пожалуйста, установите правильную дату")
+                                .setCancelable(false)
+                                .setNegativeButton("Ок, закрыть",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
                     else {
                         // код отправки на сервер
                         pdfUri = "gs://antitextbook.appspot.com/forChecking/" + mSubject + "_" + mClass + "_" + mAuthor + "_" + mDescribing + "_" + mPart + "_" + mYear + "/" + mSubject +
                                 "_" + mClass + "_" + mAuthor + "_" + mDescribing + "_" + mPart + "_" + mYear + "_pdf"; // путь до учебника
                         imgUri = "gs://antitextbook.appspot.com/forChecking/images/" + mSubject + "_" + mClass + "_" + mDescribing + "_" + mAuthor + "_" + mPart + "_" + mYear + "_img"; // путь до обложки
 
-                        saveDataToDatabase();
-                        uploadFile(pdfUri, filePdfPath);
-                        uploadFile(imgUri, filePath);
-                        counterFor = 1;
+                        // загружаем в отдельном потоке pdf файл и сохраняем данные в бд
+                        Thread uploadPdf = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                // сохраняем данные в бд
+                                final DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+
+                                final String mClassFlow = mClass;
+                                final String mAuthorFlow = mAuthor;
+                                final String mYearFlow = mYear;
+                                final String mSubjectFlow = mSubject;
+                                final String mPartFlow = mPart;
+                                final String pdfUriFlow = pdfUri;
+                                final String imgUriFlow = imgUri;
+                                final String mDescribingFlow = mDescribing;
+                                final Context context = getContext();
+                                final String schoolN = mSchoolNumber;
+
+                                mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                        String dbCounter = dataSnapshot.child("forChecking").child("counter").getValue(String.class);
+                                        assert dbCounter != null;
+                                        int intCounter = Integer.parseInt(dbCounter);
+                                        intCounter++;
+                                        String stringCounter = Integer.toString(intCounter);
+
+                                        mRef.child("forChecking").child("Books").child(stringCounter).child("Class").setValue(mClassFlow);
+                                        mRef.child("forChecking").child("Books").child(stringCounter).child("Author").setValue(mAuthorFlow);
+                                        mRef.child("forChecking").child("Books").child(stringCounter).child("Year").setValue(mYearFlow);
+                                        mRef.child("forChecking").child("Books").child(stringCounter).child("Subject").setValue(mSubjectFlow);
+                                        mRef.child("forChecking").child("Books").child(stringCounter).child("Part").setValue(mPartFlow);
+                                        mRef.child("forChecking").child("Books").child(stringCounter).child("Pdf").setValue(pdfUriFlow);
+                                        mRef.child("forChecking").child("Books").child(stringCounter).child("Icon").setValue(imgUriFlow);
+                                        mRef.child("forChecking").child("Books").child(stringCounter).child("Describing").setValue(mDescribingFlow);
+                                        mRef.child("forChecking").child("Books").child(stringCounter).child("TopDownloads").setValue("0");
+                                        mRef.child("forChecking").child("Books").child(stringCounter).child("UserTop").setValue("0");
+                                        mRef.child("forChecking").child("Books").child(stringCounter).child("SchoolCounter").setValue("-1");
+                                        mRef.child("forChecking").child("Books").child(stringCounter).child("School").child("0").setValue(schoolN);
+                                        mRef.child("forChecking").child("Books").child(stringCounter).child("ThisCounter").setValue(stringCounter);
+
+                                        mRef.child("forChecking").child("counter").setValue(stringCounter);
+                                        mRef.child("forChecking").child("AllBooks").child(stringCounter).setValue(mSubjectFlow + " " + mAuthorFlow + " " + mDescribingFlow + " " + mClassFlow);
+
+                                        Toast.makeText(context, "Загружено в базу данных", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(context));
+                                        builder.setTitle("Error")
+                                                .setMessage(databaseError.getMessage())
+                                                .setCancelable(false)
+                                                .setNegativeButton("Ок, закрыть",
+                                                        new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int id) {
+                                                                dialog.cancel();
+                                                            }
+                                                        });
+                                        AlertDialog alert = builder.create();
+                                        alert.show();
+                                    }
+                                });
+
+                                // загрузка pdf файла
+                                Uri filePdfPathInFlow = filePdfPath;
+                                String pdfUriInFlow = pdfUri;
+
+                                if (filePdfPathInFlow != null) {
+                                    //*final ProgressDialog progressDialog = new ProgressDialog(getContext());
+                                    //*progressDialog.setTitle("Загрузка");
+                                    //*progressDialog.show();
+
+                                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                                    StorageReference riversRef = storage.getReferenceFromUrl(pdfUriInFlow);// путь на облаке, куда загружается файл, im - название файла на облаке
+                                    // в переменной типа Uri filePath хранится путь на устройстве до загружаемого файла
+                                    riversRef.putFile(filePdfPathInFlow)
+                                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                @Override
+                                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                    //progressDialog.dismiss();
+                                                    //filePdfPath = null;
+
+                                                    // проверяем, вышел ли пользователь из активити. Если пользователь вышел, то все обнулится в onDetach
+                                                   if(getActivity() != null) {
+                                                        // обнуляем все EditText
+                                                        ((EditText) Objects.requireNonNull(getActivity()).findViewById(R.id.textAuthorCloudSchool)).setText("");
+                                                        ((EditText) getActivity().findViewById(R.id.textClassCloudSchool)).setText("");
+                                                        ((EditText) getActivity().findViewById(R.id.textYearCloudSchool)).setText("");
+                                                        ((EditText) getActivity().findViewById(R.id.textSubjectCloudSchool)).setText("");
+                                                        ((EditText) getActivity().findViewById(R.id.textPartCloudSchool)).setText("");
+                                                        ((EditText) getActivity().findViewById(R.id.describingBookSchool)).setText("");
+                                                        imageView.setImageDrawable(null);
+                                                        filePath = null;
+                                                        filePdfPath = null;
+                                                        Toast.makeText(context, "PDF файл загружен ", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                    else {
+                                                        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(context));
+                                                        builder.setTitle("Информация")
+                                                                .setMessage("PDF файл загружен")
+                                                                .setCancelable(false)
+                                                                .setNegativeButton("Ок, закрыть",
+                                                                        new DialogInterface.OnClickListener() {
+                                                                            public void onClick(DialogInterface dialog, int id) {
+                                                                                dialog.cancel();
+                                                                            }
+                                                                        });
+                                                        AlertDialog alert = builder.create();
+                                                        alert.show();
+                                                    }
+
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                                                @Override
+                                                public void onFailure(@NonNull Exception exception) {
+                                                    //*progressDialog.dismiss();
+
+                                                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(context));
+                                                    builder.setTitle("Error")
+                                                            .setMessage(exception.getMessage())
+                                                            .setCancelable(false)
+                                                            .setNegativeButton("Ок, закрыть",
+                                                                    new DialogInterface.OnClickListener() {
+                                                                        public void onClick(DialogInterface dialog, int id) {
+                                                                            dialog.cancel();
+                                                                        }
+                                                                    });
+                                                    AlertDialog alert = builder.create();
+                                                    alert.show();
+                                                }
+                                            })
+                                            .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                                @Override
+                                                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                                    //calculating progress percentage
+                                                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                                                    //displaying percentage in progress dialog
+
+                                                    //*progressDialog.setMessage("Загрузка " + ((int) progress) + "%...");
+                                                }
+                                            });
+                                }
+                                // если нет файлов
+                                else {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(context));
+                                    builder.setTitle("Error")
+                                            .setMessage("Нет файлов")
+                                            .setCancelable(false)
+                                            .setNegativeButton("Ок, закрыть",
+                                                    new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                            dialog.cancel();
+                                                        }
+                                                    });
+                                    AlertDialog alert = builder.create();
+                                    alert.show();
+                                }
+                            }
+                        });
+                        uploadPdf.start();
+
+                        // загружаем в отдельном потоке img файл
+                        Thread uploadImg = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                Uri filePathInFlow = filePath;
+                                String imgUriInFlow = imgUri;
+
+                                final Context context = getContext();
+
+                                if (filePathInFlow != null) {
+                                    //*final ProgressDialog progressDialog = new ProgressDialog(getContext());
+                                    //*progressDialog.setTitle("Загрузка");
+                                    //*progressDialog.show();
+
+                                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                                    StorageReference riversRef = storage.getReferenceFromUrl(imgUriInFlow);// путь на облаке, куда загружается файл, im - название файла на облаке
+                                    // в переменной типа Uri filePath хранится путь на устройстве до загружаемого файла
+                                    riversRef.putFile(filePathInFlow)
+                                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                @Override
+                                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                                    //progressDialog.dismiss();
+                                                    //filePath = null;
+                                                    //imageView.setImageDrawable(null);
+
+                                                    if(getActivity() != null) {
+
+                                                        Toast.makeText(context, "Файл изображения загружен ", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                    else {
+                                                        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(context));
+                                                        builder.setTitle("Информация")
+                                                                .setMessage("Файл изображения загружен")
+                                                                .setCancelable(false)
+                                                                .setNegativeButton("Ок, закрыть",
+                                                                        new DialogInterface.OnClickListener() {
+                                                                            public void onClick(DialogInterface dialog, int id) {
+                                                                                dialog.cancel();
+                                                                            }
+                                                                        });
+                                                        AlertDialog alert = builder.create();
+                                                        alert.show();
+                                                    }
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                                                @Override
+                                                public void onFailure(@NonNull Exception exception) {
+                                                    //*progressDialog.dismiss();
+
+                                                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(context));
+                                                    builder.setTitle("Error")
+                                                            .setMessage(exception.getMessage())
+                                                            .setCancelable(false)
+                                                            .setNegativeButton("Ок, закрыть",
+                                                                    new DialogInterface.OnClickListener() {
+                                                                        public void onClick(DialogInterface dialog, int id) {
+                                                                            dialog.cancel();
+                                                                        }
+                                                                    });
+                                                    AlertDialog alert = builder.create();
+                                                    alert.show();
+                                                }
+                                            })
+                                            .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                                @Override
+                                                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                                    // получаем процент загрузки
+                                                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                                                    // отображаем диалог с процентами
+
+                                                    //*progressDialog.setMessage("Загрузка " + ((int) progress) + "%...");
+                                                }
+                                            });
+                                }
+                                // если нет файлов
+                                else {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(context));
+                                    builder.setTitle("Error")
+                                            .setMessage("Нет файлов")
+                                            .setCancelable(false)
+                                            .setNegativeButton("Ок, закрыть",
+                                                    new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                            dialog.cancel();
+                                                        }
+                                                    });
+                                    AlertDialog alert = builder.create();
+                                    alert.show();
+                                }
+                            }
+                        });
+                        uploadImg.start();
+
+
                     }
                 }
             });
@@ -245,63 +536,6 @@ public class UploadBookOfSchool extends Fragment {
             });
         }
         return rootView;
-    }
-    private void saveDataToDatabase(){
-        mRef = FirebaseDatabase.getInstance().getReference();
-
-        mRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(counterFor == 1) {
-                    dbCounter = dataSnapshot.child("forChecking").child("counter").getValue(String.class);
-                    // Toast.makeText(getActivity(), dbCounter, Toast.LENGTH_SHORT).show();
-                    assert dbCounter != null;
-                    int intCounter = Integer.parseInt(dbCounter);
-                    intCounter++;
-                    String stringCounter = Integer.toString(intCounter);
-
-                    mRef.child("forChecking").child("Books").child(stringCounter).child("Class").setValue(mClass);
-                    mRef.child("forChecking").child("Books").child(stringCounter).child("Author").setValue(mAuthor);
-                    mRef.child("forChecking").child("Books").child(stringCounter).child("Year").setValue(mYear);
-                    mRef.child("forChecking").child("Books").child(stringCounter).child("Subject").setValue(mSubject);
-                    mRef.child("forChecking").child("Books").child(stringCounter).child("Part").setValue(mPart);
-                    mRef.child("forChecking").child("Books").child(stringCounter).child("Pdf").setValue(pdfUri);
-                    mRef.child("forChecking").child("Books").child(stringCounter).child("Icon").setValue(imgUri);
-                    mRef.child("forChecking").child("Books").child(stringCounter).child("Describing").setValue(mDescribing);
-                    mRef.child("forChecking").child("Books").child(stringCounter).child("TopDownloads").setValue("0");
-                    mRef.child("forChecking").child("Books").child(stringCounter).child("UserTop").setValue("0");
-                    mRef.child("forChecking").child("Books").child(stringCounter).child("SchoolCounter").setValue("-1");
-                    // сразу устанавливаем школу, которая загружала эту книгу
-                    mRef.child("forChecking").child("Books").child(stringCounter).child("School").child("0").setValue(mSchoolNumber);
-                    mRef.child("forChecking").child("Books").child(stringCounter).child("ThisCounter").setValue(stringCounter);
-
-                    mRef.child("forChecking").child("counter").setValue(stringCounter);
-                    mRef.child("forChecking").child("AllBooks").child(stringCounter).setValue(mSubject + " " + mAuthor + " " + mDescribing + " " + mClass);
-
-                    counterFor = 0;
-                    Toast.makeText(getActivity(), "Загружено", Toast.LENGTH_SHORT).show();
-                }
-            }
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                builder.setTitle("Error")
-                        .setMessage(databaseError.getMessage())
-                        .setCancelable(false)
-                        .setNegativeButton("Ок, закрыть",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
-        });
-
-
-
     }
 
     private void pdfChooser() {
@@ -351,82 +585,6 @@ public class UploadBookOfSchool extends Fragment {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void uploadFile(String path, Uri pathOfFile) {
-
-        // переписано на добавление книги в отдельную папку, создание отдельной ветки в бд, сохранение имени того, кто добавлял книгу. Все это для того, чтобы админ потом мог принят или отклонить добавление книги
-        if (pathOfFile != null) {
-            final ProgressDialog progressDialog = new ProgressDialog(getContext());
-            progressDialog.setTitle("Загрузка");
-            progressDialog.show();
-
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference riversRef = storage.getReferenceFromUrl(path);// путь на облаке, куда загружается файл, im - название файла на облаке
-            // в переменной типа Uri filePath хранится путь на устройстве до загружаемого файла
-            riversRef.putFile(pathOfFile)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            filePath = null;
-                            filePdfPath = null;
-                            ((EditText) Objects.requireNonNull(getActivity()).findViewById(R.id.textAuthorCloudSchool)).setText("");
-                            ((EditText) getActivity().findViewById(R.id.textClassCloudSchool)).setText("");
-                            ((EditText) getActivity().findViewById(R.id.textYearCloudSchool)).setText("");
-                            ((EditText) getActivity().findViewById(R.id.textSubjectCloudSchool)).setText("");
-                            ((EditText) getActivity().findViewById(R.id.textPartCloudSchool)).setText("");
-                            ((EditText) getActivity().findViewById(R.id.describingBookSchool)).setText("");
-                            imageView.setImageDrawable(null);
-                            Toast.makeText(getActivity(), "Файл загружен ", Toast.LENGTH_LONG).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            progressDialog.dismiss();
-
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                            builder.setTitle("Error")
-                                    .setMessage(exception.getMessage())
-                                    .setCancelable(false)
-                                    .setNegativeButton("Ок, закрыть",
-                                            new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int id) {
-                                                    dialog.cancel();
-                                                }
-                                            });
-                            AlertDialog alert = builder.create();
-                            alert.show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            //calculating progress percentage
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                            //displaying percentage in progress dialog
-                            progressDialog.setMessage("Загрузка " + ((int) progress) + "%...");
-                        }
-                    });
-        }
-        // если нет файлов
-        else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-            builder.setTitle("Error")
-                    .setMessage("Нет файлов")
-                    .setCancelable(false)
-                    .setNegativeButton("Ок, закрыть",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-    }
-
     // проверка на доступ интернета
     private static boolean isOnline (Context context)
     {
@@ -449,9 +607,20 @@ public class UploadBookOfSchool extends Fragment {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onDetach() {
         super.onDetach();
+
+        ((EditText) Objects.requireNonNull(getActivity()).findViewById(R.id.textAuthorCloudSchool)).setText("");
+        ((EditText) getActivity().findViewById(R.id.textClassCloudSchool)).setText("");
+        ((EditText) getActivity().findViewById(R.id.textYearCloudSchool)).setText("");
+        ((EditText) getActivity().findViewById(R.id.textSubjectCloudSchool)).setText("");
+        ((EditText) getActivity().findViewById(R.id.textPartCloudSchool)).setText("");
+        ((EditText) getActivity().findViewById(R.id.describingBookSchool)).setText("");
+        imageView.setImageDrawable(null);
+        filePath = null;
+        filePdfPath = null;
     }
 
 }

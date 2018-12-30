@@ -1,6 +1,7 @@
 package com.example.antitextbook;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -129,74 +130,136 @@ public class AboutBook extends Fragment {
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 public void onClick(View v) {
-                    // скачивание книги
-                    mRef = FirebaseDatabase.getInstance().getReference();
-                    // получаем данные только 1 раз (не следит за изменениями)
-                    // это сделано, чтобы не вылетало, когда в бд добавляются книги
-                    mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    // скачивание книги в отдельном потоке
+                    Thread download = new Thread(new Runnable() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            changeTop();
-                            islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(conterOfFragment).child("Pdf").getValue(String.class)));
+                        public void run() {
+                            final Context context = getContext();
+                            final String contFrag = conterOfFragment;
 
-                            String nameOfFileInTelephone = dataSnapshot.child("Books").child(conterOfFragment).child("Author").getValue(String.class) + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Describing").getValue(String.class) + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Class").getValue(String.class)
-                                    + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Subject").getValue(String.class) + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Part").getValue(String.class)
-                                    + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Year").getValue(String.class);
+                            final DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
 
-                            localFile = saveFile(Objects.requireNonNull(getContext()).getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/" + nameOfFileInTelephone + ".pdf");
-
-                            assert localFile != null;
-                            final ProgressDialog progressDialog = new ProgressDialog(getContext());
-                            progressDialog.setTitle("Downloading");
-                            progressDialog.show();
-                            islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            // устанавливаем большее значение в топе загрузок
+                            mRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
-                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                    progressDialog.dismiss();
-
-                                    // в переменной pdfFilePath хранится Uri скаченного файла. Передавать его в Home.class, записывать его в файл настроек или SharedPreferences
-                                    if (localFile.toURI() != null) {
-                                        pdfFilePath = Uri.parse(localFile.toURI() + "");
-
-                                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-                                        SharedPreferences.Editor editor = preferences.edit();
-                                        editor.putString("URI", valueOf(pdfFilePath));
-                                        editor.apply();
-                                    }
-                                    pdfFilePath = null;
-                                    islandRef = null;
-
-                                    Fragment fragment = null;
-                                    Class fragmentClass;
-                                    fragmentClass = Home.class;
-                                    try {
-                                        fragment = (Fragment) fragmentClass.newInstance();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                                    assert fragment != null;
-                                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-                                    Toast.makeText(getActivity(), "Файл скачан", Toast.LENGTH_LONG).show();
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    String dbCounter = dataSnapshot.child("Books").child(contFrag).child("TopDownloads").getValue(String.class);
+                                    assert dbCounter != null;
+                                    int intCounter = Integer.parseInt(dbCounter);
+                                    intCounter++;
+                                    String stringCounter = Integer.toString(intCounter);
+                                    mRef.child("Books").child(contFrag).child("TopDownloads").setValue(stringCounter);
                                 }
-                            }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
+
                                 @Override
-                                public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                    //calculating progress percentage
-                                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                                    //displaying percentage in progress dialog
-                                    progressDialog.setMessage("Downloaded " + ((int) progress) + "%...");
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                                    builder.setTitle("Error")
+                                            .setMessage(databaseError.getMessage())
+                                            .setCancelable(false)
+                                            .setNegativeButton("Ок, закрыть",
+                                                    new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                            dialog.cancel();
+                                                        }
+                                                    });
+                                    AlertDialog alert = builder.create();
+                                    alert.show();
                                 }
                             });
 
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Toast.makeText(getContext(), "ERROR" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                            // получаем данные только 1 раз (не следит за изменениями)
+                            // это сделано, чтобы не вылетало, когда в бд добавляются книги
+                            mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                    StorageReference islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(contFrag).child("Pdf").getValue(String.class)));
+
+                                    String nameOfFileInTelephone = dataSnapshot.child("Books").child(contFrag).child("Author").getValue(String.class) + " " + dataSnapshot.child("Books").child(contFrag).child("Describing").getValue(String.class) + " " + dataSnapshot.child("Books").child(contFrag).child("Class").getValue(String.class)
+                                            + " " + dataSnapshot.child("Books").child(contFrag).child("Subject").getValue(String.class) + " " + dataSnapshot.child("Books").child(contFrag).child("Part").getValue(String.class)
+                                            + " " + dataSnapshot.child("Books").child(contFrag).child("Year").getValue(String.class);
+
+                                    final File localFile = saveFile(Objects.requireNonNull(getContext()).getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/" + nameOfFileInTelephone + ".pdf");
+
+                                    assert localFile != null;
+                                    final ProgressDialog progressDialog = new ProgressDialog(context);
+                                    progressDialog.setTitle("Downloading");
+                                    progressDialog.show();
+                                    islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                            progressDialog.dismiss();
+
+                                            // в переменной pdfFilePath хранится Uri скаченного файла. Передавать его в Home.class, записывать его в файл настроек или SharedPreferences
+                                            if (localFile.toURI() != null) {
+                                                pdfFilePath = Uri.parse(localFile.toURI() + "");
+
+                                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                                                SharedPreferences.Editor editor = preferences.edit();
+                                                editor.putString("URI", valueOf(pdfFilePath));
+                                                editor.apply();
+                                            }
+
+                                            // тут у нас проверка на то, ушел ли пользователь с активити. Если не ушел, то мы сразу открываем книгу, если ушел, то оповещаем его
+                                            if(getActivity() != null) {
+                                                Fragment fragment = new Home();
+                                                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                                                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                                Toast.makeText(context, "Файл скачан", Toast.LENGTH_LONG).show();
+                                            }
+                                            else {
+                                                //* написать код для открытия сразу библиотеки
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(context));
+                                                builder.setTitle("Информация")
+                                                        .setMessage("Файл скачан")
+                                                        .setCancelable(false)
+                                                        .setNegativeButton("Ок, закрыть",
+                                                                new DialogInterface.OnClickListener() {
+                                                                    public void onClick(DialogInterface dialog, int id) {
+                                                                        dialog.cancel();
+                                                                    }
+                                                                });
+                                                AlertDialog alert = builder.create();
+                                                alert.show();
+                                            }
+
+                                        }
+                                    }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                            //calculating progress percentage
+                                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                                            //displaying percentage in progress dialog
+                                            progressDialog.setMessage("Downloaded " + ((int) progress) + "%...");
+                                        }
+                                    });
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                                    builder.setTitle("Error")
+                                            .setMessage(databaseError.getMessage())
+                                            .setCancelable(false)
+                                            .setNegativeButton("Ок, закрыть",
+                                                    new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                            dialog.cancel();
+                                                        }
+                                                    });
+                                    AlertDialog alert = builder.create();
+                                    alert.show();
+                                }
+                            });
                         }
                     });
+                    download.start();
                 }
+
             });
 
             // изображение-кнопка назад
@@ -230,28 +293,6 @@ public class AboutBook extends Fragment {
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
-
-
-    // устанавливаем большее значение в топе загрузок
-    private void changeTop(){
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    String dbCounter = dataSnapshot.child("Books").child(conterOfFragment).child("TopDownloads").getValue(String.class);
-                    assert dbCounter != null;
-                    int intCounter = Integer.parseInt(dbCounter);
-                    intCounter++;
-                    String stringCounter = Integer.toString(intCounter);
-                    mRef.child("Books").child(conterOfFragment).child("TopDownloads").setValue(stringCounter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
 
     // изменяем текст на тот, который получили из бд
     @SuppressLint("WrongViewCast")
@@ -308,6 +349,7 @@ public class AboutBook extends Fragment {
 
     }
 
+    // метод создания пустого файла
     public File saveFile (String filePath)
     {
         //Создание объекта файла.

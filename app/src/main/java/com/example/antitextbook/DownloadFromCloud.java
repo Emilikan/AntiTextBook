@@ -51,8 +51,23 @@ public class DownloadFromCloud extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_download_from_cloud, container, false);
 
-        // подписываем пользователя на тему (для получаения push уведомлений)
-        FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
+        ImageView back = rootView.findViewById(R.id.back3);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = null;
+                Class fragmentClass;
+                fragmentClass = Library.class;
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                assert fragment != null;
+                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+            }
+        });
 
         if(!isOnline(Objects.requireNonNull(getContext()))){
             AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
@@ -74,8 +89,10 @@ public class DownloadFromCloud extends Fragment {
             alert.show();
         }
         else {
+            // подписываем пользователя на тему (для получаения push уведомлений)
+            FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
+
             frameLayout = rootView.findViewById(R.id.downloadFromCloud);
-            ImageView back = rootView.findViewById(R.id.back3);
             setTheme();
 
             mRef = FirebaseDatabase.getInstance().getReference();
@@ -112,22 +129,7 @@ public class DownloadFromCloud extends Fragment {
                 }
             });
 
-            back.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Fragment fragment = null;
-                    Class fragmentClass;
-                    fragmentClass = Library.class;
-                    try {
-                        fragment = (Fragment) fragmentClass.newInstance();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                    assert fragment != null;
-                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-                }
-            });
+
 
             listTasks = rootView.findViewById(R.id.booksListView);
         }
