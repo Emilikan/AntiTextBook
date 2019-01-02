@@ -2,9 +2,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/schedule2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/schedule"
     tools:context=".Schedule2">
 
     <!-- TODO: Update blank fragment layout -->
@@ -34,6 +34,7 @@
                     <!-- app:cardBackgroundColor="@color/colorGreen"-->
 
                     <RelativeLayout
+                        android:id="@+id/pairs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="16dp">
@@ -46,28 +47,28 @@
                             android:text="Понедельник"
                             android:textSize="30sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_mon1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/mon_couples"
                             android:text="Первая пара" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_mon2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_mon1"
                             android:text="Вторая пара" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_mon3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_mon2"
                             android:text="Третья пара" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_mon4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -80,8 +81,7 @@
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
+                    android:layout_height="wrap_content">
                     <!-- app:cardBackgroundColor="@color/colorGreen"-->
 
                     <RelativeLayout
@@ -97,28 +97,28 @@
                             android:text="Вторник"
                             android:textSize="30sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_th1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/thuesday_couples"
                             android:text="Первая пара" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_th2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_th1"
                             android:text="Вторая пара" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_th3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_th2"
                             android:text="Третья пара" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_th4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -130,8 +130,7 @@
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
+                    android:layout_height="wrap_content">
                     <!-- app:cardBackgroundColor="@color/colorGreen"-->
 
                     <RelativeLayout
@@ -147,28 +146,28 @@
                             android:text="Среда"
                             android:textSize="30sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_wed1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/wednesday_couples"
                             android:text="Первая пара" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_wed2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_wed1"
                             android:text="Вторая пара" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_wed3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_wed2"
                             android:text="Третья пара" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_wed4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -179,8 +178,7 @@
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
+                    android:layout_height="wrap_content">
                     <!-- app:cardBackgroundColor="@color/colorGreen"-->
 
                     <RelativeLayout
@@ -196,28 +194,28 @@
                             android:text="Четверг"
                             android:textSize="30sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_thur1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/thursday_couples"
                             android:text="Первая пара" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_thur2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_thur1"
                             android:text="Вторая пара" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_thur3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_thur2"
                             android:text="Третья пара" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_thur4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -229,8 +227,7 @@
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
+                    android:layout_height="wrap_content">
                     <!-- app:cardBackgroundColor="@color/colorGreen"-->
 
                     <RelativeLayout
@@ -246,28 +243,28 @@
                             android:text="Пятница"
                             android:textSize="30sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_fri1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/friday_couples"
                             android:text="Первая пара" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_fri2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_fri1"
                             android:text="Вторая пара" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_fri3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_fri2"
                             android:text="Третья пара" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_fri4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -295,27 +292,28 @@
                             android:text="Суббота"
                             android:textSize="30sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_sat1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/saturday_couples"
                             android:text="Первая пара" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_sat2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_sat1"
                             android:text="Вторая пара" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/couples_sat3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_sat2"
                             android:text="Третья пара" />
-                        <TextView
+
+                        <EditText
                             android:id="@+id/couples_sat4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
