@@ -51,7 +51,7 @@ public class Schedule extends Fragment {
             }
         });
 
-        return inflater.inflate(R.layout.fragment_schedule, container, false);
+        return rootView;
     }
     public void changeTextView(View view){
         EditText editText = view.findViewById(R.id.lesson_mon1);

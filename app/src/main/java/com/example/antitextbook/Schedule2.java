@@ -46,7 +46,7 @@ public class Schedule2 extends Fragment {
             }
         });
 
-        return inflater.inflate(R.layout.fragment_schedule2, container, false);
+        return rootView;
     }
 
 }
