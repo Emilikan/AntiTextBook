@@ -1,13 +1,16 @@
 package com.example.antitextbook;
 
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,15 +34,22 @@ public class AdminOfApp extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_admin_of_app, container, false);
 
+        // кнопка выхода
         Button singOut = rootView.findViewById(R.id.singOutOfAdmin);
         singOut.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
+
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("saveMeAdmin", "false");
+                editor.apply();
+
                 Fragment fragment = null;
                 Class fragmentClass;
-                fragmentClass = Server.class;
+                fragmentClass = MainSettings.class;
                 try {
                     fragment = (Fragment) fragmentClass.newInstance();
                 } catch (Exception e) {
@@ -51,7 +61,7 @@ public class AdminOfApp extends Fragment {
             }
         });
 
-        Button cloud = rootView.findViewById(R.id.buttonToCloud); // переход на загрузку книги
+        CardView cloud = rootView.findViewById(R.id.buttonToCloud); // переход на загрузку книги
         cloud.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -64,7 +74,7 @@ public class AdminOfApp extends Fragment {
             }
         });
 
-        Button admin = rootView.findViewById(R.id.buttonToAdmin); // переход на админку
+        CardView admin = rootView.findViewById(R.id.buttonToAdmin); // переход на админку
         admin.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override

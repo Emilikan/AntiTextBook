@@ -11,7 +11,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -25,22 +24,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.Objects;
-
-import static java.lang.String.valueOf;
 
 public class Settings extends Fragment {
     private int STORAGE_PERMISSION_CODE = 23;
 
     private FrameLayout frameLayout;
     private Button aboutApp;
+
+    private String userName;
+    private String userSchool;
+    private String userClass;
+
+    private String studentOrSchoolBoy = "";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +62,138 @@ public class Settings extends Fragment {
         aboutApp = rootView.findViewById(R.id.infoApp);
         setTheme();
 
+        // профиль
+        RadioGroup radioGroup = rootView.findViewById(R.id.radioGroup);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case -1:
+                        studentOrSchoolBoy = "";
+                        Toast.makeText(getActivity(), "Ничего не выбранно", Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.heightSchoolBoy:
+                        studentOrSchoolBoy = "Student";
+                        break;
+                    case R.id.schoolBoy:
+                        studentOrSchoolBoy = "SchoolBoy";
+                        break;
+                }
+            }
+        });
 
+        EditText userClassED = rootView.findViewById(R.id.profClass);
+        EditText userSchoolED = rootView.findViewById(R.id.profSchool);
+        EditText userNameED = rootView.findViewById(R.id.profName);
+
+        RadioButton buttonSchool = rootView.findViewById(R.id.schoolBoy);
+        RadioButton buttonStudent = rootView.findViewById(R.id.heightSchoolBoy);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        userClassED.setText(preferences.getString("UserClass", "Поле не заполнено"));
+        userNameED.setText(preferences.getString("UserName", "Поле не заполнено"));
+        userSchoolED.setText(preferences.getString("UserSchool", "Поле не заполнено"));
+
+        String uStOrSch = preferences.getString("UserStudentOrSchoolBoy", "0");
+        if(!"0".equals(uStOrSch) && "Student".equals(uStOrSch)){
+            buttonStudent.setChecked(true);
+            buttonSchool.setChecked(false);
+        }
+        else if (!"0".equals(uStOrSch) && "SchoolBoy".equals(uStOrSch)){
+            buttonSchool.setChecked(true);
+            buttonStudent.setChecked(false);
+        }
+        else {
+            buttonSchool.setChecked(false);
+            buttonStudent.setChecked(false);
+        }
+
+        Button save = rootView.findViewById(R.id.saveProfile);
+        save.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onClick(View v) {
+
+                userName = ((EditText) Objects.requireNonNull(getActivity()).findViewById(R.id.profName)).getText().toString();
+                userSchool = ((EditText) getActivity().findViewById(R.id.profSchool)).getText().toString();
+                userClass = ((EditText) getActivity().findViewById(R.id.profClass)).getText().toString();
+
+                if("".equals(userClass) || "".equals(userName) || "".equals(userSchool) || "".equals(studentOrSchoolBoy) || "".equals(studentOrSchoolBoy)){
+
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    builder.setTitle("Warning")
+                            .setMessage("Не все поля заполненны, пожалуйста, заполните все поля")
+                            .setCancelable(false)
+                            .setNegativeButton("Ок, закрыть",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+                else if(Integer.parseInt(userClass) > 8 && studentOrSchoolBoy.equals("Student")){
+
+
+                    AlertDialog.Builder ad;
+                    ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    ad.setTitle("Предупреждение");  // заголовок
+                    ad.setMessage("Вы не можете быть больше 8 курса. Выберите 'школьник' или напишите в службу поддержки."); // сообщение
+                    ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            Fragment fragment = new Send();
+                            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                        }
+                    });
+                    ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            dialog.cancel();
+                        }
+                    });
+                    ad.setCancelable(true);
+                    ad.show();
+                }
+                else if(Integer.parseInt(userClass) > 12 && studentOrSchoolBoy.equals("SchoolBoy")){
+
+                    AlertDialog.Builder ad;
+                    ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    ad.setTitle("Предупреждение");  // заголовок
+                    ad.setMessage("Вы не можете быть больше 12 класса. Выберите 'студент' или напишите в службу поддержки."); // сообщение
+                    ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            Fragment fragment = new Send();
+                            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                        }
+                    });
+                    ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            dialog.cancel();
+                        }
+                    });
+                    ad.setCancelable(true);
+                    ad.show();
+                }
+                else {
+                    // сохранение данных о пользователе в SharedPreference
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("Users", "1");
+                    editor.putString("UserName", userName);
+                    editor.putString("UserClass", userClass);
+                    editor.putString("UserSchool", userSchool);
+                    editor.putString("UserStudentOrSchoolBoy", studentOrSchoolBoy);
+                    editor.putString("isFirst", "true");
+                    editor.apply();
+                    Toast.makeText(getContext(), "Сохранено", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        // другие настройки (настройки приложения)
         Button buttonInfoApp = rootView.findViewById(R.id.infoApp); // кнопка информации о приложении
         buttonInfoApp.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -78,39 +213,13 @@ public class Settings extends Fragment {
             }
         });
 
-        String folderName = "AntiTextBook/ATB/settings", fileName = "checkedBox.txt";
-        final String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName + "/" + fileName;
-
-        File file = new File(fullPath);
-        if(!file.exists()) {
-            if (isExternalStorageWritable()) {
-
-            } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                builder.setTitle("Error")
-                        .setMessage("не установлена cd-card. Для корректной работы приложения необходима cd-card")
-                        .setCancelable(false)
-                        .setNegativeButton("Ок, закрыть",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
-        }
-
-
-
         // сохраняет значение checkBox
         CheckBox checkBox = rootView.findViewById(R.id.checkBox);
         checkBox.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-
-                //сохранение значения в shared prefrences
+                //сохранение значения в shared preferences
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("Checked", "pair");
@@ -131,7 +240,7 @@ public class Settings extends Fragment {
             public void onClick(View v) {
                 AlertDialog.Builder ad;
 
-                ad = new AlertDialog.Builder(getContext());
+                ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
                 ad.setTitle("Смена темы");  // заголовок
                 ad.setMessage("Для смены темы приложение будет перезагружено"); // сообщение
                 ad.setPositiveButton("Ок, перезагрузить", new DialogInterface.OnClickListener() {
@@ -158,13 +267,6 @@ public class Settings extends Fragment {
             }
         });
         return rootView;
-    }
-
-
-    public boolean isExternalStorageWritable()
-    {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -276,7 +378,7 @@ public class Settings extends Fragment {
                     Toast.makeText(c,"Was not able to restart application, PM null",Toast.LENGTH_LONG).show();
                 }
             } else {
-                Toast.makeText(c,"Was not able to restart application, Context null",Toast.LENGTH_LONG).show();
+                Toast.makeText(null,"Was not able to restart application, Context null",Toast.LENGTH_LONG).show();
             }
         } catch (Exception ex) {
             Toast.makeText(c,"Was not able to restart application",Toast.LENGTH_LONG).show();

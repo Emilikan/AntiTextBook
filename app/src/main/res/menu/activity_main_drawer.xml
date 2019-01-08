@@ -21,13 +21,14 @@
             android:icon="@drawable/ic_man_user"
             android:title="@string/menu_admin" />
         <item
-            android:id="@+id/profile"
-            android:icon="@drawable/ic_logout"
-            android:title="Профиль" />
-        <item
             android:id="@+id/settings"
             android:icon="@drawable/ic_settings_work_tool"
             android:title="@string/menu_settings" />
+
+        <item
+            android:id="@+id/draw"
+            android:icon="@drawable/ic_settings_work_tool"
+            android:title="Draw" />
 
     </group>
 

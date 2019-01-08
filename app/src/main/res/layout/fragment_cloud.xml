@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cloud"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cloud"
-    tools:context=".Cloud">
+    android:background="@drawable/background_of_app"
+    tools:context=".UploadBookOfSchool">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -17,19 +18,22 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/back2444"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:srcCompat="@drawable/ic_left_arrow" />
+
             <LinearLayout
+                android:id="@+id/what"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:paddingLeft="32dp"
                 android:paddingTop="10dp"
                 android:paddingRight="32dp"
-                android:paddingLeft="32dp">
-                <ImageView
-                    android:id="@+id/back2444"
-                    android:layout_width="90dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10sp"
-                    app:srcCompat="@drawable/ic_left_arrow" />
+                android:paddingBottom="32dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -41,11 +45,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:fontFamily="@font/rubik_medium"
-                        android:text="@string/cloud_title"
                         android:layout_weight="3"
-                        android:textColor="@android:color/black"
-                        android:textSize="18sp" />
+                        android:fontFamily="@font/roboto_light"
+                        android:text="@string/cloud_title"
+                        android:textColor="#FFFFFF"
+                        android:textSize="24sp" />
 
                     <Button
                         android:id="@+id/buttonHelp"
@@ -56,9 +60,10 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
                         android:layout_weight="1"
-                        android:background="@drawable/button_light"
-                        android:fontFamily="@font/rubik"
+                        android:background="@drawable/button_profile"
+                        android:fontFamily="@font/roboto_light"
                         android:text="@string/cloud_help"
+                        android:textColor="#FFFFFF"
                         tools:ignore="RtlHardcoded" />
                 </LinearLayout>
 
@@ -68,7 +73,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="141dp"
                     android:layout_marginBottom="16dp"
-                    tools:src="@tools:sample/avatars[3]"/>
+                    tools:src="@tools:sample/avatars[3]" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -80,105 +85,184 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
-                        android:layout_marginBottom="8dp"
                         android:layout_weight="50"
-                        android:background="@drawable/button_light"
-                        android:fontFamily="@font/rubik"
+                        android:background="@drawable/button_profile"
+                        android:fontFamily="@font/roboto_light"
                         android:padding="16dp"
-                        android:text="@string/cloud_choose_pdf" />
+                        android:text="@string/cloud_choose_pdf"
+                        android:textColor="#FFFFFF" />
 
                     <Button
                         android:id="@+id/buttonDownloadImage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
                         android:layout_weight="50"
-                        android:background="@drawable/button_light"
-                        android:fontFamily="@font/rubik"
+                        android:background="@drawable/button_profile"
+                        android:fontFamily="@font/roboto_light"
                         android:padding="16dp"
-                        android:text="@string/cloud_choose_img" />
+                        android:text="@string/cloud_choose_img"
+                        android:textColor="#FFFFFF" />
                 </LinearLayout>
 
-
-                <EditText
-                    android:id="@+id/textAuthorCloud"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:fontFamily="@font/rubik_medium"
+                    android:layout_marginTop="15sp"
+                    android:fontFamily="@font/roboto_light"
                     android:hint="@string/cloud_author"
-                    android:textColor="@android:color/black"
-                    android:textSize="22sp" />
+                    android:textColorHint="#FFFFFF"
+                    app:errorEnabled="true">
 
-                <EditText
-                    android:id="@+id/describingBook"
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/textAuthorCloud"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_light"
+                        android:inputType="textPersonName"
+                        android:textColor="#FFFFFF"
+                        android:textColorHint="#FFFFFF"
+                        android:textSize="18sp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:layout_marginTop="8dp"
-                    android:background="@android:color/transparent"
-                    android:fontFamily="@font/rubik"
-                    android:hint="Описание"
-                    android:inputType="textPersonName"/>
+                    android:fontFamily="@font/roboto_light"
+                    android:hint="@string/cloud_describing"
+                    android:textColorHint="#FFFFFF"
+                    app:errorEnabled="true">
 
-                <EditText
-                    android:id="@+id/textSubjectCloud"
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/describingBook"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_light"
+                        android:inputType="textPersonName"
+                        android:textColor="#FFFFFF"
+                        android:textColorHint="#FFFFFF"
+                        android:textSize="18sp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@android:color/transparent"
-                    android:fontFamily="@font/rubik"
+                    android:fontFamily="@font/roboto_light"
                     android:hint="@string/cloud_subject"
-                    android:textColor="@android:color/black" />
+                    android:textColorHint="#FFFFFF"
+                    app:errorEnabled="true">
 
-                <EditText
-                    android:id="@+id/textClassCloud"
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/textSubjectCloud"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_light"
+                        android:inputType="textPersonName"
+                        android:textColor="#FFFFFF"
+                        android:textColorHint="#FFFFFF"
+                        android:textSize="18sp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <RadioGroup
+                    android:id="@+id/radioGroup2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RadioButton
+                        android:id="@+id/schoolInCloud"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/roboto_light"
+                        android:text="@string/cloud_radio_button1"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/instituteInCloud"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/roboto_light"
+                        android:text="@string/cloud_radio_button2"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp" />
+                </RadioGroup>
+
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@android:color/transparent"
-                    android:ems="10"
-                    android:fontFamily="@font/rubik"
+                    android:fontFamily="@font/roboto_light"
                     android:hint="@string/cloud_class"
-                    android:inputType="number"
-                    android:textColor="@android:color/black" />
+                    android:textColorHint="#FFFFFF"
+                    app:errorEnabled="true">
 
-                <EditText
-                    android:id="@+id/textYearCloud"
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/textClassCloud"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_light"
+                        android:inputType="number"
+                        android:textColor="#FFFFFF"
+                        android:textColorHint="#FFFFFF"
+                        android:textSize="18sp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@android:color/transparent"
-                    android:ems="10"
-                    android:fontFamily="@font/rubik"
+                    android:fontFamily="@font/roboto_light"
                     android:hint="@string/cloud_year"
-                    android:inputType="number"
-                    android:textColor="@android:color/black" />
+                    android:textColorHint="#FFFFFF"
+                    app:errorEnabled="true">
 
-                <EditText
-                    android:id="@+id/textPartCloud"
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/textYearCloud"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_light"
+                        android:inputType="number"
+                        android:textColor="#FFFFFF"
+                        android:textColorHint="#FFFFFF"
+                        android:textSize="18sp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@android:color/transparent"
-                    android:ems="10"
-                    android:fontFamily="@font/rubik"
+                    android:fontFamily="@font/roboto_light"
                     android:hint="@string/cloud_part"
-                    android:inputType="number"
-                    android:textColor="@android:color/black" />
+                    android:textColorHint="#FFFFFF"
+                    app:errorEnabled="true">
 
-                <Button
-                    android:id="@+id/buttonSendToCloud"
-                    android:layout_width="wrap_content"
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/textPartCloud"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_light"
+                        android:inputType="number"
+                        android:textColor="#FFFFFF"
+                        android:textColorHint="#FFFFFF"
+                        android:textSize="18sp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:layout_marginBottom="32dp"
-                    android:background="@drawable/button_gradient"
-                    android:fontFamily="@font/rubik_medium"
-                    android:padding="16dp"
-                    android:text="@string/cloud_upload"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp" />
+                    android:gravity="end">
+
+                    <Button
+                        android:id="@+id/buttonSendToCloud"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/button_gradient"
+                        android:fontFamily="@font/roboto_light"
+                        android:padding="16dp"
+                        android:text="@string/cloud_upload"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp" />
+                </LinearLayout>
 
             </LinearLayout>
 

@@ -21,9 +21,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +49,6 @@ import static java.lang.String.valueOf;
 
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class AboutBook extends Fragment {
-
     private TextView mPart2;
     private TextView mAuthor2;
     private TextView mProject2;
@@ -60,8 +59,10 @@ public class AboutBook extends Fragment {
     private FrameLayout frameLayout;
     private Button upload2;
 
-    public String conterOfFragment;
+    public String counterOfFragment;
     private Uri pdfFilePath = null;
+
+    private ProgressBar progressBar;
 
     private DatabaseReference mRef;
 
@@ -73,6 +74,9 @@ public class AboutBook extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_about_book, container, false);
+
+        progressBar = rootView.findViewById(R.id.progressBarInAboutBook);
+        progressBar.setVisibility(ProgressBar.VISIBLE);
 
         if(!isOnline(Objects.requireNonNull(getContext()))){
             AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
@@ -94,15 +98,14 @@ public class AboutBook extends Fragment {
             alert.show();
         }
         else {
-
             // подписываем пользователя на тему (для получаения push уведомлений)
             FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
 
             // получаем значение о том, на какую книгу мы перешли (из Bundle)
             Bundle bundle = getArguments();
-            conterOfFragment = "0";
+            counterOfFragment = "0";
             if (bundle != null) {
-                conterOfFragment = bundle.getString("Value", "0");
+                counterOfFragment = bundle.getString("Value", "0");
             }
 
             frameLayout = rootView.findViewById(R.id.aboutBook);
@@ -129,7 +132,7 @@ public class AboutBook extends Fragment {
                         @Override
                         public void run() {
                             final Context context = getContext();
-                            final String contFrag = conterOfFragment;
+                            final String contFrag = counterOfFragment;
 
                             final DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
 
@@ -308,14 +311,16 @@ public class AboutBook extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference storageRef = storage.getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(conterOfFragment).child("Icon").getValue(String.class)));
+                StorageReference storageRef = storage.getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(counterOfFragment).child("Icon").getValue(String.class)));
                 storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Picasso.with(getContext()).load(uri).into(imageView);
+                        // проверка на то, есть ли активность еще эта для того, чтобы прога не вылетала, если еще что-то не успело загрузиться, а мы уже вышли из активити
+                        if(getActivity() != null) {
+                            Picasso.with(getContext()).load(uri).into(imageView);
+                        }
                     }
-                })
-                        .addOnFailureListener(new OnFailureListener() {
+                }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
                         Toast toast = Toast.makeText(getContext(), "Ошибка!", Toast.LENGTH_SHORT);
@@ -323,12 +328,14 @@ public class AboutBook extends Fragment {
                     }
                 });
 
-                mPart2.setText("Часть: " + dataSnapshot.child("Books").child(conterOfFragment).child("Part").getValue(String.class));
-                mAuthor2.setText("Автор: " +dataSnapshot.child("Books").child(conterOfFragment).child("Author").getValue(String.class));
-                mProject2.setText("Предмет: " +dataSnapshot.child("Books").child(conterOfFragment).child("Subject").getValue(String.class));
-                mClass2.setText("Класс: " + dataSnapshot.child("Books").child(conterOfFragment).child("Class").getValue(String.class));
-                mYear2.setText("Год: " + dataSnapshot.child("Books").child(conterOfFragment).child("Year").getValue(String.class));
-                mDescribing.setText("Описание: " + dataSnapshot.child("Books").child(conterOfFragment).child("Describing").getValue(String.class));
+                mPart2.setText("Часть: " + dataSnapshot.child("Books").child(counterOfFragment).child("Part").getValue(String.class));
+                mAuthor2.setText("Автор: " +dataSnapshot.child("Books").child(counterOfFragment).child("Author").getValue(String.class));
+                mProject2.setText("Предмет: " +dataSnapshot.child("Books").child(counterOfFragment).child("Subject").getValue(String.class));
+                mClass2.setText("Класс: " + dataSnapshot.child("Books").child(counterOfFragment).child("Class").getValue(String.class));
+                mYear2.setText("Год: " + dataSnapshot.child("Books").child(counterOfFragment).child("Year").getValue(String.class));
+                mDescribing.setText("Описание: " + dataSnapshot.child("Books").child(counterOfFragment).child("Describing").getValue(String.class));
+
+                progressBar.setVisibility(ProgressBar.INVISIBLE); // убираем прогресс бар
             }
 
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)

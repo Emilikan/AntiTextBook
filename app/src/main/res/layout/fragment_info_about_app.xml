@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/infoAboutAppMain"
-    tools:context=".InfoAboutApp">
+    tools:context=".InfoAboutApp"
+    android:background="@drawable/background_of_app">
 
     <!-- TODO: Update blank fragment layout -->
 

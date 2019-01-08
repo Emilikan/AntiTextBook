@@ -5,7 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/aboutBook"
-    tools:context=".AboutBook">
+    tools:context=".AboutBook"
+    android:background="@drawable/background_of_app">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+        <ProgressBar
+            android:id="@+id/progressBarInAboutBook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            />
+    </FrameLayout>
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -30,7 +43,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="32dp"
-                android:layout_marginTop="32dp"
                 android:layout_marginRight="32dp"
                 android:orientation="vertical">
 
@@ -39,27 +51,31 @@
                     android:layout_width="200dp"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="32dp"
-                    app:srcCompat="@drawable/loadingcircles"/>
+                    android:layout_marginBottom="32dp"/>
 
                 <TextView
                     android:id="@+id/Project2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/rubik_medium"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/roboto_light"
                     android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/describingAboutBook"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/Author2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:fontFamily="@font/rubik"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/roboto_light"
                     android:textSize="16sp" />
 
                 <TextView
@@ -67,7 +83,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:fontFamily="@font/rubik"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/roboto_light"
                     android:textSize="16sp" />
 
                 <TextView
@@ -75,7 +92,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:fontFamily="@font/rubik"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/roboto_light"
                     android:textSize="16sp" />
 
                 <TextView
@@ -83,7 +101,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:fontFamily="@font/rubik"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/roboto_light"
                     android:textSize="16sp" />
 
                 <Button
@@ -92,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:background="@drawable/button_gradient"
-                    android:fontFamily="@font/rubik_medium"
+                    android:fontFamily="@font/roboto_light"
                     android:padding="24dp"
                     android:text="@string/download"
                     android:textColor="@android:color/white"

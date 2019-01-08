@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:id="@+id/viewBooksForAdmin"
     android:layout_height="match_parent"
-    tools:context=".ViewBooksForChecking">
+    tools:context=".ViewBooksForChecking"
+    android:background="@drawable/background_of_app">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -27,8 +28,9 @@
 
         <ImageView
             android:id="@+id/imageView6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
             android:layout_marginBottom="12dp"
             android:src="@drawable/loadingcircles" />
 
@@ -78,7 +80,7 @@
             android:background="@drawable/button_gradient"
             android:fontFamily="@font/rubik_medium"
             android:padding="24dp"
-            android:text="Скачать"
+            android:text="@string/downloadBooks"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -97,7 +99,7 @@
                 android:background="@drawable/button_gradient"
                 android:fontFamily="@font/rubik_medium"
                 android:padding="24dp"
-                android:text="Добавить"
+                android:text="@string/addBook"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -111,7 +113,7 @@
                 android:background="@drawable/button_gradient"
                 android:fontFamily="@font/rubik_medium"
                 android:padding="24dp"
-                android:text="Удалить"
+                android:text="@string/deleteBook"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />

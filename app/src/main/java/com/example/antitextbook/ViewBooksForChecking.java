@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -39,16 +40,24 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import static java.lang.String.valueOf;
+import static java.net.HttpURLConnection.HTTP_OK;
 
 
 public class ViewBooksForChecking extends Fragment {
-
-    public String conterOfFragment;
+    public String counterOfFragment;
 
     private String bookAuthor;
     private String bookClass;
@@ -60,7 +69,7 @@ public class ViewBooksForChecking extends Fragment {
     private String bookSchoolCounter;
     private String bookSubject;
     private String bookYear;
-    private String stringFromAllBook;
+    private String bookForWho;
 
     private TextView mPart2;
     private TextView mAuthor2;
@@ -72,8 +81,6 @@ public class ViewBooksForChecking extends Fragment {
     private ImageView imageView;
     private FrameLayout frameLayout;
 
-    private File localFile = null;
-    private StorageReference islandRef;
     private Uri pdfFilePath = null;
 
     private DatabaseReference mRef;
@@ -129,11 +136,10 @@ public class ViewBooksForChecking extends Fragment {
         }
         else {
             Bundle bundle = getArguments();
-            conterOfFragment = "0";
+            counterOfFragment = "0";
             if (bundle != null) {
-                conterOfFragment = bundle.getString("Value", "0");
+                counterOfFragment = bundle.getString("Value", "0");
             }
-
             frameLayout = rootView.findViewById(R.id.viewBooksForAdmin);
             imageView = rootView.findViewById(R.id.imageView6);
             mPart2 = rootView.findViewById(R.id.Part2ForAdmin);
@@ -145,7 +151,6 @@ public class ViewBooksForChecking extends Fragment {
             mSchool = rootView.findViewById(R.id.SchoolForAdmin);
 
             setTheme();
-
             changeText();
 
             Button confirmed = rootView.findViewById(R.id.addBook); // кнопка добавления книги в основную базу
@@ -164,7 +169,7 @@ public class ViewBooksForChecking extends Fragment {
                 }
             });
 
-            Button download = rootView.findViewById(R.id.downloadForChecking);
+            Button download = rootView.findViewById(R.id.downloadForChecking); // кнопка скачивания книги
             download.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -186,7 +191,7 @@ public class ViewBooksForChecking extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference storageRef = storage.getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("forChecking").child("Books").child(conterOfFragment).child("Icon").getValue(String.class)));
+                StorageReference storageRef = storage.getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("Icon").getValue(String.class)));
                 storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
@@ -201,13 +206,13 @@ public class ViewBooksForChecking extends Fragment {
                             }
                         });
 
-                mPart2.setText("Часть: " + dataSnapshot.child("forChecking").child("Books").child(conterOfFragment).child("Part").getValue(String.class));
-                mAuthor2.setText("Автор: " +dataSnapshot.child("forChecking").child("Books").child(conterOfFragment).child("Author").getValue(String.class));
-                mProject2.setText("Предмет: " +dataSnapshot.child("forChecking").child("Books").child(conterOfFragment).child("Subject").getValue(String.class));
-                mClass2.setText("Класс: " + dataSnapshot.child("forChecking").child("Books").child(conterOfFragment).child("Class").getValue(String.class));
-                mYear2.setText("Год: " + dataSnapshot.child("forChecking").child("Books").child(conterOfFragment).child("Year").getValue(String.class));
-                mDescribing.setText("Описание: " + dataSnapshot.child("forChecking").child("Books").child(conterOfFragment).child("Describing").getValue(String.class));
-                mSchool.setText("Школа/человек, выложивший эту книгу: " + dataSnapshot.child("forChecking").child("Books").child(conterOfFragment).child("School").child("0").getValue(String.class));
+                mPart2.setText("Часть: " + dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("Part").getValue(String.class));
+                mAuthor2.setText("Автор: " +dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("Author").getValue(String.class));
+                mProject2.setText("Предмет: " +dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("Subject").getValue(String.class));
+                mClass2.setText("Класс: " + dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("Class").getValue(String.class));
+                mYear2.setText("Год: " + dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("Year").getValue(String.class));
+                mDescribing.setText("Описание: " + dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("Describing").getValue(String.class));
+                mSchool.setText("Школа/человек, выложивший эту книгу: " + dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("School").child("0").getValue(String.class));
             }
 
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -240,24 +245,31 @@ public class ViewBooksForChecking extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                bookAuthor = dataSnapshot.child("forChecking").child("Books").child(conterOfFragment).child("Author").getValue(String.class);
-                bookClass = dataSnapshot.child("forChecking").child("Books").child(conterOfFragment).child("Class").getValue(String.class);
-                bookDescribing = dataSnapshot.child("forChecking").child("Books").child(conterOfFragment).child("Describing").getValue(String.class);
-                bookIcon = dataSnapshot.child("forChecking").child("Books").child(conterOfFragment).child("Icon").getValue(String.class);
-                bookPart = dataSnapshot.child("forChecking").child("Books").child(conterOfFragment).child("Part").getValue(String.class);
-                bookPdf = dataSnapshot.child("forChecking").child("Books").child(conterOfFragment).child("Pdf").getValue(String.class);
-                bookSchool = dataSnapshot.child("forChecking").child("Books").child(conterOfFragment).child("School").child("0").getValue(String.class);
-                bookSchoolCounter = dataSnapshot.child("forChecking").child("Books").child(conterOfFragment).child("SchoolCounter").getValue(String.class);
-                bookSubject = dataSnapshot.child("forChecking").child("Books").child(conterOfFragment).child("Subject").getValue(String.class);
-                bookYear = dataSnapshot.child("forChecking").child("Books").child(conterOfFragment).child("Year").getValue(String.class);
-                stringFromAllBook = dataSnapshot.child("forChecking").child("AllBooks").child(conterOfFragment).getValue(String.class);
+
+                String email = dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("schoolEmail").getValue(String.class);
+                String school = dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("School").child("0").getValue(String.class);
+                String message = "   Команда разработчиков приняла вашу заявку на добавление книги на сервер." +
+                        " Теперь вашу книгу смогут увидеть учащиеся вашего (и не только) учебного заведения. По всем вопросам обращайтесь в службу поддержки через мобильное приложение";
+
+                sendEmail(email, school, message, getContext());
+
+                bookAuthor = dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("Author").getValue(String.class);
+                bookClass = dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("Class").getValue(String.class);
+                bookDescribing = dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("Describing").getValue(String.class);
+                bookIcon = dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("Icon").getValue(String.class);
+                bookPart = dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("Part").getValue(String.class);
+                bookPdf = dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("Pdf").getValue(String.class);
+                bookSchool = dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("School").child("0").getValue(String.class);
+                bookSchoolCounter = dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("SchoolCounter").getValue(String.class);
+                bookSubject = dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("Subject").getValue(String.class);
+                bookYear = dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("Year").getValue(String.class);
+                bookForWho = dataSnapshot.child("forChecking").child("Books").child(counterOfFragment).child("ForWho").getValue(String.class);
 
                 String dbCountForCheck = dataSnapshot.child("forChecking").child("counter").getValue(String.class);
                 assert dbCountForCheck != null;
                 int intCounterForCheck = Integer.parseInt(dbCountForCheck);
                 int newCountForCheck = intCounterForCheck - 1;
                 String newCounterFor = Integer.toString(newCountForCheck);
-
 
                 String dbCounter = dataSnapshot.child("counter").getValue(String.class);
                 assert dbCounter != null;
@@ -276,18 +288,16 @@ public class ViewBooksForChecking extends Fragment {
                 mRef.child("Books").child(stringCounter).child("SchoolCounter").setValue(bookSchoolCounter);
                 mRef.child("Books").child(stringCounter).child("Subject").setValue(bookSubject);
                 mRef.child("Books").child(stringCounter).child("Year").setValue(bookYear);
+                mRef.child("Books").child(stringCounter).child("ForWho").setValue(bookForWho);
                 mRef.child("Books").child(stringCounter).child("ThisCounter").setValue(stringCounter);
                 mRef.child("Books").child(stringCounter).child("TopDownloads").setValue("0");
                 mRef.child("Books").child(stringCounter).child("UserTop").setValue("0");
                 mRef.child("counter").setValue(stringCounter);
-                mRef.child("AllBooks").child(stringCounter).setValue(stringFromAllBook);
 
                 // удаляем запись
-                mRef.child("forChecking").child("Books").child(conterOfFragment).setValue(null);
-                mRef.child("forChecking").child("AllBooks").child(conterOfFragment).setValue(null);
+                mRef.child("forChecking").child("Books").child(counterOfFragment).setValue(null);
+                mRef.child("forChecking").child("AllBooks").child(counterOfFragment).setValue(null);
                 mRef.child("forChecking").child("counter").setValue(newCounterFor);
-
-                Toast.makeText(getContext(), "Книга успешно добавлена", Toast.LENGTH_SHORT).show();
 
                 Fragment fragment = null;
                 Class fragmentClass;
@@ -322,18 +332,151 @@ public class ViewBooksForChecking extends Fragment {
 
     }
 
+    private void sendEmail (String email, String school, String message1, Context context){
+        String subject = "Решение по заявке о добавлении книги на сервер";
+        String message = "   Добого времени суток, представитель школы/вуза: " + school + ".\n" + message1 + "\n\n\nС уважением команда разработчиков приложения ATB.\nСпасибо, команда BHB.";
+
+        SendMail sm = new SendMail(context, email, subject, message);
+        sm.execute();
+    }
+
     // метод удаления записей о книге из бд и файла с сервака
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
+    Thread deleteFile = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            final String flowCounterOfFragment = counterOfFragment;
+            final Context context = getContext();
+
+            final DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+            mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    // получаем ссылки на файлы
+                    String bookRefFromDb = dataSnapshot.child("forChecking").child("Books").child(flowCounterOfFragment).child("Pdf").getValue(String.class);
+                    String imgRef = dataSnapshot.child("forChecking").child("Books").child(flowCounterOfFragment).child("Icon").getValue(String.class);
+
+                    // получаем ссылки на хранилище
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
+
+                    StorageReference bookRefForDelete = storage.getReferenceFromUrl(Objects.requireNonNull(bookRefFromDb));
+                    StorageReference imgRefForDelete = storage.getReferenceFromUrl(Objects.requireNonNull(imgRef));
+
+                    // удалям pdf
+                    bookRefForDelete.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(context, "PDF файл удален", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(context));
+                            builder.setTitle("Error")
+                                    .setMessage(e.getMessage())
+                                    .setCancelable(false)
+                                    .setNegativeButton("Ок, закрыть",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    dialog.cancel();
+                                                }
+                                            });
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                        }
+                    });
+
+                    // удаляем img
+                    imgRefForDelete.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(context, "img файл удален", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(context));
+                            builder.setTitle("Error")
+                                    .setMessage(e.getMessage())
+                                    .setCancelable(false)
+                                    .setNegativeButton("Ок, закрыть",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    dialog.cancel();
+                                                }
+                                            });
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                        }
+                    });
+
+                    String email = dataSnapshot.child("forChecking").child("Books").child(flowCounterOfFragment).child("schoolEmail").getValue(String.class);
+                    String school = dataSnapshot.child("forChecking").child("Books").child(flowCounterOfFragment).child("School").child("0").getValue(String.class);
+                    String message = "   К сожалению, мы отклонили заявку на добавление вашей книги в наше приложение." +
+                            " О причине отклонения вы можете узнать написав в службу поддержки в приложении, указав название предлагаемой вами книги в течении 5 дней с момента отправки этого письма";
+
+                    sendEmail(email, school, message, context);
+
+                    mRef.child("forChecking").child("Books").child(flowCounterOfFragment).setValue(null);
+
+                    String dbCounter = dataSnapshot.child("forChecking").child("counter").getValue(String.class);
+                    assert dbCounter != null;
+                    int intCounter = Integer.parseInt(dbCounter);
+                    intCounter--;
+                    String stringCounter = Integer.toString(intCounter);
+
+                    mRef.child("forChecking").child("counter").setValue(stringCounter);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    builder.setTitle("Error")
+                            .setMessage(databaseError.getMessage())
+                            .setCancelable(false)
+                            .setNegativeButton("Ок, закрыть",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+            });
+        }
+    });
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void deleteBook(){
+        AlertDialog.Builder ad;
+        ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        ad.setTitle("Предупреждение");  // заголовок
+        ad.setMessage("Вы уверены, что хотите удалить этот файл. После удаления его уже не востановить?"); // сообщение
+        ad.setPositiveButton("Да, все равно удалить", new DialogInterface.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            public void onClick(DialogInterface dialog, int arg1) {
+                deleteFile.start();
+            }
+        });
+        ad.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                dialog.cancel();
+            }
+        });
+        ad.setCancelable(true);
+        ad.show();
 
     }
 
-    // метод скачивания книги для проверки ее содержания
+    // метод скачивания книги для проверки ее содержания админом
     private void downloadBook(){
         Thread download = new Thread(new Runnable() {
             @Override
             public void run() {
                 final Context context = getContext();
-                final String contFrag = conterOfFragment;
+                final String contFrag = counterOfFragment;
 
                 final DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
 
@@ -367,7 +510,6 @@ public class ViewBooksForChecking extends Fragment {
                     }
                 });
 
-
                 // получаем данные только 1 раз (не следит за изменениями)
                 // это сделано, чтобы не вылетало, когда в бд добавляются книги
                 mRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -377,8 +519,11 @@ public class ViewBooksForChecking extends Fragment {
 
                         StorageReference islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(contFrag).child("Pdf").getValue(String.class)));
 
-                        String nameOfFileInTelephone = dataSnapshot.child("Books").child(contFrag).child("Author").getValue(String.class) + " " + dataSnapshot.child("Books").child(contFrag).child("Describing").getValue(String.class) + " " + dataSnapshot.child("Books").child(contFrag).child("Class").getValue(String.class)
-                                + " " + dataSnapshot.child("Books").child(contFrag).child("Subject").getValue(String.class) + " " + dataSnapshot.child("Books").child(contFrag).child("Part").getValue(String.class)
+                        String nameOfFileInTelephone = dataSnapshot.child("Books").child(contFrag).child("Author").getValue(String.class)
+                                + " " + dataSnapshot.child("Books").child(contFrag).child("Describing").getValue(String.class)
+                                + " " + dataSnapshot.child("Books").child(contFrag).child("Class").getValue(String.class)
+                                + " " + dataSnapshot.child("Books").child(contFrag).child("Subject").getValue(String.class)
+                                + " " + dataSnapshot.child("Books").child(contFrag).child("Part").getValue(String.class)
                                 + " " + dataSnapshot.child("Books").child(contFrag).child("Year").getValue(String.class);
 
                         final File localFile = saveFile(Objects.requireNonNull(getContext()).getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/" + nameOfFileInTelephone + ".pdf");
@@ -410,7 +555,6 @@ public class ViewBooksForChecking extends Fragment {
                                     Toast.makeText(context, "Файл скачан", Toast.LENGTH_LONG).show();
                                 }
                                 else {
-                                    //* написать код для открытия сразу библиотеки
                                     AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(context));
                                     builder.setTitle("Информация")
                                             .setMessage("Файл скачан")
@@ -468,8 +612,9 @@ public class ViewBooksForChecking extends Fragment {
         try
         {
             //Если нет директорий в пути, то они будут созданы:
-            if (!fileHandle.getParentFile().exists())
+            if (!fileHandle.getParentFile().exists()) {
                 fileHandle.getParentFile().mkdirs();
+            }
             //Если файл существует, то он будет перезаписан:
             fileHandle.createNewFile();
             return fileHandle;

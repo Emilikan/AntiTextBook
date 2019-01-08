@@ -43,6 +43,7 @@ public class Send extends Fragment {
     private EditText nameOfFeedback;
     private EditText describingOfFeedback;
     private EditText email;
+    private Button sendFeedback;
     private FrameLayout frameLayout;
 
     private String mNameOfFeedback;
@@ -62,7 +63,7 @@ public class Send extends Fragment {
         email = rootView.findViewById(R.id.emailOfFeedback);
         setTheme();
 
-        Button sendFeedback = rootView.findViewById(R.id.sendFeedback);
+        sendFeedback = rootView.findViewById(R.id.sendFeedback);
         sendFeedback.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -100,6 +101,7 @@ public class Send extends Fragment {
                     alert.show();
                 }
                 else{
+                    sendFeedback.setClickable(false);
                     mRef = FirebaseDatabase.getInstance().getReference();
                     mRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -111,7 +113,18 @@ public class Send extends Fragment {
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                            builder.setTitle("Warning")
+                                    .setMessage("Ошибка: " + databaseError.getMessage())
+                                    .setCancelable(false)
+                                    .setNegativeButton("Ок, закрыть",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    dialog.cancel();
+                                                }
+                                            });
+                            AlertDialog alert = builder.create();
+                            alert.show();
                         }
                     });
 
@@ -163,7 +176,9 @@ public class Send extends Fragment {
                                 Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_LONG).show();
                                 nameOfFeedback.setText("");
                                 describingOfFeedback.setText("");
+                                sendFeedback.setClickable(true);
                             } catch (JSONException | IOException e) {
+                                sendFeedback.setClickable(true);
                                 e.printStackTrace();
                             }
                         }
@@ -171,6 +186,7 @@ public class Send extends Fragment {
 
                     @Override
                     public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                        sendFeedback.setClickable(true);
                         Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });

@@ -20,10 +20,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,48 +41,23 @@ public class Server extends Fragment {
     private String mLogin;
     private String mPassword;
 
+    private Boolean maySave;
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_server, container, false);
 
-        if(!isOnline(Objects.requireNonNull(getContext()))){
-            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-            builder.setTitle("Warning")
-                    .setMessage("Нет доступа в интернет. Проверьте наличие связи")
-                    .setCancelable(false)
-                    .setNegativeButton("Ок, закрыть",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-
         frameLayout = rootView.findViewById(R.id.server);
         setTheme();
 
-        /*CheckBox admin = rootView.findViewById(R.id.admin);
-        admin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                CheckBox checkBox = Objects.requireNonNull(getView()).findViewById(R.id.admin);
-                if(checkBox.isChecked()){
-
-                }
-                else {
-
-                }
-            }
-        });
-        */
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String isToNext = preferences.getString("saveMeAdmin", "false");
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null){
+        assert isToNext != null;
+        if (user != null && isOnline(Objects.requireNonNull(getContext())) && isToNext.equals("true")){
             Fragment fragment = new AdminOfApp();
             FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
@@ -90,15 +66,31 @@ public class Server extends Fragment {
         }
         else {
 
-            Button singInSchool = rootView.findViewById(R.id.singInSchool);
-            singInSchool.setOnClickListener(new View.OnClickListener() {
+            Switch saveMe = rootView.findViewById(R.id.checkBoxSaveMeInAdm);
+            saveMe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    maySave = isChecked;
+                }
+            });
+
+            ImageView help = rootView.findViewById(R.id.helpAdmin2);
+            help.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 public void onClick(View v) {
-                    Fragment fragment = new AdminForSchool();
-                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-                    DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
-                    drawer.closeDrawer(GravityCompat.START);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    builder.setTitle("Информация")
+                            .setMessage("  В настоящее время авторизация доступна только для админов и представителей учебных заведений\n  По всем вопросам обращайтесь в службу поддержки")
+                            .setCancelable(false)
+                            .setNegativeButton("Ок, закрыть",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 }
             });
 
@@ -128,18 +120,6 @@ public class Server extends Fragment {
                     }
                 }
             });
-
-            Button singUp = rootView.findViewById(R.id.singUp);
-            singUp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Fragment fragment = new Regestration();
-                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-                    DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
-                    drawer.closeDrawer(GravityCompat.START);
-                }
-            });
         }
         return rootView;
     }
@@ -154,16 +134,26 @@ public class Server extends Fragment {
             public void onComplete(@NonNull Task<AuthResult> task) {
 
                 if(task.isSuccessful()) {
-                    Toast.makeText(getContext(), "Авторизация успешна", Toast.LENGTH_LONG).show();
+                    if(getContext() != null && getActivity() != null) {
+                        if(maySave){
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("saveMeAdmin", "true");
+                            editor.apply();
+                        } else {
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("saveMeAdmin", "false");
+                            editor.apply();
+                        }
 
-                    TextView mainTitle = getActivity().findViewById(R.id.title_name);
-                    mainTitle.setText("Admin");
-
-                    Fragment fragment = new AdminOfApp();
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-                    DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
-                    drawer.closeDrawer(GravityCompat.START);
+                        Toast.makeText(getContext(), "Авторизация успешна", Toast.LENGTH_LONG).show();
+                        Fragment fragment = new AdminOfApp();
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                        DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
+                        drawer.closeDrawer(GravityCompat.START);
+                    }
 
                 }
                 else{

@@ -13,34 +13,36 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 
 public class ChooseTrueBooks extends Fragment {
+    private List<BookForRecycle> books = new ArrayList<>();
 
-    private ListView listBooks;
-    private List<String> mBooks;
     private FrameLayout frameLayout;
     private String counter = "-1";
-    private DatabaseReference mRef;
+
+    private ProgressBar progressBar;
+
+    private ArrayList<Integer> realIdOfBook= new ArrayList<>(); // тут под id в новом списке хранится настоящий id книги
+    private RecyclerView recyclerView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,9 @@ public class ChooseTrueBooks extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_choose_true_books, container, false);
+
+        progressBar = rootView.findViewById(R.id.progressBarInChoose);
+        progressBar.setVisibility(ProgressBar.VISIBLE);
 
         ImageView back = rootView.findViewById(R.id.back3ForAdmin);
         back.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +90,6 @@ public class ChooseTrueBooks extends Fragment {
                                     Fragment fragment = new AdminOfApp();
                                     FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-                                    Toast.makeText(getActivity(), "Нет книг", Toast.LENGTH_SHORT).show();
                                 }
                             });
             AlertDialog alert = builder.create();
@@ -93,9 +97,10 @@ public class ChooseTrueBooks extends Fragment {
         }
         else {
             frameLayout = rootView.findViewById(R.id.chooseTrueBooks);
+            recyclerView = rootView.findViewById(R.id.listForAdmin);
             setTheme();
 
-            mRef = FirebaseDatabase.getInstance().getReference();
+            DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
             mRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
@@ -103,8 +108,35 @@ public class ChooseTrueBooks extends Fragment {
                     counter = dataSnapshot.child("forChecking").child("counter").getValue(String.class);
                     if ("-1".equals(counter)) {
                         Toast.makeText(getContext(), "Нет книг", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(ProgressBar.INVISIBLE); // убираем прогресс бар
                     } else {
-                        checked();
+                        assert counter != null;
+                        for (int a = 0; a <= Integer.parseInt(counter); a++){
+                            if(dataSnapshot.child("forChecking").child("Books").child(Integer.toString(a)).child("Author").getValue(String.class) != null) {
+                                books.add(new BookForRecycle(dataSnapshot.child("forChecking").child("Books").child(Integer.toString(a)).child("Author").getValue(String.class),
+                                        dataSnapshot.child("forChecking").child("Books").child(Integer.toString(a)).child("Subject").getValue(String.class),
+                                        dataSnapshot.child("forChecking").child("Books").child(Integer.toString(a)).child("Describing").getValue(String.class),
+                                        dataSnapshot.child("forChecking").child("Books").child(Integer.toString(a)).child("Class").getValue(String.class),
+                                        Integer.toString(a),
+                                        realIdOfBook,
+                                        getContext(),
+                                        getActivity(),
+                                        true, true));
+                                realIdOfBook.add(a);
+                            }
+                        }
+                        progressBar.setVisibility(ProgressBar.INVISIBLE); // убираем прогресс бар
+                        if(books.size() == 0){
+                            books.add(new BookForRecycle (
+                                    "Ничего не найдено, поменяйте условия сортировки",
+                                    "",
+                                    "",
+                                    "",
+                                    Integer.toString(0), realIdOfBook, getContext(),
+                                    getActivity(), false, true));
+                            realIdOfBook.add(0);
+                        }
+                        updateUI();
                     }
                 }
 
@@ -125,71 +157,16 @@ public class ChooseTrueBooks extends Fragment {
                     alert.show();
                 }
             });
-
-            listBooks = rootView.findViewById(R.id.booksListViewForAdmin);
         }
 
         return rootView;
     }
 
-    private void checked() {
-        mRef = FirebaseDatabase.getInstance().getReference();
-        // слушатель ListView
-        listBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
-                //* мб лучше получать id по значению (например, может быть, что у 5 элемент списка и 5 id в бд соответствуют различным книгам)
-                Fragment fragment = new ViewBooksForChecking();
-                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-
-                Bundle bundle = new Bundle();
-                String valueOfReplace = position + "";
-                bundle.putString("ValueOfAdmin", valueOfReplace);
-                fragment.setArguments(bundle);
-            }
-        });
-
-        mRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {};
-                mBooks = dataSnapshot.child("forChecking").child("AllBooks").getValue(t);
-                updateUI();
-            }
-
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                AlertDialog.Builder ad;
-                ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                ad.setTitle("Error");  // заголовок
-                ad.setMessage("Ошибка: " + databaseError.getMessage() + "\n Проблемы на серверной части. Можете сообщить в службу поддержки"); // сообщение
-                ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
-                        Fragment fragment = new Send();
-                        FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-                    }
-                });
-                ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
-                        dialog.cancel();
-                    }
-                });
-                ad.setCancelable(true);
-                ad.show();
-            }
-        });
-    }
-
     // выводим книги с сервера на экран
     public void updateUI() {
         if (getActivity() != null) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.list_text_view, mBooks);
-            listBooks.setAdapter(adapter);
+            DataAdapter adapter = new DataAdapter(getContext(), books);
+            recyclerView.setAdapter(adapter);
         }
     }
 

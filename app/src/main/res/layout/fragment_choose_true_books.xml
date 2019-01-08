@@ -5,7 +5,20 @@
     android:layout_height="match_parent"
     android:id="@+id/chooseTrueBooks"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ChooseTrueBooks">
+    tools:context=".ChooseTrueBooks"
+    android:background="@drawable/background_of_app">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+        <ProgressBar
+            android:id="@+id/progressBarInChoose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,11 +40,18 @@
 
         </LinearLayout>
 
-        <ListView
+    <!--<ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/booksListViewForAdmin"
             />
+            -->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/listForAdmin"
+            android:layout_width="match_parent"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
 </FrameLayout>

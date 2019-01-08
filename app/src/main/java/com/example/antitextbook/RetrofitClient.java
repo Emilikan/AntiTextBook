@@ -8,12 +8,6 @@ package com.example.antitextbook;
 import android.support.annotation.NonNull;
 import android.util.Base64;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -24,10 +18,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-
-    private DatabaseReference mRef;
-
-
 
     private static String BASE_URL;
 

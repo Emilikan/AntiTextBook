@@ -1,6 +1,5 @@
 package com.example.antitextbook;
 
-import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -21,16 +20,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar toolbar;
+    private Boolean isHome;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
         // устанавливаем начальный фрагмент - Home
         Fragment fragment = null;
         Class fragmentClass = Home.class;
@@ -81,6 +84,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentManager fragmentManager = getSupportFragmentManager();
         assert fragment != null;
         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+
+        // проверяем, первый ли раз зашел человек (заполненя ли информация о человеке)
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String isFirst = preferences.getString("isFirst", "false");
+        assert isFirst != null;
+        if(isFirst.equals("false")){
+            fragment = new Settings();
+            fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+
+            setTitle("Настройки");
+
+            Toast.makeText(this, "Пожалуйста, заполните информацию о себе", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     // метод изменения темы
@@ -122,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
             return true;
         }
 
@@ -134,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // создаем новый фрагмент
         Fragment fragment = null;
-        Class fragmentClass = null;
+        Class fragmentClass;
 
         int id = item.getItemId();
 
@@ -145,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentClass = Settings.class;
         }
         else if (id == R.id.server) {
-            fragmentClass = Server.class;
+            fragmentClass = MainSettings.class;
         }
         else if (id == R.id.nav_send) {
             fragmentClass = Send.class;
@@ -153,8 +172,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if (id == R.id.home) {
             fragmentClass = Home.class;
         }
+        else if (id == R.id.draw) {
+            fragmentClass = Draw.class;
+        }
         else if (id == R.id.schedule) {
-
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             String pair = preferences.getString("Checked", "0");
 
@@ -164,9 +185,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             else{
                 fragmentClass = Schedule.class;
             }
-        }
-        else if (id == R.id.profile){
-            fragmentClass = Profile.class;
         }
         else {
             fragmentClass = Home.class;
@@ -188,6 +206,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setTitle(item.getTitle());
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
+        // устанавливаем имя
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        TextView textView = findViewById(R.id.title_name);
+        textView.setText(preferences.getString("UserName", "User"));
+
+        ImageView imageView = findViewById(R.id.imageView);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new Settings();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+
+                setTitle("Настройки");
+            }
+        });
+
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

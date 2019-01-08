@@ -13,20 +13,22 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -39,15 +41,25 @@ public class Subscribe extends Fragment {
 
     private String nameOfSchool;
 
-    private ListView listTasks;
-    private List<String> mTasks;
     private String counter = "-1";
 
-    ArrayList<String> allSchool;
+    private Spinner spinnerSubject;
+    private Spinner spinnerClass;
+    private Spinner spinnerForWho;
 
-    private int positionn;
-    private String counterOfSchool;
+    private ProgressBar progressBar;
 
+    private List<BookForRecycle> books = new ArrayList<>();
+
+    private String schoolOrInst = "School";
+    private String forWho;
+    private String subj;
+    private String classOf;
+
+    private ArrayList<String> nameOfSubj= new ArrayList<>(); // тут хронятся все виды предметов (для вывода их)
+    private ArrayList<Integer> realIdOfBook= new ArrayList<>(); // тут под id в новом списке хранится настоящий id книги
+
+    private RecyclerView recyclerView;
 
     private DatabaseReference mRef;
 
@@ -62,13 +74,24 @@ public class Subscribe extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_subscribe, container, false);
 
+        progressBar = rootView.findViewById(R.id.progressBarInSubscribe);
+        progressBar.setVisibility(ProgressBar.VISIBLE);
+
         // подписываем пользователя на тему (для получаения push уведомлений)
         FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
 
-        listTasks = rootView.findViewById(R.id.forSchool);
-
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         nameOfSchool = preferences.getString("dbSchool", "Ошибка");
+
+        ImageView back = rootView.findViewById(R.id.back2348);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new SchoolProfile();
+                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+            }
+        });
 
         if(!isOnline(Objects.requireNonNull(getContext()))){
             AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
@@ -89,25 +112,10 @@ public class Subscribe extends Fragment {
             alert.show();
         }
         else {
-
-            Button uploadSchoolBooks = rootView.findViewById(R.id.uploadSchoolBook);
-            uploadSchoolBooks.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Fragment fragment = null;
-                    Class fragmentClass;
-                    fragmentClass = UploadBookOfSchool.class;
-                    try {
-                        fragment = (Fragment) fragmentClass.newInstance();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                    assert fragment != null;
-                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-                }
-            });
-
+            spinnerSubject = rootView.findViewById(R.id.spinnerSubjectForSchool);
+            spinnerClass = rootView.findViewById(R.id.spinnerClassForSchool);
+            spinnerForWho = rootView.findViewById(R.id.forWhoForSchool);
+            recyclerView = rootView.findViewById(R.id.listForSchool);
 
             mRef = FirebaseDatabase.getInstance().getReference();
             mRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -121,7 +129,107 @@ public class Subscribe extends Fragment {
                         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                         Toast.makeText(getActivity(), "Нет книг", Toast.LENGTH_SHORT).show();
                     } else {
-                        checked();
+                        assert counter != null;
+                        nameOfSubj.add("Все предметы");
+                        for(int a = 0; a <= Integer.parseInt(counter); a++){
+                            String school = dataSnapshot.child("Books").child(Integer.toString(a)).child("Subject").getValue(String.class);
+                            if(!nameOfSubj.contains(school) && school != null){
+                                nameOfSubj.add(school);
+                            }
+                        }
+                        String[] arrayNameOfSubj = nameOfSubj.toArray(new String[0]); // массив со всеми предметами
+
+                        progressBar.setVisibility(ProgressBar.INVISIBLE); // убираем прогресс бар
+
+                        if(getActivity()!=null) {
+                            ArrayAdapter<String> adapter1 = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, arrayNameOfSubj);
+                            adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinnerSubject.setAdapter(adapter1);
+                        }
+
+                        final String[] arrayForClass1 = {"Все классы", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"};
+                        final String[] arrayForClass2 = {"Все курсы", "1", "2", "3", "4", "5"};
+
+                        String[] arrayForWho = {"Школьник", "Студент"};
+
+                        // какя-то шняга с тем, что вылетает, если не успевает подргузить бд (из-за плохого инета), а пользователь уходит с активити
+                        if(getActivity()!=null) {
+                            ArrayAdapter<String> adapter5 = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, arrayNameOfSubj);
+                            adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinnerSubject.setAdapter(adapter5);
+
+                            if("School".equals(schoolOrInst)) {
+                                ArrayAdapter<String> adapter1 = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, arrayForClass1);
+                                adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                spinnerClass.setAdapter(adapter1);
+                            } else {
+                                ArrayAdapter<String> adapter1 = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, arrayForClass2);
+                                adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                spinnerClass.setAdapter(adapter1);
+                            }
+
+                            ArrayAdapter<String> adapter2 = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, arrayForWho);
+                            adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinnerForWho.setAdapter(adapter2);
+                        }
+
+                        // обработчики спинеров
+                        AdapterView.OnItemSelectedListener itemSelectedListenerForClass = new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                classOf = (String)parent.getItemAtPosition(position);
+                                sortingBook1();
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        };
+                        spinnerClass.setOnItemSelectedListener(itemSelectedListenerForClass);
+
+                        AdapterView.OnItemSelectedListener itemSelectedListenerForWho = new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                String item = (String)parent.getItemAtPosition(position);
+
+                                if(item.equals("Школьник")){
+                                    schoolOrInst = "School";
+                                    forWho = "ForSchoolBoy";
+                                    ArrayAdapter<String> adapter1 = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, arrayForClass1);
+                                    adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    spinnerClass.setAdapter(adapter1);
+                                }
+                                else{
+                                    schoolOrInst = "Inst";
+                                    forWho = "ForStudent";
+                                    ArrayAdapter<String> adapter1 = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, arrayForClass2);
+                                    adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    spinnerClass.setAdapter(adapter1);
+                                }
+                                sortingBook1();
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        };
+                        spinnerForWho.setOnItemSelectedListener(itemSelectedListenerForWho);
+
+                        AdapterView.OnItemSelectedListener itemSelectedListenerForSubj = new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                subj = (String)parent.getItemAtPosition(position);
+                                sortingBook1();
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        };
+                        spinnerSubject.setOnItemSelectedListener(itemSelectedListenerForSubj);
                     }
                 }
 
@@ -154,129 +262,54 @@ public class Subscribe extends Fragment {
         return rootView;
     }
 
-    // получаем все доступные книги с сервера, ставим слушателя на ListView
-    private void checked() {
-        mRef = FirebaseDatabase.getInstance().getReference();
-        // слушатель ListView
-        listTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    private void sortingBook1(){
+        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
-            public void onItemClick(AdapterView<?> parent, View itemClicked, final int position, long id) {
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                books = new ArrayList<>();
+                realIdOfBook = new ArrayList<>();
+                final String counterOfBook = dataSnapshot.child("counter").getValue(String.class);
+                assert counterOfBook != null;
 
-                if (!nameOfSchool.equals("Ошибка")) {
-                    allSchool = new ArrayList<>();
-                    AlertDialog.Builder ad;
+                for(int a = 0; a <= Integer.parseInt(counterOfBook); a++){
+                    String mSubj = dataSnapshot.child("Books").child(Integer.toString(a)).child("Subject").getValue(String.class);
+                    String classOfBook = dataSnapshot.child("Books").child(Integer.toString(a)).child("Class").getValue(String.class);
+                    String forWhoThisBook = dataSnapshot.child("Books").child(Integer.toString(a)).child("ForWho").getValue(String.class);
 
-                    positionn = position;
-
-                        ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                        ad.setTitle("Подписаться на книгу");  // заголовок
-                        ad.setMessage("Вы уверены, что хотите подписаться под этой книгой? После подписи ученики вашей школы смогут видеть ее у себя"); // сообщение
-                        ad.setPositiveButton("Ок, подписаться", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int arg1) {
-                                // для получения номера
-                                mRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        counterOfSchool = dataSnapshot.child("Books").child(Integer.toString(positionn)).child("SchoolCounter").getValue(String.class);
-
-                                        // проверка на то, подписаны ли мы уже
-                                        assert counterOfSchool != null;
-                                        for(int a = 0; a < Integer.parseInt(counterOfSchool) + 1; a++){
-
-                                            String school = dataSnapshot.child("Books").child(Integer.toString(positionn)).child("School").child(Integer.toString(a)).getValue(String.class);
-                                            allSchool.add(school);
-                                        }
-
-                                        // если не подписаны:
-                                        if(!allSchool.contains(nameOfSchool)){
-                                            assert counterOfSchool != null;
-                                            int intCounter = Integer.parseInt(counterOfSchool);
-                                            intCounter++;
-                                            String stringCounter = Integer.toString(intCounter);
-                                            mRef.child("Books").child(Integer.toString(positionn)).child("School").child(stringCounter).setValue(nameOfSchool);
-                                            mRef.child("Books").child(Integer.toString(positionn)).child("SchoolCounter").setValue(stringCounter);
-                                            Toast.makeText(getContext(), "Вы успешно отметились", Toast.LENGTH_LONG).show();
-                                        }
-                                        // если подписаны:
-                                        else {
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                                            builder.setTitle("Error")
-                                                    .setMessage("Вы уже выбрали данную книгу")
-                                                    .setCancelable(false)
-                                                    .setNegativeButton("Ок, закрыть",
-                                                            new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int id) {
-                                                                    dialog.cancel();
-                                                                }
-                                                            });
-                                            AlertDialog alert = builder.create();
-                                            alert.show();
-                                        }
-
-                                    }
-
-                                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                                        builder.setTitle("Error")
-                                                .setMessage(databaseError.getMessage())
-                                                .setCancelable(false)
-                                                .setNegativeButton("Ок, закрыть",
-                                                        new DialogInterface.OnClickListener() {
-                                                            public void onClick(DialogInterface dialog, int id) {
-                                                                dialog.cancel();
-                                                            }
-                                                        });
-                                        AlertDialog alert = builder.create();
-                                        alert.show();
-                                    }
-                                });
-                            }
-                        });
-
-                        ad.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int arg1) {
-                                dialog.cancel();
-                            }
-                        });
-                        ad.setCancelable(true);
-                        ad.show();
-                }
-
-                // если нет названия школы
-                else {
-                    AlertDialog.Builder ad;
-                    ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                    ad.setTitle("Error");  // заголовок
-                    ad.setMessage("WTF??? Крч, я сам хз че за фигня, но пиши в службу поддержки"); // сообщение
-                    ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int arg1) {
-                            Fragment fragment = new Send();
-                            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                    if(mSubj != null) {
+                        if (subj.equals("Все предметы") && forWhoThisBook.equals(forWho) && (classOf.equals("Все классы") || classOf.equals("Все курсы"))) {
+                            books.add(new BookForRecycle(dataSnapshot.child("Books").child(Integer.toString(a)).child("Author").getValue(String.class),
+                                    mSubj, dataSnapshot.child("Books").child(Integer.toString(a)).child("Describing").getValue(String.class),
+                                    classOfBook, Integer.toString(a), realIdOfBook, getContext(), getActivity(), nameOfSchool, true));
+                            realIdOfBook.add(a);
+                        } else if ((classOf.equals("Все классы")||classOf.equals("Все курсы")) && forWhoThisBook.equals(forWho) && subj.equals(mSubj)) {
+                            books.add(new BookForRecycle(dataSnapshot.child("Books").child(Integer.toString(a)).child("Author").getValue(String.class),
+                                    mSubj, dataSnapshot.child("Books").child(Integer.toString(a)).child("Describing").getValue(String.class),
+                                    classOfBook, Integer.toString(a), realIdOfBook, getContext(), getActivity(), nameOfSchool, true));
+                            realIdOfBook.add(a);
+                        } else if (subj.equals("Все предметы") && forWhoThisBook.equals(forWho) && classOfBook.equals(classOf)) {
+                            books.add(new BookForRecycle(dataSnapshot.child("Books").child(Integer.toString(a)).child("Author").getValue(String.class),
+                                    mSubj, dataSnapshot.child("Books").child(Integer.toString(a)).child("Describing").getValue(String.class),
+                                    classOfBook, Integer.toString(a), realIdOfBook, getContext(), getActivity(), nameOfSchool, true));
+                            realIdOfBook.add(a);
+                        } else if (mSubj.equals(subj) && classOfBook.equals(classOf) && forWhoThisBook.equals(forWho)) {
+                            books.add(new BookForRecycle(dataSnapshot.child("Books").child(Integer.toString(a)).child("Author").getValue(String.class),
+                                    mSubj, dataSnapshot.child("Books").child(Integer.toString(a)).child("Describing").getValue(String.class),
+                                    classOfBook, Integer.toString(a), realIdOfBook, getContext(), getActivity(), nameOfSchool, true));
+                            realIdOfBook.add(a);
                         }
-                    });
-                    ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int arg1) {
-                            dialog.cancel();
-                        }
-                    });
-                    ad.setCancelable(true);
-                    ad.show();
+                    }
                 }
-
-            }
-        });
-
-
-        mRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {};
-                mTasks = dataSnapshot.child("AllBooks").getValue(t);
+                if(books.size() == 0){
+                    books.add(new BookForRecycle (
+                            "Ничего не найдено, поменяйте условия сортировки",
+                            "",
+                            "",
+                            "",
+                            Integer.toString(0), realIdOfBook, getContext(), getActivity(), nameOfSchool, false));
+                    realIdOfBook.add(0);
+                }
                 updateUI();
             }
 
@@ -303,15 +336,13 @@ public class Subscribe extends Fragment {
                 ad.show();
             }
         });
-
-
     }
 
     // выводим книги с сервера на экран
     public void updateUI() {
-        if (getActivity() != null) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.list_text_view, mTasks);
-            listTasks.setAdapter(adapter);
+        if(getActivity() != null) {
+            DataAdapterForSchool adapter = new DataAdapterForSchool(getContext(), books);
+            recyclerView.setAdapter(adapter);
         }
     }
 

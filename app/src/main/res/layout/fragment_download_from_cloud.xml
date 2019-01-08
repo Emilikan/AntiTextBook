@@ -5,7 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/downloadFromCloud"
-    tools:context=".DownloadFromCloud">
+    tools:context=".DownloadFromCloud"
+    android:background="@drawable/background_of_app">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+        <ProgressBar
+            android:id="@+id/progressBarInDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            />
+    </FrameLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,21 +39,53 @@
                 android:layout_marginBottom="12dp"
                 app:srcCompat="@drawable/ic_left_arrow" />
 
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="52dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="36dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:entries="@array/filter" />
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/spinnerSubject"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:entries="@array/filter" />
+
+                <Spinner
+                    android:id="@+id/spinnerClass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:entries="@array/filter" />
+
+                <Spinner
+                    android:id="@+id/forWho"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:entries="@array/filter" />
+            </LinearLayout>
         </LinearLayout>
 
+        <!--
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/booksListView"
             />
+            -->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
     </LinearLayout>
 
 </FrameLayout>

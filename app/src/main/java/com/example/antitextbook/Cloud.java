@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -53,12 +54,15 @@ public class Cloud extends Fragment {
     private Button help;
     private Button choosePdf;
     private Button chooseImg;
+    private Button sendOnCloud;
 
     private Uri filePath = null;
     private Uri filePdfPath = null;
 
     private String pdfUri;
     private String imgUri;
+
+    private String studentOrSchooler = "Ничего не выбранно";
 
     private String mAuthor;
     private String mClass;
@@ -126,8 +130,27 @@ public class Cloud extends Fragment {
             chooseImg = rootView.findViewById(R.id.buttonDownloadImage);
             imageView = rootView.findViewById(R.id.checkImage);
             help = rootView.findViewById(R.id.buttonHelp);
-            Button sendOnCloud = rootView.findViewById(R.id.buttonSendToCloud);
+            sendOnCloud = rootView.findViewById(R.id.buttonSendToCloud);
             setTheme();
+
+            RadioGroup radioGroup = rootView.findViewById(R.id.radioGroup2);
+            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    switch (checkedId) {
+                        case -1:
+                            studentOrSchooler = "";
+                            Toast.makeText(getActivity(), "Ничего не выбранно", Toast.LENGTH_LONG).show();
+                            break;
+                        case R.id.instituteInCloud:
+                            studentOrSchooler = "ForStudent";
+                            break;
+                        case R.id.schoolInCloud:
+                            studentOrSchooler = "ForSchoolBoy";
+                            break;
+                    }
+                }
+            });
 
             //Кнопка отправить
             sendOnCloud.setOnClickListener(new View.OnClickListener() {
@@ -167,7 +190,7 @@ public class Cloud extends Fragment {
                                         });
                         AlertDialog alert = builder.create();
                         alert.show();
-                    } else if(Integer.parseInt(mClass) > 12) {
+                    } else if (Integer.parseInt(mClass) > 12) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
                         builder.setTitle("Предупреждение")
                                 .setMessage("Класс не может быть установлен больше 12. Если у вас в школе больше 12 классов, то напишите в службу поддержки")
@@ -180,7 +203,7 @@ public class Cloud extends Fragment {
                                         });
                         AlertDialog alert = builder.create();
                         alert.show();
-                    } else if(Integer.parseInt(mYear) > 2020 || Integer.parseInt(mYear) < 1980) {
+                    } else if (Integer.parseInt(mYear) > 2020 || Integer.parseInt(mYear) < 1980) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
                         builder.setTitle("Предупреждение")
                                 .setMessage("Ошибка при установке даты. Дата слишком большая или слишком маленькая. Пожалуйста, установите правильную дату")
@@ -193,7 +216,21 @@ public class Cloud extends Fragment {
                                         });
                         AlertDialog alert = builder.create();
                         alert.show();
+                    } else if (studentOrSchooler.equals("Ничего не выбранно")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                        builder.setTitle("Предупреждение")
+                                .setMessage("Выберете, для кого эта книга: для студентов или для школьников")
+                                .setCancelable(false)
+                                .setNegativeButton("Ок, закрыть",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
                     } else {
+                        sendOnCloud.setClickable(false);
                         // код отправки на сервер
                         pdfUri = "gs://antitextbook.appspot.com/" + mSubject + "_" + mClass + "_" + mAuthor + "_" + mDescribing + "_" + mPart + "_" + mYear + "/" + mSubject +
                                 "_" + mClass + "_" + mAuthor + "_" + mDescribing + "_" + mPart + "_" + mYear + "_pdf"; // путь до учебника
@@ -214,6 +251,7 @@ public class Cloud extends Fragment {
                                 final String imgUriFlow = imgUri;
                                 final String mDescribingFlow = mDescribing;
                                 final Context context = getContext();
+                                final String forWho = studentOrSchooler;
 
                                 mRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -238,10 +276,10 @@ public class Cloud extends Fragment {
                                             mRef.child("Books").child(stringCounter).child("UserTop").setValue("0");
                                             mRef.child("Books").child(stringCounter).child("SchoolCounter").setValue("-1");
                                             mRef.child("Books").child(stringCounter).child("School").setValue("0");
+                                            mRef.child("Books").child(stringCounter).child("ForWho").setValue(forWho);
                                             mRef.child("Books").child(stringCounter).child("ThisCounter").setValue(stringCounter);
 
                                             mRef.child("counter").setValue(stringCounter);
-                                            mRef.child("AllBooks").child(stringCounter).setValue(mSubjectFlow + " " + mAuthorFlow + " " + mDescribingFlow + " " + mClassFlow);
 
                                             Toast.makeText(context, "Загружено в базу данных", Toast.LENGTH_SHORT).show();
 
@@ -294,6 +332,7 @@ public class Cloud extends Fragment {
 
                                                     // проверяем, вышел ли пользователь из активити. Если пользователь вышел, то все обнулится в onDetach
                                                     if(getActivity() != null) {
+                                                        sendOnCloud.setClickable(true);
                                                         Toast.makeText(context, "PDF файл загружен ", Toast.LENGTH_SHORT).show();
                                                         // обнуляем все EditText
                                                         ((EditText) Objects.requireNonNull(getActivity()).findViewById(R.id.textAuthorCloud)).setText("");
@@ -327,6 +366,9 @@ public class Cloud extends Fragment {
                                                 @Override
                                                 public void onFailure(@NonNull Exception exception) {
                                                     //*progressDialog.dismiss();
+                                                    if(getActivity() != null){
+                                                        sendOnCloud.setClickable(true);
+                                                    }
 
                                                     AlertDialog.Builder ad;
                                                     ad = new AlertDialog.Builder(Objects.requireNonNull(context));
@@ -361,6 +403,9 @@ public class Cloud extends Fragment {
                                 }
                                 // если нет файлов
                                 else {
+                                    if(getActivity() != null){
+                                        sendOnCloud.setClickable(true);
+                                    }
                                     AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(context));
                                     builder.setTitle("Error")
                                             .setMessage("Нет файлов")
@@ -403,6 +448,9 @@ public class Cloud extends Fragment {
                                                     //*progressDialog.dismiss();
 
                                                     // проверяем, вышел ли пользователь из активити
+                                                    if(getActivity()!=null){
+                                                        imageView.setImageDrawable(null);
+                                                    }
                                                     Toast.makeText(context, "Файл изображния загружен ", Toast.LENGTH_SHORT).show();
                                                 }
                                             })
@@ -595,7 +643,8 @@ public class Cloud extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        ((EditText) Objects.requireNonNull(getActivity()).findViewById(R.id.textAuthorCloud)).setText("");
+
+        /*((EditText) Objects.requireNonNull(getActivity()).findViewById(R.id.textAuthorCloud)).setText("");
         ((EditText) getActivity().findViewById(R.id.textClassCloud)).setText("");
         ((EditText) getActivity().findViewById(R.id.textYearCloud)).setText("");
         ((EditText) getActivity().findViewById(R.id.textSubjectCloud)).setText("");
@@ -604,6 +653,7 @@ public class Cloud extends Fragment {
 
         filePath = null;
         filePdfPath = null;
+        */
     }
 
 }
