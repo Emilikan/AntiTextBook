@@ -17,13 +17,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import static java.lang.String.valueOf;
 import java.util.Objects;
 
 public class Schedule extends Fragment {
     private Button changingSchedule;
     private FrameLayout frameLayout;
+    private TextView lessons;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,8 +43,15 @@ public class Schedule extends Fragment {
         changingSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Нажата кнопка", Toast.LENGTH_SHORT).show();
-                //* дописать обработку кноки "изменить расписание"
+                Toast.makeText(getActivity(), "Нажата кнопка", Toast.LENGTH_SHORT).show();
+
+                //сохранение расписания
+                lessons = getActivity().findViewById(R.id.lessons);
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("Save_lessons", valueOf(lessons));
+                editor.apply();
+
             }
         });
 
