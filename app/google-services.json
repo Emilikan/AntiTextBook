@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "755772184295",
+    "firebase_url": "https://antitextbook.firebaseio.com",
+    "project_id": "antitextbook",
+    "storage_bucket": "antitextbook.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:755772184295:android:1b65b12f62db203c",
+        "android_client_info": {
+          "package_name": "com.example.antitextbook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "755772184295-ipctgs2p04s72mgffb873tjjeua160b0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.antitextbook",
+            "certificate_hash": "e13d4b115ac98661a34d5af50b5d60bedc48f614"
+          }
+        },
+        {
+          "client_id": "755772184295-3018l8iu1dgdmpnb51kd2hp9b7l9jnun.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgWdMp7rpyf2cKJnwokH7Mfz8eneYQlhM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "755772184295-3018l8iu1dgdmpnb51kd2hp9b7l9jnun.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

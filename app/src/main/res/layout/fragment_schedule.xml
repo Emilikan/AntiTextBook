@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Schedule"
+    android:id="@+id/schedule">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/buttonChangeSchedule"
+            android:layout_width="match_parent"
+            android:layout_height="38sp"
+            android:text="Изменить расписание"
+            />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/mondayyy"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="16dp"
+                    android:layout_weight="50"
+                    android:elevation="10dp"
+                    android:translationZ="10dp"
+                    android:background="@color/colorItemLight"
+                    app:cardCornerRadius="32dp">
+                    <!-- app:cardBackgroundColor="@color/colorGreen"-->
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:id="@+id/lessons">
+
+                        <TextView
+                            android:id="@+id/mon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:text="Понедельник"
+                            android:textSize="30sp"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_mon1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/mon"
+                            android:text="Первый урок"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_mon2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_mon1"
+                            android:text="Второй урок"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_mon3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_mon2"
+                            android:text="Третий урок"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                        android:id="@+id/lesson_mon4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/lesson_mon3"
+                        android:text="Четвертый урок"
+                            android:textColor="#6221d8"/>
+                        <EditText
+                            android:id="@+id/lesson_mon5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_mon4"
+                            android:text="Пятый урок"
+                            android:textColor="#6221d8"/>
+                        <EditText
+                            android:id="@+id/lesson_mon6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_mon5"
+                            android:text="Шестой урок"
+                            android:textColor="#6221d8"/>
+                        <EditText
+                            android:id="@+id/lesson_mon7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_mon6"
+                            android:text="Седьмой урок"
+                            android:textColor="#6221d8"/>
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/tue"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="16dp"
+                    android:layout_weight="50"
+                    android:elevation="10dp"
+                    android:translationZ="10dp"
+                    android:background="@color/colorItemLight"
+                    app:cardCornerRadius="32dp"
+                    >
+                    <!-- app:cardBackgroundColor="@color/colorGreen"-->
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/thuesday"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:text="Вторник"
+                            android:textSize="30sp"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_th1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/thuesday"
+                            android:text="Первый урок"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_th2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_th1"
+                            android:text="Второй урок"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_th3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_th2"
+                            android:text="Третий урок"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_th4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_th3"
+                            android:text="Четвертый урок"
+                            android:textColor="#6221d8"/>
+                        <EditText
+                            android:id="@+id/lesson_th5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_th4"
+                            android:text="Пятый урок"
+                            android:textColor="#6221d8"/>
+                        <EditText
+                            android:id="@+id/lesson_th6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_th5"
+                            android:text="Шестой урок"
+                            android:textColor="#6221d8"/>
+                        <EditText
+                            android:id="@+id/lesson_th7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_th6"
+                            android:text="Седьмой урок"
+                            android:textColor="#6221d8"/>
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/wed"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="16dp"
+                    android:layout_weight="50"
+                    android:elevation="10dp"
+                    android:translationZ="10dp"
+                    android:background="@color/colorItemLight"
+                    app:cardCornerRadius="32dp"
+                    >
+                    <!-- app:cardBackgroundColor="@color/colorGreen"-->
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/wednesday"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:text="Среда"
+                            android:textSize="30sp"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_wed1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/wednesday"
+                            android:text="Первый урок"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_wed2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_wed1"
+                            android:text="Второй урок"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_wed3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_wed2"
+                            android:text="Третий урок"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_wed4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_wed3"
+                            android:text="Четвертый урок"
+                            android:textColor="#6221d8"/>
+                        <EditText
+                            android:id="@+id/lesson_wed5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_wed4"
+                            android:text="Пятый урок"
+                            android:textColor="#6221d8"/>
+                        <EditText
+                            android:id="@+id/lesson_wed6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_wed5"
+                            android:text="Шестой урок"
+                            android:textColor="#6221d8"/>
+                        <EditText
+                            android:id="@+id/lesson_wed7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_wed6"
+                            android:text="Седьмой урок"
+                            android:textColor="#6221d8"/>
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/thr"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="16dp"
+                    android:layout_weight="50"
+                    android:elevation="10dp"
+                    android:translationZ="10dp"
+                    android:background="@color/colorItemLight"
+                    app:cardCornerRadius="32dp"
+                    >
+                    <!-- app:cardBackgroundColor="@color/colorGreen"-->
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/thursday"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:text="Четверг"
+                            android:textSize="30sp"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_thur1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/thursday"
+                            android:text="Первый урок"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_thur2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_thur1"
+                            android:text="Второй урок"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_thur3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_thur2"
+                            android:text="Третий урок"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_thur4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_thur3"
+                            android:text="Четвертый урок"
+                            android:textColor="#6221d8"/>
+                        <EditText
+                            android:id="@+id/lesson_thur5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_thur4"
+                            android:text="Пятый урок"
+                            android:textColor="#6221d8"/>
+                        <EditText
+                            android:id="@+id/lesson_thur6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_thur5"
+                            android:text="Шестой урок"
+                            android:textColor="#6221d8"/>
+                        <EditText
+                            android:id="@+id/lesson_thur7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_thur6"
+                            android:text="Седьмой урок"
+                            android:textColor="#6221d8"/>
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/fri"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="16dp"
+                    android:layout_weight="50"
+                    android:elevation="10dp"
+                    android:translationZ="10dp"
+                    android:background="@color/colorItemLight"
+                    app:cardCornerRadius="32dp"
+                    >
+                    <!-- app:cardBackgroundColor="@color/colorGreen"-->
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/friday"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:text="Пятница"
+                            android:textSize="30sp"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_fri1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/friday"
+                            android:text="Первый урок"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_fri2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_fri1"
+                            android:text="Второй урок"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_fri3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_fri2"
+                            android:text="Третий урок"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_fri4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_fri3"
+                            android:text="Четвертый урок"
+                            android:textColor="#6221d8"/>
+                        <EditText
+                            android:id="@+id/lesson_fri5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_fri4"
+                            android:text="Пятый урок"
+                            android:textColor="#6221d8"/>
+                        <EditText
+                            android:id="@+id/lesson_fri6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_fri5"
+                            android:text="Шестой урок"
+                            android:textColor="#6221d8"/>
+                        <EditText
+                            android:id="@+id/lesson_fri7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_fri6"
+                            android:text="Седьмой урок"
+                            android:textColor="#6221d8"/>
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/sat"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="16dp"
+                    android:layout_weight="50"
+                    android:elevation="10dp"
+                    android:translationZ="10dp"
+                    android:background="@color/colorItemLight"
+                    app:cardCornerRadius="32dp"
+                    >
+                    <!-- app:cardBackgroundColor="@color/colorGreen"-->
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/saturday"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:text="Суббота"
+                            android:textSize="30sp"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_sat1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/saturday"
+                            android:text="Первый урок"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_sat2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_sat1"
+                            android:text="Второй урок"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_sat3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_sat2"
+                            android:text="Третий урок"
+                            android:textColor="#6221d8"/>
+
+                        <EditText
+                            android:id="@+id/lesson_sat4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_sat3"
+                            android:text="Четвертый урок"
+                            android:textColor="#6221d8"/>
+                        <EditText
+                            android:id="@+id/lesson_sat5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_sat4"
+                            android:text="Пятый урок"
+                            android:textColor="#6221d8"/>
+                        <EditText
+                            android:id="@+id/lesson_sat6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_sat5"
+                            android:text="Шестой урок"
+                            android:textColor="#6221d8"/>
+                        <EditText
+                            android:id="@+id/lesson_sat7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/lesson_sat6"
+                            android:text="Седьмой урок"
+                            android:textColor="#6221d8"/>
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+</FrameLayout>

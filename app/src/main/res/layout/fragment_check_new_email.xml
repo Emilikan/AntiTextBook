@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CheckNewEmail"
+    android:background="@drawable/background_of_app">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_light"
+            android:layout_height="wrap_content"
+            android:text="@string/check_new_email_text2" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="40dp"
+            android:fontFamily="@font/roboto_light"
+            android:gravity="center"
+            android:hint="@string/check_new_email_hint1"
+            android:textColorHint="#FFFFFF">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/checkNewEmail1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_light"
+                android:inputType="numberSigned"
+                android:maxLines="1"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="match_parent"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:fontFamily="@font/roboto_light"
+            android:layout_height="wrap_content"
+            android:text="@string/check_new_email_text1" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="40dp"
+            android:fontFamily="@font/roboto_light"
+            android:gravity="center"
+            android:hint="@string/check_new_email_hint2"
+            android:textColorHint="#FFFFFF">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/checkNewEmail2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_light"
+                android:inputType="numberSigned"
+                android:maxLines="1"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/checkNewEmail3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_gradient"
+            android:fontFamily="@font/roboto_light"
+            android:textColor="#FFFFFF"
+            android:padding="24dp"
+            android:textSize="16sp"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/check_new_email_button" />
+    </LinearLayout>
+
+</FrameLayout>

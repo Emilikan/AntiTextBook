@@ -1,9 +1,205 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">AntiTextBook</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="nav_header_title">User</string>
+    <string name="nav_header_subtitle">example.android.com</string>
+    <string name="nav_header_desc">Меню</string>
+    <string name="action_menu">О приложении</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact
+        based on your message history
+    </string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string-array name="list_preference_entries">
+        <item>Entry 1</item>
+        <item>Entry 2</item>
+        <item>Entry 3</item>
+    </string-array>
+
+    <string-array name="list_preference_entry_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="multi_select_list_preference_default_value" />
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notifications</string>
+
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="pref_title_vibrate">Vibrate</string>
+
+    <string name="download">Скачать</string>
+
+    <string name="cloud_choose_pdf">Выбрать PDF файл</string>
+    <string name="cloud_choose_img">Выбрать img файл</string>
+    <string name="cloud_upload">Отправить</string>
+    <string name="cloud_title">Загрузка книги</string>
+    <string name="cloud_help">Помощь</string>
+    <string name="cloud_author">Автор</string>
+    <string name="cloud_subject">Предмет</string>
+    <string name="cloud_class">Класс</string>
+    <string name="cloud_year">Год</string>
+    <string name="cloud_describing">Описание</string>
+    <string name="cloud_radio_button1">Школьная книга</string>
+    <string name="cloud_radio_button2">Книга для студентов</string>
+    <string name="cloud_part">Часть (по дефолту установить 1)</string>
+
+    <string name="search">Поиск</string>
+    <string name="back">Назад</string>
+    <string name="downloadBooks">Скачать книгу</string>
+    <string name="chooseBook">Выбрать книгу</string>
+    <string name="txt_success">Success</string>
+    <string name="addBook">Добавить</string>
+    <string name="deleteBook">Удалить</string>
+    <string name="profile">Профиль</string>
+
+    <string-array name="filter">
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+    </string-array>
+
+    <string name="menu_home">Домашняя</string>
+    <string name="menu_library">Библиотека</string>
+    <string name="menu_shedule">Расписание</string>
+    <string name="menu_admin">Админка</string>
+    <string name="menu_settings">Настройки</string>
+    <string name="menu_signOut">Выйти</string>
+    <string name="menu_connection">Связь</string>
+    <string name="menu_feedback">Служба поддержки</string>
+
+    <string name="send_mainText">Служба поддержки:</string>
+    <string name="send_title">Заголовок</string>
+    <string name="send_secondTest">Cообщите о своей проблеме или напишите отзыв</string>
+    <string name="send_describing">Письмо</string>
+    <string name="send_sendLater">Отправить</string>
+    <string name="send_email">Ваш email для обратной связи</string>
+
+    <string name="server_title">Авторизация</string>
+    <string name="server_note">В настоящее время авторизация доступна только для админов и представителей учебных заведений.\n По всем вопросам обращайтесь в службу поддержки</string>
+    <string name="server_log">Логин</string>
+    <string name="server_school">Войти как школа</string>
+    <string name="server_profile">Профиль</string>
+    <string name="server_password">Пароль</string>
+    <string name="server_sign_in">Войти</string>
+
+    <string name="settings_schedule">Пары вместо уроков?</string>
+    <string name="settings_dark_theme">Темная тема</string>
+    <string name="settings_about_app">О приложении</string>
+
+    <string name="about_app1">Приложение AntiTextBook (ATB) разработано с целью помочь школьникам (в дальнейшем и студентам) в учебе, разгрузить их спины, сделать жизнь лучше :)\n\nПриложение AntiTextBook основано командой BHB\n\nОтдельная благодарность Славе за дизайн\nПри финансовой поддержке Платцера Максима</string>
+
+    <string name="adminOfSchool_reg1">Название учебного заведения</string>
+    <string name="adminOfSchool_reg2">Код</string>
+    <string name="adminOfSchool_reg3">E-mail</string>
+    <string name="adminOfSchool_saveMe">Запомнить меня</string>
+
+    <string name="admin_of_app_main">Админка</string>
+    <string name="admin_of_app_upload">Загрузка книг</string>
+    <string name="admin_of_app_sing_out">Выйти</string>
+
+    <string name="profile_main">Ваш профиль:</string>
+    <string name="profile_change">Изменить</string>
+
+    <string name="registration_main">Заполните, пожалуйста, информацию о себе</string>
+    <string name="registration_name">Имя</string>
+    <string name="registration_who1">Школьник/лицеист/кадет</string>
+    <string name="registration_who2">Студент</string>
+    <string name="registration_number_of_school">Номер (название) школы/лицея/ВУЗа</string>
+    <string name="registration_class">Номер класса/курса</string>
+    <string name="registration_save">Сохранить</string>
+    <string name="registration_overSettings">Настройки приложения:</string>
+
+    <string name="storage_choose_file">Выбрать файл</string>
+
+    <string name="check_email_main">Введите код из E-mail</string>
+    <string name="check_email_kod">Код</string>
+    <string name="check_email_sign_in">Войти</string>
+    <string name="check_email_back">Сменить почту</string>
+    <string name="check_email_send">Отправить код еще раз</string>
+
+    <string name="school_profile_main">Ваш профиль:</string>
+    <string name="school_profile_send_email_again">Поменять почту</string>
+    <string name="school_profile_upload_books">Загрузить свою книгу</string>
+    <string name="school_profile_all_books">Отметиться под книгой</string>
+    <string name="school_profile_sing_out">Выйти</string>
+    <string name="school_profile_string1">Название учебного заведения:</string>
+    <string name="school_profile_string2">Ваш E-mail:</string>
+    <string name="school_profile_second">Ваши действия:</string>
+
+    <string name="change_email_main">Введите новую почту:</string>
+    <string name="change_email_hint">E-mail</string>
+    <string name="change_email_button">Продолжить</string>
+
+    <string name="check_new_email_text1">Введите код с новой почты:</string>
+    <string name="check_new_email_text2">Введите код со старой почты:</string>
+    <string name="check_new_email_hint1">Старый код</string>
+    <string name="check_new_email_hint2">Новый код</string>
+    <string name="check_new_email_button">Войти</string>
+
+    <string name="settings_hint_name">Имя</string>
+    <string name="settings_hint_school">Номер школы/вуза</string>
+    <string name="settings_hint_class">В каком вы классе/курсе</string>
+
+    <string name="navigation_item1">Режим чтения</string>
+    <string name="navigation_item2">Режим рисования</string>
+    <string name="navigation_item3">Настройки рисования</string>
+
+    <string name="subscribe_upload">Загрузить свою книгу</string>
 </resources>
