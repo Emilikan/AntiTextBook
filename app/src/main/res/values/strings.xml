@@ -94,13 +94,19 @@
     <string name="cloud_subject">Предмет</string>
     <string name="cloud_class">Класс</string>
     <string name="cloud_year">Год</string>
-    <string name="cloud_part">Часть (по дефолту 1)</string>
+    <string name="cloud_describing">Описание</string>
+    <string name="cloud_radio_button1">Школьная книга</string>
+    <string name="cloud_radio_button2">Книга для студентов</string>
+    <string name="cloud_part">Часть (по дефолту установить 1)</string>
 
     <string name="search">Поиск</string>
     <string name="back">Назад</string>
     <string name="downloadBooks">Скачать книгу</string>
     <string name="chooseBook">Выбрать книгу</string>
     <string name="txt_success">Success</string>
+    <string name="addBook">Добавить</string>
+    <string name="deleteBook">Удалить</string>
+    <string name="profile">Профиль</string>
 
     <string-array name="filter">
         <item></item>
@@ -119,13 +125,17 @@
     <string name="menu_feedback">Служба поддержки</string>
 
     <string name="send_mainText">Служба поддержки:</string>
-    <string name="send_title">Загаловок</string>
+    <string name="send_title">Заголовок</string>
+    <string name="send_secondTest">Cообщите о своей проблеме или напишите отзыв</string>
     <string name="send_describing">Письмо</string>
     <string name="send_sendLater">Отправить</string>
+    <string name="send_email">Ваш email для обратной связи</string>
 
     <string name="server_title">Авторизация</string>
-    <string name="server_note">В настоящее время авторизация доступна только для админов.\n По всем вопросам обращайтесь в службу поддержки</string>
+    <string name="server_note">В настоящее время авторизация доступна только для админов и представителей учебных заведений.\n По всем вопросам обращайтесь в службу поддержки</string>
     <string name="server_log">Логин</string>
+    <string name="server_school">Войти как школа</string>
+    <string name="server_profile">Профиль</string>
     <string name="server_password">Пароль</string>
     <string name="server_sign_in">Войти</string>
 
@@ -133,7 +143,63 @@
     <string name="settings_dark_theme">Темная тема</string>
     <string name="settings_about_app">О приложении</string>
 
-    <string name="about_app1">Приложение AntiTextBook (ATB) разработано с целью помочь школьникам (в дальнейшем и студентам) в учебе, разгрузить их спины, сделать жизнь лучше :)\n\nПриложение AntiTextBook основано:\n1. Эмилькой;\n2. Данилой Суворовым;\n3. Дмитрием Севастьяновым\n\nОтдельная благодарность Славе за дизайн\nПри финансовой поддержке Платцера Максима</string>
+    <string name="about_app1">Приложение AntiTextBook (ATB) разработано с целью помочь школьникам (в дальнейшем и студентам) в учебе, разгрузить их спины, сделать жизнь лучше :)\n\nПриложение AntiTextBook основано командой BHB\n\nОтдельная благодарность Славе за дизайн\nПри финансовой поддержке Платцера Максима</string>
 
+    <string name="adminOfSchool_reg1">Название учебного заведения</string>
+    <string name="adminOfSchool_reg2">Код</string>
+    <string name="adminOfSchool_reg3">E-mail</string>
+    <string name="adminOfSchool_saveMe">Запомнить меня</string>
 
+    <string name="admin_of_app_main">Админка</string>
+    <string name="admin_of_app_upload">Загрузка книг</string>
+    <string name="admin_of_app_sing_out">Выйти</string>
+
+    <string name="profile_main">Ваш профиль:</string>
+    <string name="profile_change">Изменить</string>
+
+    <string name="registration_main">Заполните, пожалуйста, информацию о себе</string>
+    <string name="registration_name">Имя</string>
+    <string name="registration_who1">Школьник/лицеист/кадет</string>
+    <string name="registration_who2">Студент</string>
+    <string name="registration_number_of_school">Номер (название) школы/лицея/ВУЗа</string>
+    <string name="registration_class">Номер класса/курса</string>
+    <string name="registration_save">Сохранить</string>
+    <string name="registration_overSettings">Настройки приложения:</string>
+
+    <string name="storage_choose_file">Выбрать файл</string>
+
+    <string name="check_email_main">Введите код из E-mail</string>
+    <string name="check_email_kod">Код</string>
+    <string name="check_email_sign_in">Войти</string>
+    <string name="check_email_back">Сменить почту</string>
+    <string name="check_email_send">Отправить код еще раз</string>
+
+    <string name="school_profile_main">Ваш профиль:</string>
+    <string name="school_profile_send_email_again">Поменять почту</string>
+    <string name="school_profile_upload_books">Загрузить свою книгу</string>
+    <string name="school_profile_all_books">Отметиться под книгой</string>
+    <string name="school_profile_sing_out">Выйти</string>
+    <string name="school_profile_string1">Название учебного заведения:</string>
+    <string name="school_profile_string2">Ваш E-mail:</string>
+    <string name="school_profile_second">Ваши действия:</string>
+
+    <string name="change_email_main">Введите новую почту:</string>
+    <string name="change_email_hint">E-mail</string>
+    <string name="change_email_button">Продолжить</string>
+
+    <string name="check_new_email_text1">Введите код с новой почты:</string>
+    <string name="check_new_email_text2">Введите код со старой почты:</string>
+    <string name="check_new_email_hint1">Старый код</string>
+    <string name="check_new_email_hint2">Новый код</string>
+    <string name="check_new_email_button">Войти</string>
+
+    <string name="settings_hint_name">Имя</string>
+    <string name="settings_hint_school">Номер школы/вуза</string>
+    <string name="settings_hint_class">В каком вы классе/курсе</string>
+
+    <string name="navigation_item1">Режим чтения</string>
+    <string name="navigation_item2">Режим рисования</string>
+    <string name="navigation_item3">Настройки рисования</string>
+
+    <string name="subscribe_upload">Загрузить свою книгу</string>
 </resources>

@@ -1,12 +1,16 @@
 package com.example.antitextbook;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -20,28 +24,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.Objects;
-
-import static java.lang.String.valueOf;
 
 public class Settings extends Fragment {
     private int STORAGE_PERMISSION_CODE = 23;
 
     private FrameLayout frameLayout;
     private Button aboutApp;
+
+    private String userName;
+    private String userSchool;
+    private String userClass;
+
+    private String studentOrSchoolBoy = "";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
 
+    @SuppressLint("CutPasteId")
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -52,7 +62,139 @@ public class Settings extends Fragment {
         aboutApp = rootView.findViewById(R.id.infoApp);
         setTheme();
 
-        Button buttonInfoApp = rootView.findViewById(R.id.infoApp);
+        // профиль
+        RadioGroup radioGroup = rootView.findViewById(R.id.radioGroup);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case -1:
+                        studentOrSchoolBoy = "";
+                        Toast.makeText(getActivity(), "Ничего не выбранно", Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.heightSchoolBoy:
+                        studentOrSchoolBoy = "Student";
+                        break;
+                    case R.id.schoolBoy:
+                        studentOrSchoolBoy = "SchoolBoy";
+                        break;
+                }
+            }
+        });
+
+        EditText userClassED = rootView.findViewById(R.id.profClass);
+        EditText userSchoolED = rootView.findViewById(R.id.profSchool);
+        EditText userNameED = rootView.findViewById(R.id.profName);
+
+        RadioButton buttonSchool = rootView.findViewById(R.id.schoolBoy);
+        RadioButton buttonStudent = rootView.findViewById(R.id.heightSchoolBoy);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        userClassED.setText(preferences.getString("UserClass", "Поле не заполнено"));
+        userNameED.setText(preferences.getString("UserName", "Поле не заполнено"));
+        userSchoolED.setText(preferences.getString("UserSchool", "Поле не заполнено"));
+
+        String uStOrSch = preferences.getString("UserStudentOrSchoolBoy", "0");
+        if(!"0".equals(uStOrSch) && "Student".equals(uStOrSch)){
+            buttonStudent.setChecked(true);
+            buttonSchool.setChecked(false);
+        }
+        else if (!"0".equals(uStOrSch) && "SchoolBoy".equals(uStOrSch)){
+            buttonSchool.setChecked(true);
+            buttonStudent.setChecked(false);
+        }
+        else {
+            buttonSchool.setChecked(false);
+            buttonStudent.setChecked(false);
+        }
+
+        Button save = rootView.findViewById(R.id.saveProfile);
+        save.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onClick(View v) {
+
+                userName = ((EditText) Objects.requireNonNull(getActivity()).findViewById(R.id.profName)).getText().toString();
+                userSchool = ((EditText) getActivity().findViewById(R.id.profSchool)).getText().toString();
+                userClass = ((EditText) getActivity().findViewById(R.id.profClass)).getText().toString();
+
+                if("".equals(userClass) || "".equals(userName) || "".equals(userSchool) || "".equals(studentOrSchoolBoy) || "".equals(studentOrSchoolBoy)){
+
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    builder.setTitle("Warning")
+                            .setMessage("Не все поля заполненны, пожалуйста, заполните все поля")
+                            .setCancelable(false)
+                            .setNegativeButton("Ок, закрыть",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+                else if(Integer.parseInt(userClass) > 8 && studentOrSchoolBoy.equals("Student")){
+
+
+                    AlertDialog.Builder ad;
+                    ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    ad.setTitle("Предупреждение");  // заголовок
+                    ad.setMessage("Вы не можете быть больше 8 курса. Выберите 'школьник' или напишите в службу поддержки."); // сообщение
+                    ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            Fragment fragment = new Send();
+                            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                        }
+                    });
+                    ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            dialog.cancel();
+                        }
+                    });
+                    ad.setCancelable(true);
+                    ad.show();
+                }
+                else if(Integer.parseInt(userClass) > 12 && studentOrSchoolBoy.equals("SchoolBoy")){
+
+                    AlertDialog.Builder ad;
+                    ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    ad.setTitle("Предупреждение");  // заголовок
+                    ad.setMessage("Вы не можете быть больше 12 класса. Выберите 'студент' или напишите в службу поддержки."); // сообщение
+                    ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            Fragment fragment = new Send();
+                            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                        }
+                    });
+                    ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            dialog.cancel();
+                        }
+                    });
+                    ad.setCancelable(true);
+                    ad.show();
+                }
+                else {
+                    // сохранение данных о пользователе в SharedPreference
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("Users", "1");
+                    editor.putString("UserName", userName);
+                    editor.putString("UserClass", userClass);
+                    editor.putString("UserSchool", userSchool);
+                    editor.putString("UserStudentOrSchoolBoy", studentOrSchoolBoy);
+                    editor.putString("isFirst", "true");
+                    editor.apply();
+                    Toast.makeText(getContext(), "Сохранено", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        // другие настройки (настройки приложения)
+        Button buttonInfoApp = rootView.findViewById(R.id.infoApp); // кнопка информации о приложении
         buttonInfoApp.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -71,62 +213,23 @@ public class Settings extends Fragment {
             }
         });
 
-        String folderName = "AntiTextBook/ATB/settings", fileName = "checkedBox.txt";
-        final String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName + "/" + fileName;
-
-        File file = new File(fullPath);
-        if(!file.exists()) {
-            if (isExternalStorageWritable()) {
-                saveFile(fullPath, String.valueOf("false"));
-            } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                builder.setTitle("Error")
-                        .setMessage("не установлена cd-card. Для корректной работы приложения необходима cd-card")
-                        .setCancelable(false)
-                        .setNegativeButton("Ок, закрыть",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
-        }
-
-
-
         // сохраняет значение checkBox
         CheckBox checkBox = rootView.findViewById(R.id.checkBox);
         checkBox.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-
-                //сохранение значения в shared prefrences
+                //сохранение значения в shared preferences
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("Checked", "pair");
                 editor.apply();
-
 
                 // проверка на доступ к памяти
                 if(isReadStorageAllowed()){
                     requestStoragePermission();
                 }
 
-                CheckBox checkBox = Objects.requireNonNull(getView()).findViewById(R.id.checkBox);
-                String folderName = "AntiTextBook/ATB/settings", fileName = "checkedBox.txt";
-                String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName + "/" + fileName;
-
-                if(checkBox.isChecked()){
-                    int i = 1;
-                    saveFile(fullPath,String.valueOf(i));
-                }
-                else {
-                    int i = 2;
-                    saveFile(fullPath, String.valueOf(i));
-                }
             }
         });
 
@@ -135,49 +238,35 @@ public class Settings extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                // проверка на доступ к памяти
-                if(isReadStorageAllowed()){
-                    requestStoragePermission();
-                }
+                AlertDialog.Builder ad;
 
-                CheckBox checkBox = Objects.requireNonNull(getView()).findViewById(R.id.darkBox);
-                if(checkBox.isChecked()){
-                    setThemeDark();
-                }
-                else {
-                   setThemeNormal();
-                }
+                ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                ad.setTitle("Смена темы");  // заголовок
+                ad.setMessage("Для смены темы приложение будет перезагружено"); // сообщение
+                ad.setPositiveButton("Ок, перезагрузить", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+
+                        CheckBox checkBox = Objects.requireNonNull(getView()).findViewById(R.id.darkBox);
+                        if(checkBox.isChecked()){
+                            setThemeDark();
+                        }
+                        else {
+                            setThemeNormal();
+                        }
+                    }
+                });
+                ad.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        dialog.cancel();
+
+                    }
+                });
+                ad.setCancelable(true);
+                ad.show();
+
             }
         });
         return rootView;
-    }
-    public void saveFile (String filePath, String FileContent)
-    {
-        //Создание объекта файла.
-        File fileHandle = new File(filePath);
-        try
-        {
-            //Если нет директорий в пути, то они будут созданы:
-            if (!fileHandle.getParentFile().exists())
-                fileHandle.getParentFile().mkdirs();
-            //Если файл существует, то он будет перезаписан:
-            fileHandle.createNewFile();
-            FileOutputStream fOut = new FileOutputStream(fileHandle);
-            OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
-            myOutWriter.write(FileContent);
-            myOutWriter.close();
-            fOut.close();
-        }
-        catch (IOException e)
-        {
-            Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public boolean isExternalStorageWritable()
-    {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -230,20 +319,75 @@ public class Settings extends Fragment {
     }
 
     // метод изменения темы на темную
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void setThemeDark(){
         String i = "TRUE";
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("Theme", i);
         editor.apply();
+
+
+        doRestart(getActivity());
     }
     // метод изменения темы на светлую
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void setThemeNormal(){
         String i = "FALSE";
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("Theme", i);
         editor.apply();
+
+        doRestart(getActivity());
+    }
+
+    public static void doRestart(Context c) {
+
+        // костыль
+        // ждем для перезагрузки приложения (чтобы инфа о смене темы добавилась в SharedPreference)
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if (c != null) {
+                PackageManager pm = c.getPackageManager();
+
+                if (pm != null) {
+
+                    Intent mStartActivity = pm.getLaunchIntentForPackage(
+                            c.getPackageName()
+                    );
+                    if (mStartActivity != null) {
+                        mStartActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                        int mPendingIntentId = 223344;
+                        PendingIntent mPendingIntent = PendingIntent.getActivity(c, mPendingIntentId, mStartActivity,
+                                PendingIntent.FLAG_CANCEL_CURRENT);
+                        AlarmManager mgr = (AlarmManager) c.getSystemService(Context.ALARM_SERVICE);
+                        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1, mPendingIntent);
+                        
+                        System.exit(0);
+                    } else {
+                        Toast.makeText(c,"Was not able to restart application, mStartActivity null",Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(c,"Was not able to restart application, PM null",Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(null,"Was not able to restart application, Context null",Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception ex) {
+            Toast.makeText(c,"Was not able to restart application",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
 }

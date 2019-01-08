@@ -19,27 +19,29 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
-
-    private static final String BASE_URL = "https://api.mailgun.net/v3/sandbox118f903315a442e69744e46c8af8b5d9.mailgun.org/";
+    private static String BASE_URL;
 
     private static final String API_USERNAME = "api";
 
     //you need to change the value to your API key
-    private static final String API_PASSWORD = "43a049435d1c3823c9565064475a9f75-52cbfb43-67508483";
+    private static String API_PASSWORD;
 
-    private static final String AUTH = "Basic " + Base64.encodeToString((API_USERNAME+":"+API_PASSWORD).getBytes(), Base64.NO_WRAP);
+    private static String AUTH;
 
     private static RetrofitClient mInstance;
     private Retrofit retrofit;
 
-    private RetrofitClient() {
+    private RetrofitClient(String url, String pass) {
+        BASE_URL = url;
+        API_PASSWORD = pass;
+        AUTH  = "Basic " + Base64.encodeToString((API_USERNAME+":"+API_PASSWORD).getBytes(), Base64.NO_WRAP);
+
         OkHttpClient okClient = new OkHttpClient.Builder()
                 .addInterceptor(
                         new Interceptor() {
                             @Override
                             public Response intercept(@NonNull Chain chain) throws IOException {
                                 Request original = chain.request();
-
                                 //Adding basic auth
                                 Request.Builder requestBuilder = original.newBuilder()
                                         .header("Authorization", AUTH)
@@ -56,11 +58,12 @@ public class RetrofitClient {
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okClient)
                 .build();
+
     }
 
-    public static synchronized RetrofitClient getInstance() {
+    public static synchronized RetrofitClient getInstance(String url, String pass) {
         if (mInstance == null) {
-            mInstance = new RetrofitClient();
+            mInstance = new RetrofitClient(url, pass);
         }
         return mInstance;
     }

@@ -49,4 +49,9 @@ public class Schedule2 extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
 }

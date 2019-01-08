@@ -98,4 +98,9 @@ public class Library extends Fragment {
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
 }

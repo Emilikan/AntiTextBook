@@ -1,8 +1,12 @@
 package com.example.antitextbook;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +37,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
@@ -43,25 +49,22 @@ import static java.lang.String.valueOf;
 
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class AboutBook extends Fragment {
-
     private TextView mPart2;
     private TextView mAuthor2;
     private TextView mProject2;
     private TextView mClass2;
     private TextView mYear2;
+    private TextView mDescribing;
     private ImageView imageView;
     private FrameLayout frameLayout;
     private Button upload2;
 
-    //private int i = 0;
-    //private String dbCounter;
-
-    public String conterOfFragment;
-    private File localFile = null;
+    public String counterOfFragment;
     private Uri pdfFilePath = null;
 
+    private ProgressBar progressBar;
+
     private DatabaseReference mRef;
-    private StorageReference islandRef;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,137 +75,231 @@ public class AboutBook extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_about_book, container, false);
 
-        // подписываем пользователя на тему (для получаения push уведомлений)
-        FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
+        progressBar = rootView.findViewById(R.id.progressBarInAboutBook);
+        progressBar.setVisibility(ProgressBar.VISIBLE);
 
-        // получаем значение о том, на какую книгу мы перешли (из Bundle)
-        Bundle bundle = getArguments();
-        conterOfFragment = "0";
-        if(bundle != null){
-            conterOfFragment = bundle.getString("Value", "0");
-        }
+        if(!isOnline(Objects.requireNonNull(getContext()))){
+            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+            builder.setTitle("Warning")
+                    .setMessage("Нет доступа в интернет. Проверьте наличие связи")
+                    .setCancelable(false)
+                    .setNegativeButton("Ок, закрыть",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
 
-        frameLayout = rootView.findViewById(R.id.aboutBook);
-        imageView = rootView.findViewById(R.id.imageView3);
-        mPart2 = rootView.findViewById(R.id.Part2);
-        mAuthor2 = rootView.findViewById(R.id.Author2);
-        mProject2 = rootView.findViewById(R.id.Project2);
-        mClass2 = rootView.findViewById(R.id.Class2);
-        mYear2 = rootView.findViewById(R.id.Year2);
-        upload2 = rootView.findViewById(R.id.upload2);
-        ImageView back = rootView.findViewById(R.id.back2);
-
-        setTheme();
-
-         // кнопка скачать книгу
-        upload2.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onClick(View v) {
-            // скачивание книги
-                //i = 1;
-                //changeTop();
-
-                mRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(conterOfFragment).child("Pdf").getValue(String.class)));
-                        //localFile = getAlbumStorageDir(getApplicationContext(), "uploads1");
-                        String nameOfFileInTelephone = dataSnapshot.child("Books").child(conterOfFragment).child("Author").getValue(String.class) + " " +  dataSnapshot.child("Books").child(conterOfFragment).child("Class").getValue(String.class)
-                                + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Subject").getValue(String.class) + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Part").getValue(String.class)
-                                + " " + dataSnapshot.child("Books").child(conterOfFragment).child("Year").getValue(String.class);
-
-                        localFile = saveFile(Objects.requireNonNull(getContext()).getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/" + nameOfFileInTelephone + ".pdf");
-
-                        assert localFile != null;
-                        islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                if(getActivity() != null && getContext() != null) {
-                                    Toast.makeText(getActivity(), "Файл скачан", Toast.LENGTH_LONG).show();
-                                    // в переменной pdfFilePath хранится Uri скаченного файла. Передавать его в Home.class, записывать его в файл настроек или SharedPreferences
-                                    if(localFile.toURI() != null) {
-                                        pdfFilePath = Uri.parse(localFile.toURI() + "");
-
-                                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-                                        SharedPreferences.Editor editor = preferences.edit();
-                                        editor.putString("URI", valueOf(pdfFilePath));
-                                        editor.apply();
-                                    }
-                                    localFile = null;
-                                    pdfFilePath = null;
-                                    islandRef = null;
-                                    mRef = null;
-
-                                    Fragment fragment = null;
-                                    Class fragmentClass;
-                                    fragmentClass = Home.class;
-                                    try {
-                                        fragment = (Fragment) fragmentClass.newInstance();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
+                                    Fragment fragment = new Library();
                                     FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                                    assert fragment != null;
                                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                    Toast.makeText(getActivity(), "Нет книг", Toast.LENGTH_SHORT).show();
                                 }
-                            }
-                        });
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(getContext(), "ERROR" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        });
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+        else {
+            // подписываем пользователя на тему (для получаения push уведомлений)
+            FirebaseMessaging.getInstance().subscribeToTopic("ForAllUsers1");
 
-        // изображение-кнопка назад
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment fragment = null;
-                Class fragmentClass;
-                fragmentClass = DownloadFromCloud.class;
-                try {
-                    fragment = (Fragment) fragmentClass.newInstance();
-                } catch (Exception e) {
-                    e.printStackTrace();
+            // получаем значение о том, на какую книгу мы перешли (из Bundle)
+            Bundle bundle = getArguments();
+            counterOfFragment = "0";
+            if (bundle != null) {
+                counterOfFragment = bundle.getString("Value", "0");
+            }
+
+            frameLayout = rootView.findViewById(R.id.aboutBook);
+            imageView = rootView.findViewById(R.id.imageView3);
+            mPart2 = rootView.findViewById(R.id.Part2);
+            mAuthor2 = rootView.findViewById(R.id.Author2);
+            mProject2 = rootView.findViewById(R.id.Project2);
+            mDescribing = rootView.findViewById(R.id.describingAboutBook);
+            mClass2 = rootView.findViewById(R.id.Class2);
+            mYear2 = rootView.findViewById(R.id.Year2);
+            upload2 = rootView.findViewById(R.id.upload2);
+            ImageView back = rootView.findViewById(R.id.back2);
+
+            setTheme();
+
+            // кнопка скачать книгу
+            upload2.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                @Override
+                public void onClick(View v) {
+
+                    // скачивание книги в отдельном потоке
+                    Thread download = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            final Context context = getContext();
+                            final String contFrag = counterOfFragment;
+
+                            final DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+
+                            // устанавливаем большее значение в топе загрузок
+                            mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    String dbCounter = dataSnapshot.child("Books").child(contFrag).child("TopDownloads").getValue(String.class);
+                                    assert dbCounter != null;
+                                    int intCounter = Integer.parseInt(dbCounter);
+                                    intCounter++;
+                                    String stringCounter = Integer.toString(intCounter);
+                                    mRef.child("Books").child(contFrag).child("TopDownloads").setValue(stringCounter);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    AlertDialog.Builder ad;
+                                    ad = new AlertDialog.Builder(context);
+                                    ad.setTitle("Error");  // заголовок
+                                    ad.setMessage("Ошибка: " + databaseError.getMessage() + "\n Проблемы на серверной части. Можете сообщить в службу поддержки"); // сообщение
+                                    ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int arg1) {
+                                            Fragment fragment = new Send();
+                                            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                                            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                        }
+                                    });
+                                    ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int arg1) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                                    ad.setCancelable(true);
+                                    ad.show();
+                                }
+                            });
+
+                            // получаем данные только 1 раз (не следит за изменениями)
+                            // это сделано, чтобы не вылетало, когда в бд добавляются книги
+                            mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                    StorageReference islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(contFrag).child("Pdf").getValue(String.class)));
+
+                                    String nameOfFileInTelephone = dataSnapshot.child("Books").child(contFrag).child("Author").getValue(String.class) + " " + dataSnapshot.child("Books").child(contFrag).child("Describing").getValue(String.class) + " " + dataSnapshot.child("Books").child(contFrag).child("Class").getValue(String.class)
+                                            + " " + dataSnapshot.child("Books").child(contFrag).child("Subject").getValue(String.class) + " " + dataSnapshot.child("Books").child(contFrag).child("Part").getValue(String.class)
+                                            + " " + dataSnapshot.child("Books").child(contFrag).child("Year").getValue(String.class);
+
+                                    final File localFile = saveFile(Objects.requireNonNull(getContext()).getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/" + nameOfFileInTelephone + ".pdf");
+
+                                    assert localFile != null;
+                                    final ProgressDialog progressDialog = new ProgressDialog(context);
+                                    progressDialog.setTitle("Downloading");
+                                    progressDialog.show();
+                                    islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                            progressDialog.dismiss();
+
+                                            // в переменной pdfFilePath хранится Uri скаченного файла. Передавать его в Home.class, записывать его в файл настроек или SharedPreferences
+                                            if (localFile.toURI() != null) {
+                                                pdfFilePath = Uri.parse(localFile.toURI() + "");
+
+                                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                                                SharedPreferences.Editor editor = preferences.edit();
+                                                editor.putString("URI", valueOf(pdfFilePath));
+                                                editor.apply();
+                                            }
+
+                                            // тут у нас проверка на то, ушел ли пользователь с активити. Если не ушел, то мы сразу открываем книгу, если ушел, то оповещаем его
+                                            if(getActivity() != null) {
+                                                Fragment fragment = new Home();
+                                                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                                                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                                Toast.makeText(context, "Файл скачан", Toast.LENGTH_LONG).show();
+                                            }
+                                            else {
+                                                //* написать код для открытия сразу библиотеки
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(context));
+                                                builder.setTitle("Информация")
+                                                        .setMessage("Файл скачан")
+                                                        .setCancelable(false)
+                                                        .setNegativeButton("Ок, закрыть",
+                                                                new DialogInterface.OnClickListener() {
+                                                                    public void onClick(DialogInterface dialog, int id) {
+                                                                        dialog.cancel();
+                                                                    }
+                                                                });
+                                                AlertDialog alert = builder.create();
+                                                alert.show();
+                                            }
+
+                                        }
+                                    }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                            // получаем проценты загрузки
+                                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                                            // отображаем диалог с процентами
+                                            progressDialog.setMessage("Downloaded " + ((int) progress) + "%...");
+                                        }
+                                    });
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    AlertDialog.Builder ad;
+                                    ad = new AlertDialog.Builder(context);
+                                    ad.setTitle("Error");  // заголовок
+                                    ad.setMessage("Ошибка: " + databaseError.getMessage() + "\n Проблемы на серверной части. Можете сообщить в службу поддержки"); // сообщение
+                                    ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int arg1) {
+                                            Fragment fragment = new Send();
+                                            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                                            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                        }
+                                    });
+                                    ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int arg1) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                                    ad.setCancelable(true);
+                                    ad.show();
+                                }
+                            });
+                        }
+                    });
+                    download.start();
                 }
-                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                assert fragment != null;
-                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-            }
-        });
 
-        changeText();
+            });
+
+            // изображение-кнопка назад
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Fragment fragment = null;
+                    Class fragmentClass;
+                    fragmentClass = DownloadFromCloud.class;
+                    try {
+                        fragment = (Fragment) fragmentClass.newInstance();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                    assert fragment != null;
+                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                }
+            });
+
+            changeText();
+        }
 
         return rootView;
     }
 
-    /*private void changeTop(){
-        mRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(i == 1){
-                    dbCounter = dataSnapshot.child("Books").child(conterOfFragment).child("TopDownloads").getValue(String.class);
-                    // Toast.makeText(getActivity(), dbCounter, Toast.LENGTH_SHORT).show();
-                    assert dbCounter != null;
-                    int intCounter = Integer.parseInt(dbCounter);
-                    intCounter++;
-                    String stringCounter = Integer.toString(intCounter);
-                    mRef.child("Books").child(conterOfFragment).child("TopDownloads").setValue(stringCounter);
-                    i = 0;
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+    // проверям наличие интернета
+    private static boolean isOnline (Context context)
+    {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
-    */
 
     // изменяем текст на тот, который получили из бд
     @SuppressLint("WrongViewCast")
@@ -213,13 +310,15 @@ public class AboutBook extends Fragment {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference storageRef = storage.getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(conterOfFragment).child("Icon").getValue(String.class)));
+                StorageReference storageRef = storage.getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(counterOfFragment).child("Icon").getValue(String.class)));
                 storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Picasso.with(getContext()).load(uri).into(imageView);
+                        // проверка на то, есть ли активность еще эта для того, чтобы прога не вылетала, если еще что-то не успело загрузиться, а мы уже вышли из активити
+                        if(getActivity() != null) {
+                            Picasso.with(getContext()).load(uri).into(imageView);
+                        }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -229,34 +328,44 @@ public class AboutBook extends Fragment {
                     }
                 });
 
-                mPart2.setText("Часть: " + dataSnapshot.child("Books").child(conterOfFragment).child("Part").getValue(String.class));
-                mAuthor2.setText("Автор: " +dataSnapshot.child("Books").child(conterOfFragment).child("Author").getValue(String.class));
-                mProject2.setText("Предмет: " +dataSnapshot.child("Books").child(conterOfFragment).child("Subject").getValue(String.class));
-                mClass2.setText("Класс: " + dataSnapshot.child("Books").child(conterOfFragment).child("Class").getValue(String.class));
-                mYear2.setText("Год: " + dataSnapshot.child("Books").child(conterOfFragment).child("Year").getValue(String.class));
+                mPart2.setText("Часть: " + dataSnapshot.child("Books").child(counterOfFragment).child("Part").getValue(String.class));
+                mAuthor2.setText("Автор: " +dataSnapshot.child("Books").child(counterOfFragment).child("Author").getValue(String.class));
+                mProject2.setText("Предмет: " +dataSnapshot.child("Books").child(counterOfFragment).child("Subject").getValue(String.class));
+                mClass2.setText("Класс: " + dataSnapshot.child("Books").child(counterOfFragment).child("Class").getValue(String.class));
+                mYear2.setText("Год: " + dataSnapshot.child("Books").child(counterOfFragment).child("Year").getValue(String.class));
+                mDescribing.setText("Описание: " + dataSnapshot.child("Books").child(counterOfFragment).child("Describing").getValue(String.class));
+
+                progressBar.setVisibility(ProgressBar.INVISIBLE); // убираем прогресс бар
             }
 
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // создаем диологовое окно с ошибкой
-                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                builder.setTitle("Error")
-                        .setMessage(databaseError.getMessage())
-                        .setCancelable(false)
-                        .setNegativeButton("Ок, закрыть",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                AlertDialog alert = builder.create();
-                alert.show();
+                AlertDialog.Builder ad;
+                ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                ad.setTitle("Error");  // заголовок
+                ad.setMessage("Ошибка: " + databaseError.getMessage() + "\n Проблемы на серверной части. Можете сообщить в службу поддержки"); // сообщение
+                ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        Fragment fragment = new Send();
+                        FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                    }
+                });
+                ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        dialog.cancel();
+                    }
+                });
+                ad.setCancelable(true);
+                ad.show();
             }
         });
 
     }
 
+    // метод создания пустого файла
     public File saveFile (String filePath)
     {
         //Создание объекта файла.
@@ -272,6 +381,24 @@ public class AboutBook extends Fragment {
         }
         catch (IOException e)
         {
+            AlertDialog.Builder ad;
+            ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+            ad.setTitle("Error");  // заголовок
+            ad.setMessage("Ошибка: " + e.getMessage() + "\n Проблемы в создании файла. Можете сообщить в службу поддержки"); // сообщение
+            ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int arg1) {
+                    Fragment fragment = new Send();
+                    FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                }
+            });
+            ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int arg1) {
+                    dialog.cancel();
+                }
+            });
+            ad.setCancelable(true);
+            ad.show();
             Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
         return fileHandle;
@@ -288,6 +415,12 @@ public class AboutBook extends Fragment {
             frameLayout.setBackgroundResource(R.drawable.dark_bg);
             upload2.setBackgroundResource(R.drawable.dark_cards);
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mRef = null;
     }
 
 }
