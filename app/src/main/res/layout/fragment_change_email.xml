@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChangeEmail"
-    android:background="@drawable/background_of_app">
+    android:background="@drawable/background_of_app"
+    tools:context=".ChangeEmail">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,12 +15,12 @@
         <TextView
             android:id="@+id/textView8"
             android:layout_width="match_parent"
-            android:gravity="center"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:fontFamily="@font/roboto_light"
             android:layout_height="wrap_content"
-            android:text="@string/change_email_main" />
+            android:fontFamily="@font/roboto_light"
+            android:gravity="center"
+            android:text="@string/change_email_main"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -50,15 +50,15 @@
             android:id="@+id/next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_gradient"
-            android:fontFamily="@font/roboto_light"
-            android:textColor="#FFFFFF"
-            android:padding="24dp"
-            android:textSize="16sp"
-            android:layout_marginRight="40dp"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="15dp"
-            android:text="@string/change_email_button" />
+            android:layout_marginRight="40dp"
+            android:background="@drawable/button_gradient"
+            android:fontFamily="@font/roboto_light"
+            android:padding="24dp"
+            android:text="@string/change_email_button"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
 
     </LinearLayout>
 </FrameLayout>

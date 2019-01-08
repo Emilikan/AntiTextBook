@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".MainSettings"
-    android:background="@drawable/background_of_app">
+    android:background="@drawable/background_of_app"
+    tools:context=".MainSettings">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -16,9 +16,9 @@
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
-            android:background="#7d48df"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="#7d48df" />
 
     </android.support.design.widget.AppBarLayout>
 

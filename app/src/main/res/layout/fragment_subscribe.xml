@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Subscribe"
-    android:background="@drawable/background_of_app">
+    android:background="@drawable/background_of_app"
+    tools:context=".Subscribe">
 
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
+
         <ProgressBar
             android:id="@+id/progressBarInSubscribe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
-            />
+            android:visibility="invisible" />
     </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -74,8 +75,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/listForSchool"
             android:layout_width="match_parent"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
     </LinearLayout>
 </FrameLayout>

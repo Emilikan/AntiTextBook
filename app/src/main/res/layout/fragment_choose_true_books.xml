@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/chooseTrueBooks"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/chooseTrueBooks"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ChooseTrueBooks"
-    android:background="@drawable/background_of_app">
+    android:background="@drawable/background_of_app"
+    tools:context=".ChooseTrueBooks">
 
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
+
         <ProgressBar
             android:id="@+id/progressBarInChoose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
-            />
+            android:visibility="visible" />
     </FrameLayout>
 
     <LinearLayout
@@ -40,18 +40,18 @@
 
         </LinearLayout>
 
-    <!--<ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/booksListViewForAdmin"
-            />
-            -->
+        <!--<ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/booksListViewForAdmin"
+                />
+                -->
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/listForAdmin"
             android:layout_width="match_parent"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
     </LinearLayout>
 
 </FrameLayout>

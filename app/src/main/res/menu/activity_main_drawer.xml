@@ -24,12 +24,6 @@
             android:id="@+id/settings"
             android:icon="@drawable/ic_settings_work_tool"
             android:title="@string/menu_settings" />
-
-        <item
-            android:id="@+id/draw"
-            android:icon="@drawable/ic_settings_work_tool"
-            android:title="Draw" />
-
     </group>
 
     <item android:title="@string/menu_connection">

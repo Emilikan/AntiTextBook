@@ -172,15 +172,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if (id == R.id.home) {
             fragmentClass = Home.class;
         }
-        else if (id == R.id.draw) {
-            fragmentClass = Draw.class;
-        }
         else if (id == R.id.schedule) {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             String pair = preferences.getString("Checked", "0");
 
             if("pair".equals(pair)) {
-                fragmentClass = Schedule2.class;
+                fragmentClass = Schedule.class;
             }
             else{
                 fragmentClass = Schedule.class;

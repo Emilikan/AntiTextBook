@@ -2,11 +2,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/library"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/library"
-    tools:context=".Library"
-    android:background="@drawable/background_of_app">
+    android:background="@drawable/background_of_app"
+    tools:context=".Library">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -22,9 +22,9 @@
             android:layout_height="0dp"
             android:layout_margin="16dp"
             android:layout_weight="50"
+            android:background="@color/colorItemLight"
             android:elevation="10dp"
             android:translationZ="10dp"
-            android:background="@color/colorItemLight"
             app:cardCornerRadius="32dp">
 
             <ImageView
@@ -33,8 +33,8 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:layout_margin="32dp"
-                app:srcCompat="@drawable/ic_folder_white_shape"
-                android:translationX="120dp" />
+                android:translationX="120dp"
+                app:srcCompat="@drawable/ic_folder_white_shape" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -54,10 +54,10 @@
             android:layout_height="0dp"
             android:layout_margin="16dp"
             android:layout_weight="50"
+            android:background="@color/colorItemLight"
             android:elevation="10dp"
             android:translationZ="10dp"
-            android:background="@color/colorItemLight"
-            app:cardCornerRadius="32dp" >
+            app:cardCornerRadius="32dp">
 
             <ImageView
                 android:id="@+id/imageView5"
@@ -65,8 +65,8 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:layout_margin="32dp"
-                app:srcCompat="@drawable/ic_cloud_computing"
-                android:translationX="120dp" />
+                android:translationX="120dp"
+                app:srcCompat="@drawable/ic_cloud_computing" />
 
             <TextView
                 android:id="@+id/textView6"

@@ -1,115 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/send"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/send"
-    tools:context=".Send"
-    android:background="@drawable/background_of_app">
+    android:background="@drawable/background_of_app"
+    tools:context=".Send">
 
-    <!-- TODO: Update blank fragment layout -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_light"
-            android:text="@string/send_mainText"
-            android:gravity="center"
-            android:textColor="#FFF"
-            android:textSize="24sp" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:fontFamily="@font/roboto_light"
-            android:text="@string/send_secondTest"
-            android:textColor="#FFF"
-            android:textSize="11sp" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40sp"
-            android:layout_marginTop="12dp"
-            android:layout_marginRight="40sp"
-            android:fontFamily="@font/roboto_light"
-            android:hint="@string/send_title"
-            android:textColorHint="#FFFFFF"
-            app:errorEnabled="true">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/nameOfFeedback"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_light"
-                android:inputType="textPersonName"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#FFFFFF" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40sp"
-            android:layout_marginTop="12dp"
-            android:layout_marginRight="40sp"
-            android:fontFamily="@font/roboto_light"
-            android:hint="@string/send_email"
-            android:textColorHint="#FFFFFF"
-            app:errorEnabled="true">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_light"
+                    android:gravity="center"
+                    android:text="@string/send_mainText"
+                    android:textColor="#FFF"
+                    android:textSize="24sp" />
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/emailOfFeedback"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_light"
-                android:inputType="textEmailAddress"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#FFFFFF" />
-        </android.support.design.widget.TextInputLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_light"
+                    android:gravity="center"
+                    android:text="@string/send_secondTest"
+                    android:textColor="#FFF"
+                    android:textSize="11sp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40sp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="40sp"
+                    android:fontFamily="@font/roboto_light"
+                    android:hint="@string/send_title"
+                    android:textColorHint="#FFFFFF"
+                    app:errorEnabled="true">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/nameOfFeedback"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_light"
+                        android:inputType="textPersonName"
+                        android:textColor="#FFFFFF"
+                        android:textColorHint="#FFFFFF" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40sp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="40sp"
+                    android:fontFamily="@font/roboto_light"
+                    android:hint="@string/send_email"
+                    android:textColorHint="#FFFFFF"
+                    app:errorEnabled="true">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/emailOfFeedback"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_light"
+                        android:inputType="textEmailAddress"
+                        android:textColor="#FFFFFF"
+                        android:textColorHint="#FFFFFF" />
+                </android.support.design.widget.TextInputLayout>
 
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40sp"
-            android:layout_marginTop="12dp"
-            android:layout_marginRight="40sp"
-            android:fontFamily="@font/roboto_light"
-            android:hint="@string/send_describing"
-            android:textColorHint="#FFFFFF"
-            app:errorEnabled="true">
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40sp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="40sp"
+                    android:fontFamily="@font/roboto_light"
+                    android:hint="@string/send_describing"
+                    android:textColorHint="#FFFFFF"
+                    app:errorEnabled="true">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/describingOfFeedback"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_light"
-                android:inputType="textMultiLine"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#FFFFFF" />
-        </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/describingOfFeedback"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_light"
+                        android:inputType="textMultiLine"
+                        android:textColor="#FFFFFF"
+                        android:textColorHint="#FFFFFF" />
+                </android.support.design.widget.TextInputLayout>
 
-        <Button
-            android:id="@+id/sendFeedback"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="36dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginRight="36dp"
-            android:fontFamily="@font/roboto_light"
-            android:textColor="#FFF"
-            android:background="@drawable/button_gradient"
-            android:text="@string/send_sendLater"
-            android:visibility="visible" />
+                <Button
+                    android:id="@+id/sendFeedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="36dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginRight="36dp"
+                    android:background="@drawable/button_gradient"
+                    android:fontFamily="@font/roboto_light"
+                    android:text="@string/send_sendLater"
+                    android:textColor="#FFF"
+                    android:visibility="visible" />
 
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
-
 </FrameLayout>

@@ -52,7 +52,7 @@
                         android:fontFamily="@font/roboto_light"
                         android:gravity="center"
                         android:hint="@string/settings_hint_name"
-                        android:textColor = "#FFF"
+                        android:textColor="#FFF"
                         android:textColorHint="#6221d8">
 
                         <android.support.design.widget.TextInputEditText

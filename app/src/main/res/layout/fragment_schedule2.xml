@@ -34,9 +34,9 @@
                     android:layout_height="0dp"
                     android:layout_margin="16dp"
                     android:layout_weight="50"
+                    android:background="@color/colorItemLight"
                     android:elevation="10dp"
                     android:translationZ="10dp"
-                    android:background="@color/colorItemLight"
                     app:cardCornerRadius="32dp">
                     <!-- app:cardBackgroundColor="@color/colorGreen"-->
 
@@ -52,8 +52,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
                             android:text="Понедельник"
-                            android:textSize="30sp"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8"
+                            android:textSize="30sp" />
 
                         <EditText
                             android:id="@+id/couples_mon1"
@@ -61,7 +61,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/mon_couples"
                             android:text="Первая пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                         <EditText
                             android:id="@+id/couples_mon2"
@@ -69,7 +69,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_mon1"
                             android:text="Вторая пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                         <EditText
                             android:id="@+id/couples_mon3"
@@ -77,7 +77,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_mon2"
                             android:text="Третья пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                         <EditText
                             android:id="@+id/couples_mon4"
@@ -85,7 +85,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_mon3"
                             android:text="Четвертая пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
@@ -97,9 +97,9 @@
                     android:layout_height="0dp"
                     android:layout_margin="16dp"
                     android:layout_weight="50"
+                    android:background="@color/colorItemLight"
                     android:elevation="10dp"
                     android:translationZ="10dp"
-                    android:background="@color/colorItemLight"
                     app:cardCornerRadius="32dp">
                     <!-- app:cardBackgroundColor="@color/colorGreen"-->
 
@@ -114,8 +114,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
                             android:text="Вторник"
-                            android:textSize="30sp"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8"
+                            android:textSize="30sp" />
 
                         <EditText
                             android:id="@+id/couples_th1"
@@ -123,7 +123,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/thuesday_couples"
                             android:text="Первая пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                         <EditText
                             android:id="@+id/couples_th2"
@@ -131,7 +131,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_th1"
                             android:text="Вторая пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                         <EditText
                             android:id="@+id/couples_th3"
@@ -139,7 +139,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_th2"
                             android:text="Третья пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                         <EditText
                             android:id="@+id/couples_th4"
@@ -147,7 +147,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_th3"
                             android:text="Четвертая пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
@@ -158,9 +158,9 @@
                     android:layout_height="0dp"
                     android:layout_margin="16dp"
                     android:layout_weight="50"
+                    android:background="@color/colorItemLight"
                     android:elevation="10dp"
                     android:translationZ="10dp"
-                    android:background="@color/colorItemLight"
                     app:cardCornerRadius="32dp">
                     <!-- app:cardBackgroundColor="@color/colorGreen"-->
 
@@ -175,8 +175,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
                             android:text="Среда"
-                            android:textSize="30sp"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8"
+                            android:textSize="30sp" />
 
                         <EditText
                             android:id="@+id/couples_wed1"
@@ -184,7 +184,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/wednesday_couples"
                             android:text="Первая пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                         <EditText
                             android:id="@+id/couples_wed2"
@@ -192,7 +192,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_wed1"
                             android:text="Вторая пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                         <EditText
                             android:id="@+id/couples_wed3"
@@ -200,7 +200,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_wed2"
                             android:text="Третья пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                         <EditText
                             android:id="@+id/couples_wed4"
@@ -208,7 +208,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_wed3"
                             android:text="Четвертая пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
 
@@ -218,9 +218,9 @@
                     android:layout_height="0dp"
                     android:layout_margin="16dp"
                     android:layout_weight="50"
+                    android:background="@color/colorItemLight"
                     android:elevation="10dp"
                     android:translationZ="10dp"
-                    android:background="@color/colorItemLight"
                     app:cardCornerRadius="32dp">
                     <!-- app:cardBackgroundColor="@color/colorGreen"-->
 
@@ -235,8 +235,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
                             android:text="Четверг"
-                            android:textSize="30sp"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8"
+                            android:textSize="30sp" />
 
                         <EditText
                             android:id="@+id/couples_thur1"
@@ -244,7 +244,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/thursday_couples"
                             android:text="Первая пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                         <EditText
                             android:id="@+id/couples_thur2"
@@ -252,7 +252,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_thur1"
                             android:text="Вторая пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                         <EditText
                             android:id="@+id/couples_thur3"
@@ -260,7 +260,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_thur2"
                             android:text="Третья пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                         <EditText
                             android:id="@+id/couples_thur4"
@@ -268,7 +268,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_thur3"
                             android:text="Четвертая пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
@@ -279,9 +279,9 @@
                     android:layout_height="0dp"
                     android:layout_margin="16dp"
                     android:layout_weight="50"
+                    android:background="@color/colorItemLight"
                     android:elevation="10dp"
                     android:translationZ="10dp"
-                    android:background="@color/colorItemLight"
                     app:cardCornerRadius="32dp">
                     <!-- app:cardBackgroundColor="@color/colorGreen"-->
 
@@ -296,8 +296,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
                             android:text="Пятница"
-                            android:textSize="30sp"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8"
+                            android:textSize="30sp" />
 
                         <EditText
                             android:id="@+id/couples_fri1"
@@ -305,7 +305,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/friday_couples"
                             android:text="Первая пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                         <EditText
                             android:id="@+id/couples_fri2"
@@ -313,7 +313,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_fri1"
                             android:text="Вторая пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                         <EditText
                             android:id="@+id/couples_fri3"
@@ -321,7 +321,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_fri2"
                             android:text="Третья пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                         <EditText
                             android:id="@+id/couples_fri4"
@@ -329,7 +329,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_fri3"
                             android:text="Четвертая пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
@@ -340,9 +340,9 @@
                     android:layout_height="0dp"
                     android:layout_margin="16dp"
                     android:layout_weight="50"
+                    android:background="@color/colorItemLight"
                     android:elevation="10dp"
                     android:translationZ="10dp"
-                    android:background="@color/colorItemLight"
                     app:cardCornerRadius="32dp">
                     <!-- app:cardBackgroundColor="@color/colorGreen"-->
 
@@ -357,8 +357,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
                             android:text="Суббота"
-                            android:textSize="30sp"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8"
+                            android:textSize="30sp" />
 
                         <EditText
                             android:id="@+id/couples_sat1"
@@ -366,7 +366,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/saturday_couples"
                             android:text="Первая пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                         <EditText
                             android:id="@+id/couples_sat2"
@@ -374,7 +374,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_sat1"
                             android:text="Вторая пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                         <EditText
                             android:id="@+id/couples_sat3"
@@ -382,7 +382,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_sat2"
                             android:text="Третья пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
                         <EditText
                             android:id="@+id/couples_sat4"
@@ -390,7 +390,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/couples_sat3"
                             android:text="Четвертая пара"
-                            android:textColor="#6221d8"/>
+                            android:textColor="#6221d8" />
 
 
                     </RelativeLayout>

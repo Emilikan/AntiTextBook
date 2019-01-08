@@ -2,22 +2,22 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/aboutBook"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/aboutBook"
-    tools:context=".AboutBook"
-    android:background="@drawable/background_of_app">
+    android:background="@drawable/background_of_app"
+    tools:context=".AboutBook">
 
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
+
         <ProgressBar
             android:id="@+id/progressBarInAboutBook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
-            />
+            android:visibility="visible" />
     </FrameLayout>
 
     <!-- TODO: Update blank fragment layout -->
@@ -51,31 +51,31 @@
                     android:layout_width="200dp"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="32dp"/>
+                    android:layout_marginBottom="32dp" />
 
                 <TextView
                     android:id="@+id/Project2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="#FFFFFF"
                     android:fontFamily="@font/roboto_light"
+                    android:textColor="#FFFFFF"
                     android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/describingAboutBook"
                     android:layout_width="match_parent"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/roboto_light"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"/>
+                    android:fontFamily="@font/roboto_light"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/Author2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:textColor="#FFFFFF"
                     android:fontFamily="@font/roboto_light"
+                    android:textColor="#FFFFFF"
                     android:textSize="16sp" />
 
                 <TextView
@@ -83,8 +83,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:textColor="#FFFFFF"
                     android:fontFamily="@font/roboto_light"
+                    android:textColor="#FFFFFF"
                     android:textSize="16sp" />
 
                 <TextView
@@ -92,8 +92,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:textColor="#FFFFFF"
                     android:fontFamily="@font/roboto_light"
+                    android:textColor="#FFFFFF"
                     android:textSize="16sp" />
 
                 <TextView
@@ -101,8 +101,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:textColor="#FFFFFF"
                     android:fontFamily="@font/roboto_light"
+                    android:textColor="#FFFFFF"
                     android:textSize="16sp" />
 
                 <Button
