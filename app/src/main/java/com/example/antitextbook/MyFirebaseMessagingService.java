@@ -8,7 +8,9 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Objects;
 
-
+/**
+ * Вот это точно для получения push уведомлений
+ */
 //class extending FirebaseMessagingService
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 

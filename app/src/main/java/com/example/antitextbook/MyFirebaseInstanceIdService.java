@@ -1,17 +1,13 @@
 package com.example.antitextbook;
 
-import android.annotation.SuppressLint;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
-import java.util.Objects;
-
-import static java.security.AccessController.getContext;
+/**
+ * Если мне не изменяет память, то этот класс для push уведоблений
+ */
 
 public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
 

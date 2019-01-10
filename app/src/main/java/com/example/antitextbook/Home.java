@@ -27,15 +27,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnDrawListener;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -59,8 +56,6 @@ public class Home extends Fragment {
     private PDFView pdfView;
 
     private String uriOfPdf;
-
-    private Bitmap mNewBitmap;
 
     private int color = Color.GREEN;
     private int thisWidth;
@@ -311,7 +306,6 @@ public class Home extends Fragment {
                 thisHeight = top + bottom;
                 thisWidth = right + left;
 
-                mNewBitmap = Bitmap.createBitmap(left + right, top + bottom, Bitmap.Config.ARGB_8888);
                 mBitmap = Bitmap.createBitmap(left + right, top + bottom, Bitmap.Config.ARGB_8888);
                 mCanvas = new Canvas(mBitmap);
             }
@@ -335,9 +329,9 @@ public class Home extends Fragment {
 
     public Bitmap combineBitmap(Bitmap c, Bitmap s)
     {
-        Bitmap cs = null;
+        Bitmap cs;
 
-        int width, height = 0;
+        int width, height;
 
         if(c.getWidth() > s.getWidth()) {
             width = c.getWidth();

@@ -45,6 +45,10 @@ import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 
+/**
+ * Класс загрузки книги от школы на сервер (книга еще должна пройти проверку у админов-разрабов)
+ */
+
 public class UploadBookOfSchool extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 234;
     private static final int PICK_PDF_REQUEST = 345;

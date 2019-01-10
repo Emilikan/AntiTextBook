@@ -33,6 +33,10 @@ import android.widget.Toast;
 
 import java.util.Objects;
 
+/**
+ * Настройки. Ничего интересного
+ */
+
 public class Settings extends Fragment {
     private int STORAGE_PERMISSION_CODE = 23;
 

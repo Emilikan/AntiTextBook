@@ -45,6 +45,10 @@ import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 
+/**
+ * Класс отправки книги от админа-разработчика (без доп проверок админов)
+ */
+
 public class Cloud extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 234;
     private static final int PICK_PDF_REQUEST = 345;

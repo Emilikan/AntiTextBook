@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
+/**
+ * Получаем книги из определенной папки и обрабатываем нажатие на них
+ */
 
 public class Storage extends Fragment {
     private static final int PICK_PDF_REQUEST = 345;

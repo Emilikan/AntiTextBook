@@ -19,9 +19,12 @@ import android.widget.ImageView;
 
 import java.util.Objects;
 
+/**
+ * Класс для проверки правильности введенного кода
+ */
+
 public class CheckEmail extends Fragment {
     private String emailOfSchool;
-    private int kod = 0;
     private int newKod;
 
     private SharedPreferences preferences;
@@ -198,7 +201,7 @@ public class CheckEmail extends Fragment {
 
     private void sendEmail() {
         // генерим код
-        kod = 1000 + (int) (Math.random() * 9999);
+        int kod = 1000 + (int) (Math.random() * 9999);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();

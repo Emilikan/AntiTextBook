@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -36,6 +35,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Показываем книги для школ
+ */
 
 public class Subscribe extends Fragment {
 
@@ -278,6 +280,7 @@ public class Subscribe extends Fragment {
                     String forWhoThisBook = dataSnapshot.child("Books").child(Integer.toString(a)).child("ForWho").getValue(String.class);
 
                     if(mSubj != null) {
+                        assert forWhoThisBook != null;
                         if (subj.equals("Все предметы") && forWhoThisBook.equals(forWho) && (classOf.equals("Все классы") || classOf.equals("Все курсы"))) {
                             books.add(new BookForRecycle(dataSnapshot.child("Books").child(Integer.toString(a)).child("Author").getValue(String.class),
                                     mSubj, dataSnapshot.child("Books").child(Integer.toString(a)).child("Describing").getValue(String.class),
@@ -288,16 +291,19 @@ public class Subscribe extends Fragment {
                                     mSubj, dataSnapshot.child("Books").child(Integer.toString(a)).child("Describing").getValue(String.class),
                                     classOfBook, Integer.toString(a), realIdOfBook, getContext(), getActivity(), nameOfSchool, true));
                             realIdOfBook.add(a);
-                        } else if (subj.equals("Все предметы") && forWhoThisBook.equals(forWho) && classOfBook.equals(classOf)) {
-                            books.add(new BookForRecycle(dataSnapshot.child("Books").child(Integer.toString(a)).child("Author").getValue(String.class),
-                                    mSubj, dataSnapshot.child("Books").child(Integer.toString(a)).child("Describing").getValue(String.class),
-                                    classOfBook, Integer.toString(a), realIdOfBook, getContext(), getActivity(), nameOfSchool, true));
-                            realIdOfBook.add(a);
-                        } else if (mSubj.equals(subj) && classOfBook.equals(classOf) && forWhoThisBook.equals(forWho)) {
-                            books.add(new BookForRecycle(dataSnapshot.child("Books").child(Integer.toString(a)).child("Author").getValue(String.class),
-                                    mSubj, dataSnapshot.child("Books").child(Integer.toString(a)).child("Describing").getValue(String.class),
-                                    classOfBook, Integer.toString(a), realIdOfBook, getContext(), getActivity(), nameOfSchool, true));
-                            realIdOfBook.add(a);
+                        } else {
+                            assert classOfBook != null;
+                            if (subj.equals("Все предметы") && forWhoThisBook.equals(forWho) && classOfBook.equals(classOf)) {
+                                books.add(new BookForRecycle(dataSnapshot.child("Books").child(Integer.toString(a)).child("Author").getValue(String.class),
+                                        mSubj, dataSnapshot.child("Books").child(Integer.toString(a)).child("Describing").getValue(String.class),
+                                        classOfBook, Integer.toString(a), realIdOfBook, getContext(), getActivity(), nameOfSchool, true));
+                                realIdOfBook.add(a);
+                            } else if (mSubj.equals(subj) && classOfBook.equals(classOf) && forWhoThisBook.equals(forWho)) {
+                                books.add(new BookForRecycle(dataSnapshot.child("Books").child(Integer.toString(a)).child("Author").getValue(String.class),
+                                        mSubj, dataSnapshot.child("Books").child(Integer.toString(a)).child("Describing").getValue(String.class),
+                                        classOfBook, Integer.toString(a), realIdOfBook, getContext(), getActivity(), nameOfSchool, true));
+                                realIdOfBook.add(a);
+                            }
                         }
                     }
                 }

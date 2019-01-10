@@ -9,7 +9,7 @@ import android.support.v4.app.NotificationCompat;
 import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
- * Created by Belal on 12/8/2017.
+ * Класс для получения push уведомлений
  */
 
 public class MyNotificationManager {
@@ -28,7 +28,7 @@ public class MyNotificationManager {
         return mInstance;
     }
 
-    public void displayNotification(String title, String body) {
+    void displayNotification(String title, String body) {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(mCtx, Constants.CHANNEL_ID)
