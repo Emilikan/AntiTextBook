@@ -49,6 +49,10 @@ public class FavoriteBook extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
                 pdfUri = arrPdfUriLB.get(position);
+                SharedPreferences preferences1 = PreferenceManager.getDefaultSharedPreferences(getContext());
+                SharedPreferences.Editor editor1 = preferences1.edit();
+                editor1.putString("openBook", mLastBook.get(position));
+                editor1.apply();
 
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor editor = preferences.edit();
@@ -65,6 +69,10 @@ public class FavoriteBook extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
                 pdfUri = arrPdfUri.get(position);
+                SharedPreferences preferences1 = PreferenceManager.getDefaultSharedPreferences(getContext());
+                SharedPreferences.Editor editor1 = preferences1.edit();
+                editor1.putString("openBook", mBooks.get(position));
+                editor1.apply();
 
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor editor = preferences.edit();
