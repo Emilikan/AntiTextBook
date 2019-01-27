@@ -37,7 +37,6 @@ public class Storage extends Fragment {
 
     private LinearLayout linearLayout;
     private Button choosePdf;
-
     private ListView listBooks;
     private String pdfUri;
 
@@ -53,13 +52,13 @@ public class Storage extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_storage, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_storage, container, false);
 
         // для смены тема
         linearLayout = rootView.findViewById(R.id.storage);
         choosePdf = rootView.findViewById(R.id.buttonChooseBook);
         listBooks = rootView.findViewById(R.id.booksListView2);
-        ImageView comeBack = rootView.findViewById(R.id.back4);
+        final ImageView comeBack = rootView.findViewById(R.id.back4);
 
         updateUI();
         setTheme();
@@ -69,6 +68,11 @@ public class Storage extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
+                SharedPreferences preferences1 = PreferenceManager.getDefaultSharedPreferences(getContext());
+                SharedPreferences.Editor editor1 = preferences1.edit();
+                editor1.putString("openBook", mBooks.get(position));
+                editor1.apply();
+
                 pdfUri = arrPdfUri.get(position);
 
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -82,10 +86,12 @@ public class Storage extends Fragment {
             }
         });
 
+
         // картинка-кнопка назад
         comeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Fragment fragment = null;
                 Class fragmentClass;
                 fragmentClass = Library.class;
@@ -111,16 +117,23 @@ public class Storage extends Fragment {
         // получаем все файлы, которые есть в папке загрузок
         File rootFolder = Objects.requireNonNull(getContext()).getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
         assert rootFolder != null;
-        File[] filesArray = rootFolder.listFiles();
+        final File[] filesArray = rootFolder.listFiles();
 
         for (File f: filesArray) {
             mBooks.add(f.getName());
             arrPdfUri.add(f.toURI() + "");
         }
 
+        listBooks.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                return true;
+            }
+        });
         return rootView;
     }
-
     // метод, который открывает проводник для выбора pdf
     private void pdfChooser() {
         Intent intent = new Intent();

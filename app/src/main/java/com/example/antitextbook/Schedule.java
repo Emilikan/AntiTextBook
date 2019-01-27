@@ -1,6 +1,5 @@
 package com.example.antitextbook;
 
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -9,8 +8,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +17,9 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import static java.lang.String.valueOf;
 import java.util.Objects;
+
+import static java.lang.String.valueOf;
 
 public class Schedule extends Fragment {
     private Button changingSchedule;
@@ -41,12 +39,13 @@ public class Schedule extends Fragment {
 
         changingSchedule =  rootView.findViewById(R.id.buttonChangeSchedule);
         changingSchedule.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Нажата кнопка", Toast.LENGTH_SHORT).show();
 
                 //сохранение расписания
-                lessons = getActivity().findViewById(R.id.lessons);
+                lessons = Objects.requireNonNull(getActivity()).findViewById(R.id.lessons);
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("Save_lessons", valueOf(lessons));

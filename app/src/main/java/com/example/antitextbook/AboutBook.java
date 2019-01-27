@@ -67,7 +67,7 @@ public class AboutBook extends Fragment {
     private DatabaseReference mRef;
 
     /**
-     * Класс относится к фрагменту AboutBook. Позволяет пользователю просмотреть информацию о книге, чкачать ее
+     * Класс относится к фрагменту AboutBook. Позволяет пользователю просмотреть информацию о книге, cкачать ее
      */
 
     @Override
