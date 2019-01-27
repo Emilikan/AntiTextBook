@@ -22,6 +22,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -84,7 +86,35 @@ public class Home extends Fragment {
      *
      * Так, ну вроде с остольным понятно
      */
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.home_menu, menu);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        if (preferences.getString("openBook","").equals(preferences.getString(preferences.getString("openBook",""),""))){
+            menu.getItem(0).setTitle("Удалить книгу из любимого");
+        }
+        else{
+            menu.getItem(0).setTitle("Добавить книгу в любимое");
+        }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences.Editor editor = preferences.edit();
+        if (preferences.getString("openBook","").equals(preferences.getString(preferences.getString("openBook",""),""))){
+            editor.remove(preferences.getString("openBook",""));
+            item.setTitle("Добавить книгу в любимое");
+        }
+        else{
+            editor.putString(preferences.getString("openBook",""),preferences.getString("openBook",""));
+            item.setTitle("Удалить книгу из любимого");
+        }
 
+        editor.apply();
+        return super.onOptionsItemSelected(item);
+
+    }
     private BottomNavigationView.OnNavigationItemSelectedListener menu = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
@@ -170,6 +200,8 @@ public class Home extends Fragment {
                     });
                     ad.setCancelable(true);
                     ad.show();
+
+
             }
             return true;
         }
@@ -181,6 +213,8 @@ public class Home extends Fragment {
     public View onCreateView(@NonNull final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView1 = inflater.inflate(R.layout.fragment_home, container, false);
+
+        setHasOptionsMenu(true);
 
         progressBar = rootView1.findViewById(R.id.progressBarInHome);
 
@@ -199,7 +233,12 @@ public class Home extends Fragment {
         menuVisibility.setOnNavigationItemSelectedListener(menu);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("lastBook",preferences.getString("openBook",""));
+        editor.putString("lastBookPDFUri",preferences.getString("URI",""));
+        editor.apply();
         uriOfPdf = preferences.getString("URI", "");
+
         String thisPageString = preferences.getString("thisPageString" + uriOfPdf.substring(Objects.requireNonNull(uriOfPdf).lastIndexOf("/") + 1), "0");
 
         try {
@@ -358,6 +397,7 @@ public class Home extends Fragment {
 
         return cs;
     }
+
 
     private void onClicks(Boolean isDraw){
         if(isDraw){
