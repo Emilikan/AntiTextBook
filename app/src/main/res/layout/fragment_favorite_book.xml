@@ -1,59 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_of_app"
     tools:context=".FavoriteBook"
     tools:layout_editor_absoluteY="81dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView11"
-        android:layout_width="0dp"
-        android:layout_height="57dp"
-        android:text="Любимые книги"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/favoriteBooks"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lastBook" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/favoriteBooks"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="28dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@font/roboto_light"
+                android:text="Последняя книга"
+                android:textColor="#FFF"
+                android:textSize="30sp" />
 
-    <ListView
-        android:id="@+id/lastBook"
-        android:layout_width="0dp"
-        android:layout_height="66dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView11"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+            <ListView
+                android:id="@+id/lastBook"
+                android:layout_width="match_parent"
+                android:layout_height="66dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/roboto_light" />
 
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="4dp"
-        android:text="Последняя книга"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/lastBook"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="match_parent"
+                android:layout_height="57dp"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="@font/roboto_light"
+                android:text="Любимые книги"
+                android:textColor="#FFF"
+                android:textSize="30sp" />
 
-</android.support.constraint.ConstraintLayout>
+            <ListView
+                android:id="@+id/favoriteBooks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="28dp"
+                android:fontFamily="@font/roboto_light" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

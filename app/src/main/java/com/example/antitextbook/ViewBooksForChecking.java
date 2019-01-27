@@ -55,6 +55,9 @@ import retrofit2.Response;
 import static java.lang.String.valueOf;
 import static java.net.HttpURLConnection.HTTP_OK;
 
+/**
+ * Отображаем книги для шк
+ */
 
 public class ViewBooksForChecking extends Fragment {
     public String counterOfFragment;

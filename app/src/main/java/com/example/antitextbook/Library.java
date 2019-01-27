@@ -13,20 +13,20 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.TextView;
-import android.widget.Toolbar;
 
 import java.util.Objects;
+
+/**
+ * Класс библиотеки (какая неожиданность XD)
+ * Некая прослойка. Проста обработка переходов
+ */
 
 public class Library extends Fragment {
 
     private FrameLayout frameLayout;
     private CardView download;
     private CardView choose;
-    private TextView chooseText;
-    private TextView downloadText;
 
     @SuppressLint("CutPasteId")
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -38,8 +38,6 @@ public class Library extends Fragment {
         frameLayout = rootView.findViewById(R.id.library);
         choose = rootView.findViewById(R.id.choose);
         download = rootView.findViewById(R.id.download);
-        chooseText = rootView.findViewById(R.id.textView5);
-        downloadText = rootView.findViewById(R.id.textView6);
 
         setTheme();
 

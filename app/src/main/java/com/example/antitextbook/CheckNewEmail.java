@@ -15,10 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.util.Objects;
-
+/**
+ * Класс для проверки кода при смене почты в админке школы
+ */
 
 public class CheckNewEmail extends Fragment {
     private String mOldKod;

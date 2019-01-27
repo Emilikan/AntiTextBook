@@ -18,8 +18,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,12 +26,9 @@ import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import java.util.Objects;
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar toolbar;
-    private Boolean isHome;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -74,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // устанавливаем начальный фрагмент - Home
         Fragment fragment = null;
-        Class fragmentClass = Home.class;
+        Class fragmentClass = FavoriteBook.class;
         try {
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (IllegalAccessException e) {

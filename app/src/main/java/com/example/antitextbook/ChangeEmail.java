@@ -16,13 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.util.Objects;
 
+/**
+ * Класс для тзменения почты. Отправляет два письма: на старую и новую почты
+ */
+
 public class ChangeEmail extends Fragment {
     private EditText email;
-    private int kod;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,6 @@ public class ChangeEmail extends Fragment {
                     Thread send = new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            Context context1 = context;
                             int kod1 = 1000 + (int) (Math.random() * 9999);
                             int kod2 = 1000 + (int) (Math.random() * 9999);
 
@@ -60,8 +61,8 @@ public class ChangeEmail extends Fragment {
                             editor.putString("oldKodOfEmailInChange", Integer.toString(kod2));
                             editor.apply();
 
-                            sendEmail(emailString, kod1, context1);
-                            sendEmail(oldEmail, kod2, context1);
+                            sendEmail(emailString, kod1, context);
+                            sendEmail(oldEmail, kod2, context);
                         }
                     });
                     send.start();

@@ -32,6 +32,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Создаем RecycleView для админки (с последующими действиями)
+ */
 
 public class ChooseTrueBooks extends Fragment {
     private List<BookForRecycle> books = new ArrayList<>();

@@ -17,13 +17,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -49,6 +47,10 @@ public class AdminForSchool extends Fragment {
     private ProgressBar progressBar;
 
     private DatabaseReference mRef;
+
+    /**
+     * Класс входа в админку школы пльзователя. Получаем код и названия школы, отправляем на сервер, смотрим, все ли ок и выдаем результат пользователю
+     */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

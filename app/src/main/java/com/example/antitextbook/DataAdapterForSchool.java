@@ -13,10 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,31 +30,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Класс генерирования RecycleView для школьной админки. Отдеьный класс, т.к. сильно другое действие при нажатии, а отслеживание нажатия происходит в этом классе
+ */
+
 public class DataAdapterForSchool extends RecyclerView.Adapter<DataAdapter.ViewHolder>  {
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
-        private DatabaseReference mRef;
-        ImageView imageView;
-        TextView authorView;
-        TextView subjectView;
-        TextView describingView;
-        TextView classView;
-        String counterOfFragment;
-        LinearLayout linearLayout;
-
-        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-        ViewHolder(final View view){
-            super(view);
-
-            imageView = view.findViewById(R.id.imageForBook);
-            linearLayout = view.findViewById(R.id.listText);
-            authorView = view.findViewById(R.id.authorMain);
-            subjectView = view.findViewById(R.id.subjectMain);
-            describingView = view.findViewById(R.id.describingMain);
-            classView = view.findViewById(R.id.classMain);
-        }
-    }
 
     private LayoutInflater inflater;
     private List<BookForRecycle> books;

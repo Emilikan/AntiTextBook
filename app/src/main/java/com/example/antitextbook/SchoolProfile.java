@@ -18,11 +18,12 @@ import android.widget.TextView;
 
 import java.util.Objects;
 
-public class SchoolProfile extends Fragment {
-    private TextView schoolName;
-    private TextView schoolEmail;
-    private String oldEmail;
+/**
+ * Класс профиля школы. Что-то типо прокладки
+ */
 
+public class SchoolProfile extends Fragment {
+    private String oldEmail;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,10 +36,10 @@ public class SchoolProfile extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_school_profile, container, false);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         oldEmail = preferences.getString("schoolEmail", null);
-        schoolName = rootView.findViewById(R.id.NameOfSchool);
+        TextView schoolName = rootView.findViewById(R.id.NameOfSchool);
         schoolName.setText(preferences.getString("dbSchool", ""));
 
-        schoolEmail = rootView.findViewById(R.id.EmailOfSchool);
+        TextView schoolEmail = rootView.findViewById(R.id.EmailOfSchool);
         schoolEmail.setText(preferences.getString("schoolEmail", ""));
         // кнопка смены почты
         Button newEmailAddress = rootView.findViewById(R.id.sendEmailAgain);

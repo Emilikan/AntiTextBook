@@ -14,7 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 /**
- * класс колорпикера
+ * класс колорпикера (для выбора цвета в классе Home, т.е. при рисовании на книге)
  */
 
 public class ColorPickerDialog extends Dialog {
@@ -96,13 +96,12 @@ public class ColorPickerDialog extends Dialog {
             setMeasuredDimension(CENTER_X*2, CENTER_Y*2);
         }
 
-        private int CENTER_X = 200;
-        private int CENTER_Y = 200;
+        private int CENTER_X;
+        private int CENTER_Y;
         private int CENTER_RADIUS = 100;
 
         private int floatToByte(float x) {
-            int n = java.lang.Math.round(x);
-            return n;
+            return Math.round(x);
         }
 
         private int pinToByte(int n) {
@@ -190,7 +189,6 @@ public class ColorPickerDialog extends Dialog {
                         }
                     } else {
                         float angle = (float)java.lang.Math.atan2(y, x);
-                        // need to turn angle [-PI ... PI] into unit [0....1]
                         float unit = angle/(2*PI);
                         if (unit < 0) {
                             unit += 1;
@@ -204,7 +202,7 @@ public class ColorPickerDialog extends Dialog {
                         if (inCenter) {
                             mListener.colorChanged(mCenterPaint.getColor());
                         }
-                        mTrackingCenter = false;    // so we draw w/o halo
+                        mTrackingCenter = false;
                         invalidate();
                     }
                     break;
@@ -214,13 +212,13 @@ public class ColorPickerDialog extends Dialog {
     }
 
     private int thisWidth;
-    private  int thisHeigth;
+    private  int thisHeight;
 
-    public ColorPickerDialog(Context context, OnColorChangedListener listener, int initialColor, int width, int height) {
+    ColorPickerDialog(Context context, OnColorChangedListener listener, int initialColor, int width, int height) {
         super(context);
 
         thisWidth = width;
-        thisHeigth = height;
+        thisHeight = height;
 
         mListener = listener;
         mInitialColor = initialColor;
@@ -237,7 +235,7 @@ public class ColorPickerDialog extends Dialog {
         };
 
 
-        setContentView(new ColorPickerView(getContext(), l, mInitialColor, thisHeigth, thisWidth));
+        setContentView(new ColorPickerView(getContext(), l, mInitialColor, thisHeight, thisWidth));
         setTitle("Pick a Color");
     }
 }

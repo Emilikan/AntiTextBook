@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,9 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class FavoriteBook extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_favorite_book, container, false);
         favoriteBooks = rootView.findViewById(R.id.favoriteBooks);
@@ -64,6 +64,7 @@ public class FavoriteBook extends Fragment {
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
             }
         });
+
         favoriteBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -99,6 +100,7 @@ public class FavoriteBook extends Fragment {
         }
         return rootView;
     }
+
     public void updateUI() {
         if (getActivity() != null) {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.list_text_view, mBooks);
@@ -108,7 +110,7 @@ public class FavoriteBook extends Fragment {
                 mLastBook.remove(0);
             }
             catch (Exception e){
-
+                //Toast.makeText(getContext(), "Ошибка: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
             mLastBook.add(preferences.getString("lastBook",""));
             arrPdfUriLB.add(preferences.getString("lastBookPDFUri",""));

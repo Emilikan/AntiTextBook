@@ -1,5 +1,5 @@
-/*
-* интерфейс для отправки письма через Mailgun
+/**
+ * интерфейс для отправки письма через Mailgun
  */
 
 package com.example.antitextbook;

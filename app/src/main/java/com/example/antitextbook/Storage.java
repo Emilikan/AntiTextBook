@@ -22,18 +22,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
-import static java.lang.String.valueOf;
+/**
+ * Получаем книги из определенной папки и обрабатываем нажатие на них
+ */
 
 public class Storage extends Fragment {
     private static final int PICK_PDF_REQUEST = 345;
