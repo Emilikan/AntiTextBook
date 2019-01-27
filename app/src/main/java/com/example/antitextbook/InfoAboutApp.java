@@ -16,6 +16,10 @@ import android.widget.FrameLayout;
 
 import java.util.Objects;
 
+/**
+ * просто показываем информацию о проиложении
+ */
+
 public class InfoAboutApp extends Fragment {
 
     private FrameLayout frameLayout;

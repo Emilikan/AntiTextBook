@@ -22,7 +22,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -37,6 +36,10 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+/**
+ * Класс отображения всех доступных книг с сервера (загрзки книг тут нет), зато есть сортировка)))
+ */
 
 public class DownloadFromCloud extends Fragment {
     private List<BookForRecycle> books = new ArrayList<>();

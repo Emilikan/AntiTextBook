@@ -5,6 +5,10 @@ import android.support.v4.app.FragmentActivity;
 
 import java.util.ArrayList;
 
+/**
+ * Класс, который используется для создания RecycleView. Принимает различные переменные. Имеет несколько конструкторов для того, чтобы из разных мест можно было пользоваться одним классом
+ */
+
 public class BookForRecycle {
     private String author;
     private String subject;
@@ -16,10 +20,10 @@ public class BookForRecycle {
     private FragmentActivity activity;
     private String nameOfSchool;
     private Boolean isAdmin = false;
-    private Boolean isBook = false;
+    private Boolean isBook;
 
-    public BookForRecycle(String author, String subject, String describing, String classOfBook, String image,
-                          ArrayList<Integer> arrayList, Context context, FragmentActivity activity, String nameOfSchool, Boolean isBook){
+    BookForRecycle(String author, String subject, String describing, String classOfBook, String image,
+                   ArrayList<Integer> arrayList, Context context, FragmentActivity activity, String nameOfSchool, Boolean isBook){
         this.author = author;
         this.arrayList = arrayList;
         this.subject = subject;
@@ -31,8 +35,8 @@ public class BookForRecycle {
         this.isBook = isBook;
         this.nameOfSchool = nameOfSchool;
     }
-    public BookForRecycle(String author, String subject, String describing, String classOfBook, String image,
-                          ArrayList<Integer> arrayList, Context context, FragmentActivity activity, Boolean isBook, Boolean isAdmin){
+    BookForRecycle(String author, String subject, String describing, String classOfBook, String image,
+                   ArrayList<Integer> arrayList, Context context, FragmentActivity activity, Boolean isBook, Boolean isAdmin){
         this.author = author;
         this.arrayList = arrayList;
         this.subject = subject;
@@ -44,9 +48,8 @@ public class BookForRecycle {
         this.isAdmin = isAdmin;
         this.isBook = isBook;
     }
-
-    public BookForRecycle(String author, String subject, String describing, String classOfBook, String image,
-                          ArrayList<Integer> arrayList, Context context, FragmentActivity activity, Boolean isBook){
+    BookForRecycle(String author, String subject, String describing, String classOfBook, String image,
+                   ArrayList<Integer> arrayList, Context context, FragmentActivity activity, Boolean isBook){
         this.author = author;
         this.arrayList = arrayList;
         this.subject = subject;
@@ -58,15 +61,15 @@ public class BookForRecycle {
         this.isBook = isBook;
     }
 
-    public Boolean getIsBook(){
+    Boolean getIsBook(){
         return isBook;
     }
 
-    public Boolean getIsAdmin(){
+    Boolean getIsAdmin(){
         return isAdmin;
     }
 
-    public String getNameOfSchool(){
+    String getNameOfSchool(){
         return nameOfSchool;
     }
 
@@ -78,20 +81,12 @@ public class BookForRecycle {
         return context;
     }
 
-    public ArrayList<Integer> getArrayList(){
+    ArrayList<Integer> getArrayList(){
         return arrayList;
     }
 
-    public void setArrayList(ArrayList<Integer> arrayList){
-        this.arrayList = arrayList;
-    }
-
-    public String getAuthor() {
+    String getAuthor() {
         return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public String getSubject() {
@@ -102,20 +97,12 @@ public class BookForRecycle {
         this.subject = subject;
     }
 
-    public String getDescribing() {
+    String getDescribing() {
         return describing;
     }
 
-    public void setDescribing(String describing) {
-        this.describing = describing;
-    }
-
-    public String getClassOfBook() {
+    String getClassOfBook() {
         return classOfBook;
-    }
-
-    public void setClassOfBook(String classOfBook) {
-        this.classOfBook = classOfBook;
     }
 
     public String getImageForBook() {

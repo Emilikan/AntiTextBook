@@ -35,6 +35,10 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
+/**
+ * Вход в админку-разработчик
+ */
+
 public class Server extends Fragment {
     private FrameLayout frameLayout;
 

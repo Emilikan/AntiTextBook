@@ -34,6 +34,9 @@ import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 import static java.lang.String.valueOf;
+/**
+ * Получаем книги из определенной папки и обрабатываем нажатие на них
+ */
 
 public class Storage extends Fragment {
     private static final int PICK_PDF_REQUEST = 345;

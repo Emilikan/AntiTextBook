@@ -2,7 +2,6 @@
 * Класс для отправки письма через Mailgun
  */
 
-
 package com.example.antitextbook;
 
 import android.support.annotation.NonNull;

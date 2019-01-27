@@ -39,6 +39,11 @@ import retrofit2.Response;
 
 import static java.net.HttpURLConnection.HTTP_OK;
 
+/**
+ * feedback)))
+ * Мой любимый feedback)))
+ */
+
 public class Send extends Fragment {
     private EditText nameOfFeedback;
     private EditText describingOfFeedback;

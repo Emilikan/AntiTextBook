@@ -27,7 +27,7 @@ public class MainSettings extends Fragment {
         List<Fragment> fragmentList = new ArrayList<>();
         List<String> fragmentTitles = new ArrayList<>();
 
-        public ViewPagerAdapter(FragmentManager fragmentManager) {
+        ViewPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
         }
 
@@ -46,7 +46,7 @@ public class MainSettings extends Fragment {
             return fragmentTitles.get(position);
         }
 
-        public void addFragment(Fragment fragment, String name) {
+        void addFragment(Fragment fragment, String name) {
             fragmentList.add(fragment);
             fragmentTitles.add(name);
         }

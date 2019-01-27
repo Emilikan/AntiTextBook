@@ -22,6 +22,9 @@ import java.util.Objects;
 
 
 public class AdminOfApp extends Fragment {
+    /**
+     * Класс именно админки для разработчиков. Является некоторой прослойкой. (Класс входа называется Server)
+     */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

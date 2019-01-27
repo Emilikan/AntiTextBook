@@ -30,9 +30,13 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Класс для генерирования RecycleView на основе данных объекта класса BookForRecycle
+ */
+
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageView;
         TextView authorView;
