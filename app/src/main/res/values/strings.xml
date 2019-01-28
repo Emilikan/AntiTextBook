@@ -1,34 +1,29 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">AntiTextBook</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">User</string>
+    <string name="navigation_drawer_open">Открыть меню</string>
+    <string name="navigation_drawer_close">Закрыть меню</string>
+    <string name="nav_header_title">Пользователь</string>
     <string name="nav_header_subtitle">example.android.com</string>
     <string name="nav_header_desc">Меню</string>
     <string name="action_menu">О приложении</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_settings">Settings</string>
-
-    <!-- Strings related to Settings -->
-
-    <!-- Example General settings -->
+    <string name="hello_blank_fragment">Привет фрагмент</string>
+    <string name="title_activity_settings">Настройки</string>
     <string name="pref_header_general">General</string>
 
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
+    <string name="pref_title_social_recommendations">Включить социальные рекомендации</string>
+    <string name="pref_description_social_recommendations">Рекомендации для людей, чтобы связаться
+        на основе истории сообщений
     </string>
 
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
+    <string name="pref_title_display_name">Имя дисплея</string>
+    <string name="pref_default_display_name">Джон Смит</string>
 
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string name="pref_title_add_friends_to_messages">Добавить друзей для сообщений</string>
     <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
+        <item>Всегда</item>
+        <item>По возможности</item>
+        <item>Никогда</item>
     </string-array>
     <string-array name="pref_example_list_values">
         <item>1</item>
@@ -36,17 +31,16 @@
         <item>-1</item>
     </string-array>
 
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
+    <string name="pref_header_data_sync">Дата &amp; синхронизация</string>
 
-    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string name="pref_title_sync_frequency">Частота синхронизации</string>
     <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
+        <item>15 минут</item>
+        <item>30 минут</item>
+        <item>1 час</item>
+        <item>3 часа</item>
+        <item>6 часов</item>
+        <item>Никогда</item>
     </string-array>
     <string-array name="pref_sync_frequency_values">
         <item>15</item>
@@ -58,9 +52,9 @@
     </string-array>
 
     <string-array name="list_preference_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
+        <item>Вступление 1</item>
+        <item>Вступление 2</item>
+        <item>Вступление 3</item>
     </string-array>
 
     <string-array name="list_preference_entry_values">
@@ -71,17 +65,16 @@
 
     <string-array name="multi_select_list_preference_default_value" />
 
-    <string name="pref_title_system_sync_settings">System sync settings</string>
+    <string name="pref_title_system_sync_settings">Параметры синхронизации системы</string>
 
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
+    <string name="pref_header_notifications">Уведомления</string>
 
-    <string name="pref_title_new_message_notifications">New message notifications</string>
+    <string name="pref_title_new_message_notifications">Новых сообщениях </string>
 
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
+    <string name="pref_title_ringtone">Рингтон</string>
+    <string name="pref_ringtone_silent">Тихий</string>
 
-    <string name="pref_title_vibrate">Vibrate</string>
+    <string name="pref_title_vibrate">Вибрация</string>
 
     <string name="download">Скачать</string>
 
@@ -108,13 +101,6 @@
     <string name="deleteBook">Удалить</string>
     <string name="profile">Профиль</string>
 
-    <string-array name="filter">
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-    </string-array>
-
     <string name="menu_home">Домашняя</string>
     <string name="menu_library">Библиотека</string>
     <string name="menu_shedule">Расписание</string>
@@ -126,13 +112,15 @@
 
     <string name="send_mainText">Служба поддержки:</string>
     <string name="send_title">Заголовок</string>
-    <string name="send_secondTest">Cообщите о своей проблеме или напишите отзыв</string>
+    <string name="send_secondTest">Сообщите о своей проблеме или напишите отзыв</string>
     <string name="send_describing">Письмо</string>
     <string name="send_sendLater">Отправить</string>
-    <string name="send_email">Ваш email для обратной связи</string>
+    <string name="send_email">Ваш e-mail для обратной связи</string>
 
     <string name="server_title">Авторизация</string>
-    <string name="server_note">В настоящее время авторизация доступна только для админов и представителей учебных заведений.\n По всем вопросам обращайтесь в службу поддержки</string>
+    <string name="server_note">В настоящее время
+        авторизация доступна только для админов и представителей учебных заведений.\n
+        По всем вопросам обращайтесь в службу поддержки</string>
     <string name="server_log">Логин</string>
     <string name="server_school">Войти как школа</string>
     <string name="server_profile">Профиль</string>
@@ -143,7 +131,10 @@
     <string name="settings_dark_theme">Темная тема</string>
     <string name="settings_about_app">О приложении</string>
 
-    <string name="about_app1">Приложение AntiTextBook (ATB) разработано с целью помочь школьникам (в дальнейшем и студентам) в учебе, разгрузить их спины, сделать жизнь лучше :)\n\nПриложение AntiTextBook основано командой BHB\n\nОтдельная благодарность Славе за дизайн\nПри финансовой поддержке Платцера Максима</string>
+    <string name="about_app1">Приложение AntiTextBook (ATB) разработано с целью помочь школьникам
+        (в дальнейшем и студентам) в учебе, разгрузить их спины, сделать жизнь лучше :)\n\n
+        Приложение AntiTextBook основано командой BHB\n\n
+        При финансовой поддержке Платцера Максима</string>
 
     <string name="adminOfSchool_reg1">Название учебного заведения</string>
     <string name="adminOfSchool_reg2">Код</string>

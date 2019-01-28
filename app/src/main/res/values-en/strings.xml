@@ -1,5 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">AntiTextBook</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">User</string>
+    <string name="nav_header_subtitle">example.android.com</string>
     <string name="title_activity_settings">Settings</string>
+
+    <string name="nav_header_desc">Menu</string>
+    <string name="action_menu">About the application</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact
+        based on your message history
+    </string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string-array name="list_preference_entries">
+        <item>Entry 1</item>
+        <item>Entry 2</item>
+        <item>Entry 3</item>
+    </string-array>
+
+    <string-array name="list_preference_entry_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="multi_select_list_preference_default_value" />
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <string name="pref_header_notifications">Notifications</string>
+
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="pref_title_vibrate">Vibrate</string>
+
+    <string name="download">Download</string>
+
+    <string name="cloud_choose_pdf">Select PDF file</string>
+    <string name="cloud_choose_img">Select IMG file</string>
+    <string name="cloud_upload">Upload</string>
+    <string name="cloud_title">Upload book</string>
+    <string name="cloud_help">Help</string>
+    <string name="cloud_author">Author</string>
+    <string name="cloud_subject">Subject</string>
+    <string name="cloud_class">Class</string>
+    <string name="cloud_year">Year</string>
+    <string name="cloud_describing">Description</string>
+    <string name="cloud_radio_button1">Book for schoolchildren</string>
+    <string name="cloud_radio_button2">Book for students</string>
+    <string name="cloud_part">Part of (on default establish 1)</string>
+
+    <string name="search">Search</string>
+    <string name="back">Backward</string>
+    <string name="downloadBooks">Download a book</string>
+    <string name="chooseBook">Choose a book</string>
+    <string name="txt_success">Success</string>
+    <string name="addBook">Add</string>
+    <string name="deleteBook">Delete</string>
+    <string name="profile">Profile</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_library">Library</string>
+    <string name="menu_shedule">Schedule</string>
+    <string name="menu_admin">Admin panel</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_signOut">Exit</string>
+    <string name="menu_connection">Communication</string>
+    <string name="menu_feedback">Support service</string>
+
+    <string name="send_mainText">Support service:</string>
+    <string name="send_title">Header</string>
+    <string name="send_secondTest">Report your issue or write a review</string>
+    <string name="send_describing">Letter</string>
+    <string name="send_sendLater">Send</string>
+    <string name="send_email">Your e-mail for feedback</string>
+
+    <string name="server_title">Authorization</string>
+    <string name="server_note">Currently, authorization is available only for admins and
+        representatives of educational institutions.\n If you have any questions, please contact support</string>
+    <string name="server_log">Login</string>
+    <string name="server_school">To sign on behalf of the school</string>
+    <string name="server_profile">Profile</string>
+    <string name="server_password">Password</string>
+    <string name="server_sign_in">Enter</string>
+
+    <string name="settings_schedule">Couples instead of classes?</string>
+    <string name="settings_dark_theme">Dark theme</string>
+    <string name="settings_about_app">About the application</string>
+
+    <string name="about_app1">The AntiTextBook (ATB) app is designed to help students
+        (hereinafter students) to study, to unload their backs, to make life better :)
+        \n\nApplication AntiTextBook founded by a team of BHB\n\n
+        With the financial support of Platzer Maxim</string>
+
+    <string name="adminOfSchool_reg1">The name of the school</string>
+    <string name="adminOfSchool_reg2">Code</string>
+    <string name="adminOfSchool_reg3">E-mail</string>
+    <string name="adminOfSchool_saveMe">Remember me</string>
+
+    <string name="admin_of_app_main">Admin panel</string>
+    <string name="admin_of_app_upload">Upload book</string>
+    <string name="admin_of_app_sing_out">Exit</string>
+
+    <string name="profile_main">Your profile:</string>
+    <string name="profile_change">edit</string>
+
+    <string name="registration_main">Please fill in your personal information</string>
+    <string name="registration_name">Name</string>
+    <string name="registration_who1">Student/student/cadet</string>
+    <string name="registration_who2">Student</string>
+    <string name="registration_number_of_school">Number (name) of school / Lyceum / University</string>
+    <string name="registration_class">Class/course number</string>
+    <string name="registration_save">Save</string>
+    <string name="registration_overSettings">Application setting:</string>
+
+    <string name="storage_choose_file">Choose file</string>
+
+    <string name="check_email_main">Enter code from e-mail</string>
+    <string name="check_email_kod">Code</string>
+    <string name="check_email_sign_in">Enter</string>
+    <string name="check_email_back">To change the e-mail</string>
+    <string name="check_email_send">Send code again</string>
+
+    <string name="school_profile_main">Your profile:</string>
+    <string name="school_profile_send_email_again">Change e-mail</string>
+    <string name="school_profile_upload_books">Upload your book</string>
+    <string name="school_profile_all_books">Check in under the book</string>
+    <string name="school_profile_sing_out">Exit</string>
+    <string name="school_profile_string1">The name of the school:</string>
+    <string name="school_profile_string2">Your E-mail:</string>
+    <string name="school_profile_second">Your actions:</string>
+
+    <string name="change_email_main">Enter new e-mail:</string>
+    <string name="change_email_hint">E-mail</string>
+    <string name="change_email_button">Resume</string>
+
+    <string name="check_new_email_text1">Enter code from new mail:</string>
+    <string name="check_new_email_text2">Enter the code from the old email:</string>
+    <string name="check_new_email_hint1">Old code</string>
+    <string name="check_new_email_hint2">New code</string>
+    <string name="check_new_email_button">Enter</string>
+
+    <string name="settings_hint_name">Name</string>
+    <string name="settings_hint_school">The number of school/University</string>
+    <string name="settings_hint_class">What grade are you in/aware of</string>
+
+    <string name="navigation_item1">Read mode</string>
+    <string name="navigation_item2">The drawing mode</string>
+    <string name="navigation_item3">Drawing settings</string>
+
+    <string name="subscribe_upload">Upload your book</string>
 </resources>
