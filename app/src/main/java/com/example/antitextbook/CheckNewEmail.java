@@ -17,6 +17,10 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.Objects;
+
+import static com.example.antitextbook.Constants.a0;
+import static com.example.antitextbook.MainActivity.fragmentIs;
+
 /**
  * Класс для проверки кода при смене почты в админке школы
  */
@@ -118,6 +122,7 @@ public class CheckNewEmail extends Fragment {
                     Fragment fragment = new SchoolProfile();
                     FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                    fragmentIs = a0;
 
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                     SharedPreferences.Editor editor = preferences.edit();

@@ -19,6 +19,9 @@ import android.widget.ImageView;
 
 import java.util.Objects;
 
+import static com.example.antitextbook.Constants.a0;
+import static com.example.antitextbook.MainActivity.fragmentIs;
+
 /**
  * Класс для проверки правильности введенного кода
  */
@@ -126,6 +129,7 @@ public class CheckEmail extends Fragment {
                         Fragment fragment = new SchoolProfile();
                         FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                        fragmentIs = a0;
 
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                         SharedPreferences.Editor editor = preferences.edit();
@@ -178,6 +182,7 @@ public class CheckEmail extends Fragment {
                 Fragment fragment = new MainSettings();
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a0;
             }
         });
 

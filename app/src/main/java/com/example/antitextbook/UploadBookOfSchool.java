@@ -44,6 +44,8 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.antitextbook.Constants.a0;
+import static com.example.antitextbook.MainActivity.fragmentIs;
 
 /**
  * Класс загрузки книги от школы на сервер (книга еще должна пройти проверку у админов-разрабов)
@@ -105,6 +107,7 @@ public class UploadBookOfSchool extends Fragment {
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 assert fragment != null;
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a0;
             }
         });
 
@@ -122,6 +125,7 @@ public class UploadBookOfSchool extends Fragment {
                                     FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                                     Toast.makeText(getActivity(), "Нет книг", Toast.LENGTH_SHORT).show();
+                                    fragmentIs = a0;
                                 }
                             });
             AlertDialog alert = builder.create();
@@ -210,6 +214,7 @@ public class UploadBookOfSchool extends Fragment {
                                 Fragment fragment = new Send();
                                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                fragmentIs = a0;
                             }
                         });
                         ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
@@ -230,6 +235,7 @@ public class UploadBookOfSchool extends Fragment {
                                 Fragment fragment = new Send();
                                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                fragmentIs = a0;
                             }
                         });
                         ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
@@ -340,6 +346,7 @@ public class UploadBookOfSchool extends Fragment {
                                                 Fragment fragment = new Send();
                                                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                                fragmentIs = a0;
                                             }
                                         });
                                         ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
@@ -425,6 +432,7 @@ public class UploadBookOfSchool extends Fragment {
                                                             Fragment fragment = new Send();
                                                             FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                                             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                                            fragmentIs = a0;
                                                         }
                                                     });
                                                     ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
@@ -514,6 +522,7 @@ public class UploadBookOfSchool extends Fragment {
                                                             Fragment fragment = new Send();
                                                             FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                                             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                                            fragmentIs = a0;
                                                         }
                                                     });
                                                     ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {

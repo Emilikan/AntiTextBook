@@ -52,6 +52,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.antitextbook.Constants.a0;
+import static com.example.antitextbook.Constants.a3;
+import static com.example.antitextbook.Constants.a7;
+import static com.example.antitextbook.MainActivity.fragmentIs;
 import static java.lang.String.valueOf;
 import static java.net.HttpURLConnection.HTTP_OK;
 
@@ -115,6 +119,7 @@ public class ViewBooksForChecking extends Fragment {
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 assert fragment != null;
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a3;
             }
         });
 
@@ -132,6 +137,7 @@ public class ViewBooksForChecking extends Fragment {
                                     FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                                     Toast.makeText(getActivity(), "Нет книг", Toast.LENGTH_SHORT).show();
+                                    fragmentIs = a0;
                                 }
                             });
             AlertDialog alert = builder.create();
@@ -313,6 +319,7 @@ public class ViewBooksForChecking extends Fragment {
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 assert fragment != null;
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a3;
             }
 
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -556,6 +563,7 @@ public class ViewBooksForChecking extends Fragment {
                                     FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                                     Toast.makeText(context, "Файл скачан", Toast.LENGTH_LONG).show();
+                                    fragmentIs = a7;
                                 }
                                 else {
                                     AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(context));

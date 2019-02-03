@@ -33,6 +33,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
+import static com.example.antitextbook.Constants.*;
+import static com.example.antitextbook.MainActivity.fragmentIs;
 import static java.lang.String.valueOf;
 
 public class AdminForSchool extends Fragment {
@@ -62,7 +64,7 @@ public class AdminForSchool extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_admin_for_school, container, false);
-
+        fragmentIs = a0;
         progressBar = rootView.findViewById(R.id.progressBarInAdminForSchool);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -199,6 +201,7 @@ public class AdminForSchool extends Fragment {
                             FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                             progressBar.setVisibility(ProgressBar.INVISIBLE);
+                            fragmentIs = a2;
                         }
                     });
                     ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
@@ -230,6 +233,7 @@ public class AdminForSchool extends Fragment {
                             Fragment fragment = new CheckEmail();
                             FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                            fragmentIs = a2;
 
                             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                             SharedPreferences.Editor editor = preferences.edit();
@@ -246,6 +250,7 @@ public class AdminForSchool extends Fragment {
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.apply();
                             progressBar.setVisibility(ProgressBar.INVISIBLE);
+                            fragmentIs = a2;
                         }
                     }
                 }
@@ -260,6 +265,7 @@ public class AdminForSchool extends Fragment {
                             Fragment fragment = new Send();
                             FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                            fragmentIs = a2;
                         }
                     });
                     ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
@@ -285,6 +291,7 @@ public class AdminForSchool extends Fragment {
                         Fragment fragment = new Send();
                         FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                        fragmentIs = a2;
                     }
                 });
                 ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {

@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +23,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.antitextbook.Constants.a0;
+import static com.example.antitextbook.Constants.a21;
+import static com.example.antitextbook.MainActivity.fragmentIs;
+
 /**
  * Получаем книги из определенной папки и обрабатываем нажатие на них
+ * + сокачанные книги
  */
 
 public class Storage extends Fragment {
@@ -62,6 +69,7 @@ public class Storage extends Fragment {
 
         updateUI();
         setTheme();
+        Toast.makeText(getContext(), "Фрагмент Storage", Toast.LENGTH_SHORT).show();
 
          // обработчик на ListView
         listBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -83,6 +91,7 @@ public class Storage extends Fragment {
                 Fragment fragment = new Home();
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a21;
             }
         });
 
@@ -103,6 +112,7 @@ public class Storage extends Fragment {
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 assert fragment != null;
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a0;
             }
         });
 
@@ -178,8 +188,11 @@ public class Storage extends Fragment {
             Fragment fragment = new Home();
             FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+            fragmentIs = a21;
         }
     }
+
+
 
     @Override
     public void onDetach() {

@@ -51,7 +51,7 @@
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="2dp"
-                    android:entries="@array/filter" />
+                />
 
                 <Spinner
                     android:id="@+id/spinnerClass"
@@ -59,8 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="2dp"
-                    android:layout_marginBottom="2dp"
-                    android:entries="@array/filter" />
+                    android:layout_marginBottom="2dp" />
 
                 <Spinner
                     android:id="@+id/forWho"
@@ -68,8 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="2dp"
-                    android:layout_marginBottom="2dp"
-                    android:entries="@array/filter" />
+                    android:layout_marginBottom="2dp" />
             </LinearLayout>
         </LinearLayout>
 

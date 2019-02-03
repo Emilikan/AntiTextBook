@@ -32,6 +32,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.example.antitextbook.Constants.*;
+import static com.example.antitextbook.MainActivity.fragmentIs;
+
 /**
  * Создаем RecycleView для админки (с последующими действиями)
  */
@@ -76,6 +79,7 @@ public class ChooseTrueBooks extends Fragment {
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 assert fragment != null;
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a7;
             }
         });
 
@@ -93,6 +97,7 @@ public class ChooseTrueBooks extends Fragment {
                                     Fragment fragment = new AdminOfApp();
                                     FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                    fragmentIs = a7;
                                 }
                             });
             AlertDialog alert = builder.create();

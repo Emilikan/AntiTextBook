@@ -19,6 +19,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static com.example.antitextbook.Constants.a0;
+import static com.example.antitextbook.Constants.a10;
+import static com.example.antitextbook.MainActivity.fragmentIs;
+
 public class FavoriteBook extends Fragment {
     private ListView lastBook;
 
@@ -61,6 +65,7 @@ public class FavoriteBook extends Fragment {
                 Fragment fragment = new Home();
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a10;
             }
         });
 
@@ -83,6 +88,7 @@ public class FavoriteBook extends Fragment {
                 Fragment fragment = new Home();
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a10;
             }
         });
 

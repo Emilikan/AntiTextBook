@@ -37,6 +37,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.example.antitextbook.Constants.a0;
+import static com.example.antitextbook.Constants.a9;
+import static com.example.antitextbook.MainActivity.fragmentIs;
+
 /**
  * Класс отображения всех доступных книг с сервера (загрзки книг тут нет), зато есть сортировка)))
  */
@@ -92,6 +96,7 @@ public class DownloadFromCloud extends Fragment {
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 assert fragment != null;
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a0;
             }
         });
 
@@ -108,6 +113,7 @@ public class DownloadFromCloud extends Fragment {
                                     Fragment fragment = new Library();
                                     FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                    fragmentIs = a0;
                                 }
                             });
             AlertDialog alert = builder.create();
@@ -136,6 +142,7 @@ public class DownloadFromCloud extends Fragment {
                         FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                         Toast.makeText(getActivity(), "Нет книг", Toast.LENGTH_SHORT).show();
+                        fragmentIs = a9;
                     } else {
 
                         // находим все предметы
@@ -256,6 +263,7 @@ public class DownloadFromCloud extends Fragment {
                             Fragment fragment = new Send();
                             FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                            fragmentIs = a9;
                         }
                     });
                     ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
@@ -348,6 +356,7 @@ public class DownloadFromCloud extends Fragment {
                         Fragment fragment = new Send();
                         FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                        fragmentIs = a9;
                     }
                 });
                 ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
