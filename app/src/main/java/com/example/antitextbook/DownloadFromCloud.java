@@ -64,6 +64,9 @@ public class DownloadFromCloud extends Fragment {
     private String forWho;
     private String subj;
     private String classOf;
+    private String fromSettingsHigthSchool;
+    private String fromSettingsClass;
+    private String fromSettingsSchool;
 
     private RecyclerView recyclerView;
 
@@ -80,6 +83,10 @@ public class DownloadFromCloud extends Fragment {
         progressBar = rootView.findViewById(R.id.progressBarInDownload);
         progressBar.setVisibility(ProgressBar.VISIBLE);
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        fromSettingsHigthSchool = preferences.getString("UserStudentOrSchoolBoy", "SchoolBoy");
+        fromSettingsClass = preferences.getString("UserClass", "1");
+        fromSettingsSchool = preferences.getString("UserSchool", "false");
 
         ImageView back = rootView.findViewById(R.id.back3);
         back.setOnClickListener(new View.OnClickListener() {
@@ -179,15 +186,23 @@ public class DownloadFromCloud extends Fragment {
                                 ArrayAdapter<String> adapter1 = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, arrayForClass1);
                                 adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 spinnerClass.setAdapter(adapter1);
+                                spinnerClass.setSelection(Integer.parseInt(fromSettingsClass));
                             } else {
                                 ArrayAdapter<String> adapter1 = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, arrayForClass2);
                                 adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 spinnerClass.setAdapter(adapter1);
+                                spinnerClass.setSelection(Integer.parseInt(fromSettingsClass));
                             }
+
 
                             ArrayAdapter<String> adapter2 = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, arrayForWho);
                             adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spinnerForWho.setAdapter(adapter2);
+                            if(fromSettingsHigthSchool.equals("Student")){
+                                spinnerForWho.setSelection(1);
+                            }
+
+
                         }
 
                         // обработчики спинеров
@@ -216,6 +231,7 @@ public class DownloadFromCloud extends Fragment {
                                     ArrayAdapter<String> adapter1 = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, arrayForClass1);
                                     adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                     spinnerClass.setAdapter(adapter1);
+                                    spinnerClass.setSelection(Integer.parseInt(fromSettingsClass));
                                 }
                                 else{
                                     schoolOrInst = "Inst";
@@ -223,6 +239,7 @@ public class DownloadFromCloud extends Fragment {
                                     ArrayAdapter<String> adapter1 = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, arrayForClass2);
                                     adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                     spinnerClass.setAdapter(adapter1);
+                                    spinnerClass.setSelection(Integer.parseInt(fromSettingsClass));
                                 }
                                 sortingBook1();
                             }
@@ -293,6 +310,10 @@ public class DownloadFromCloud extends Fragment {
                         String mSubj = dataSnapshot.child("Books").child(Integer.toString(a)).child("Subject").getValue(String.class);
                         String classOfBook = dataSnapshot.child("Books").child(Integer.toString(a)).child("Class").getValue(String.class);
                         String forWhoThisBook = dataSnapshot.child("Books").child(Integer.toString(a)).child("ForWho").getValue(String.class);
+                        // тут создать список школ по книге, в него добавить все школы, под этой книгой, затем в if (else if) смотреть,
+                        // есть ли в этом списке школа, которая указана в переменной fromSettingsSchool. Затем, те книги, которые подходят под этот критерий, выносить в отдельный список
+                        // Потом составить новый массив из тех книг, которых нет в предыдущем и эти два массива вывести в RecycleView друг за дргуом черз черту
+                        //String dbSchoolOfBook = dataSnapshot.child("Books").child(Integer.toString(a)).child("")
 
                         if(mSubj != null) {
 
