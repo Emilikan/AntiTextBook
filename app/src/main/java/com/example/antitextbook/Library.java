@@ -17,9 +17,36 @@ import android.widget.FrameLayout;
 
 import java.util.Objects;
 
+import static com.example.antitextbook.Constants.a0;
+import static com.example.antitextbook.Constants.a13;
+import static com.example.antitextbook.MainActivity.fragmentIs;
+
 /**
  * Класс библиотеки (какая неожиданность XD)
  * Некая прослойка. Проста обработка переходов
+ */
+
+/**
+ * ░░░░░░░░░░░░░▄▄▄▄▄▄▄▄▄▄▄▄░░░░░░░░░░░░░
+ * ░░░░░░░░░▄▄▀▀░░░░░░░░░░░░▀▀▄▄░░░░░░░░░
+ * ░░░░░░▄█▀░░░░░░░▄▄▄▄▄▄░░░░░░░▀▄▄░░░░░░
+ * ░░░░▄█▀░░░░░░░░░▀████▀░░░░░░░░░▀█▄░░░░
+ * ░░░▄▀░░░░░░░░░░░░░██░░░░░░░░░░░░░▀▄░░░
+ * ░░█▀░░░░░░░░░░░▄▄▄██▄▄▄░░░░░░░░░░░▀█░░
+ * ░▄▀░░░░░░░░░░░░░░▀██▀░░░░░░░░░░░░░░▀▄░
+ * ░█░░░░░░░░░░░░░░░▄██▄░░░░░░░░░░░░░░░█░
+ * █░░░░░░░░░░░░░░░░████░░░▄▄▀▀▀▀▀█▄░░░░█
+ * █░░░░░░▄█▀▀▀▀█▄▄░▀▀███▄█░░░░░░░░▀█░░░█
+ * █░░░░░█▀░░░░░░░▀█▄▄░▀▀█▄░░░░░░░░░█▄░░█
+ * █░░░░██░░░░░░░░▄░░▀█▄░░▀░░░░░░░░░█▀░░█
+ * ░█░░░░█▄░░░░░░░▀█▄▄░▀▀█▄░░░░░░░░▄█░░█░
+ * ░▀▄░░░▀▀▄░░░░░░░████▄▄░▀▀▀█▄▄▄█▀▀░░▄▀░
+ * ░░█▄░░░░▀▄░░░░░░██████░░░░░░░░░░░░▄▀░░
+ * ░░░▀▄░░░░░░░░▄█████████▄░░░░░░░░░▄▀░░░
+ * ░░░░░█▄░░░░░▄████████████▄░░░░░▄▀░░░░░
+ * ░░░░░░▀▀▄▄░░██████████████░░▄▄▀░░░░░░░
+ * ░░░░░░░░░▀▀████████████████▀▀░░░░░░░░░
+ * ░░░░░░░░░░░░░▀▀▀▀▀▀▀▀▀▀▀▀░░░░░░░░░░░░░
  */
 
 public class Library extends Fragment {
@@ -56,6 +83,7 @@ public class Library extends Fragment {
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 assert fragment != null;
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a13;
             }
         });
 
@@ -74,6 +102,7 @@ public class Library extends Fragment {
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 assert fragment != null;
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a13;
             }
         });
         return rootView;

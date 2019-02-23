@@ -19,8 +19,20 @@ import android.widget.EditText;
 
 import java.util.Objects;
 
+import static com.example.antitextbook.Constants.*;
+import static com.example.antitextbook.MainActivity.fragmentIs;
+
 /**
  * Класс для тзменения почты. Отправляет два письма: на старую и новую почты
+ */
+
+/*
+╭━━╮┈┈╭━━╮┈┈╭━━╮
+┫┛┗┣╮╭┫┛┗┣╮╭┫┛┗┣
+╯╰╯╰┛┗╯╰╯╰┛┗╯╰╯╰
+╱▔▔╲┈┈╱▔▔╲┈┈╱▔▔╲
+╱▏▕╲╲╱╱▏▕╲╲╱╱▏▕╲
+╱▔▔╲╰╯╱▔▔╲╰╯╱▔▔╲
  */
 
 public class ChangeEmail extends Fragment {
@@ -35,6 +47,7 @@ public class ChangeEmail extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_change_email, container, false);
+
         email = rootView.findViewById(R.id.changeEmail);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         final String oldEmail = preferences.getString("schoolEmail", null);
@@ -69,6 +82,7 @@ public class ChangeEmail extends Fragment {
                     Fragment fragment = new CheckNewEmail();
                     FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                    fragmentIs = a4;
                 }
                 else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));

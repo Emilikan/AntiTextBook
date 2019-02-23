@@ -32,6 +32,10 @@ import android.widget.Toast;
 
 import java.util.Objects;
 
+import static com.example.antitextbook.Constants.a0;
+import static com.example.antitextbook.Constants.a20;
+import static com.example.antitextbook.MainActivity.fragmentIs;
+
 /**
  * Настройки. Ничего интересного
  */
@@ -149,6 +153,7 @@ public class Settings extends Fragment {
                             Fragment fragment = new Send();
                             FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                            fragmentIs = a20;
                         }
                     });
                     ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
@@ -170,6 +175,7 @@ public class Settings extends Fragment {
                             Fragment fragment = new Send();
                             FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                            fragmentIs = a20;
                         }
                     });
                     ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
@@ -213,6 +219,7 @@ public class Settings extends Fragment {
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 assert fragment != null;
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a20;
             }
         });
 

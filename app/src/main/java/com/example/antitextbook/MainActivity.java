@@ -26,9 +26,192 @@ import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.Objects;
+
+import static com.example.antitextbook.Constants.*;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    /**
+     * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+     * ░██████░░░░██░░░░██░░██████░░░░
+     * ░██░░░░██░░██░░░░██░░██░░░░██░░
+     * ░██████░░░░████████░░██████░░░░
+     * ░██░░░░██░░████████░░██░░░░██░░
+     * ░██░░░░██░░██░░░░██░░██░░░░██░░
+     * ░██████░░░░██░░░░██░░██████░░░░
+     * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+     */
+
+    /**
+     * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+     * ██████████░░░░░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░██░░░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░░░██░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░░░██░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░░░██░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░██░░░░░░░░░░░░░░░░░░░░
+     * ██████████░░░░░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░██░░░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░░░██░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░░░██░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░░░██░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░░░██░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░██░░░░░░░░░░░░░░░░░░░░
+     * ██████████░░░░░░░░░░░░░░░░░░░░░░
+     * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+     * ████░░░░░░░░░░████░░░░░░░░░░░░░░
+     * ████░░░░░░░░░░████░░░░░░░░░░░░░░
+     * ████░░░░░░░░░░████░░░░░░░░░░░░░░
+     * ████░░░░░░░░░░████░░░░░░░░░░░░░░
+     * ████░░░░░░░░░░████░░░░░░░░░░░░░░
+     * ████░░░░░░░░░░████░░░░░░░░░░░░░░
+     * ██████████████████░░░░░░░░░░░░░░
+     * ██████████████████░░░░░░░░░░░░░░
+     * ████░░░░░░░░░░████░░░░░░░░░░░░░░
+     * ████░░░░░░░░░░████░░░░░░░░░░░░░░
+     * ████░░░░░░░░░░████░░░░░░░░░░░░░░
+     * ████░░░░░░░░░░████░░░░░░░░░░░░░░
+     * ████░░░░░░░░░░████░░░░░░░░░░░░░░
+     * ████░░░░░░░░░░████░░░░░░░░░░░░░░
+     * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+     * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+     * ██████████░░░░░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░██░░░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░░░██░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░░░██░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░░░██░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░██░░░░░░░░░░░░░░░░░░░░
+     * ██████████░░░░░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░██░░░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░░░██░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░░░██░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░░░██░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░░░██░░░░░░░░░░░░░░░░░░
+     * ██░░░░░░░░██░░░░░░░░░░░░░░░░░░░░
+     * ██████████░░░░░░░░░░░░░░░░░░░░░░
+     */
+    public static String fragmentIs = a0;
+
 
     private Toolbar toolbar;
+
+    /*@Override
+    public void onBackPressed() {
+        // super.onBackPressed();
+        backPress();
+    }
+    */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void backPress(){
+        Fragment fragment = null;
+        if(fragmentIs.equals(a0)){
+            super.onBackPressed();
+        }
+        else if(fragmentIs.equals(a1)){
+            fragment = new AboutBook();
+        }
+        else if(fragmentIs.equals(a2)){
+            fragment = new AdminForSchool();
+            fragmentIs = a0;
+        }
+        else if(fragmentIs.equals(a3)){
+            fragment = new AdminOfApp();
+            fragmentIs = a0;
+        }
+        else if(fragmentIs.equals(a4)){
+            fragment = new ChangeEmail();
+            fragmentIs = a17;
+        }
+        else if(fragmentIs.equals(a5)){
+            fragment = new CheckEmail();
+            fragmentIs = a2;
+        }
+        else if(fragmentIs.equals(a6)){
+            fragment = new CheckNewEmail();
+            fragmentIs = a4;
+        }
+        else if(fragmentIs.equals(a7)){
+            fragment = new ChooseTrueBooks();
+            fragmentIs = a3;
+        }
+        else if(fragmentIs.equals(a8)){
+            fragment = new Cloud();
+            fragmentIs = a3;
+        }
+        else if(fragmentIs.equals(a9)){
+            fragment = new DownloadFromCloud();
+            fragmentIs = a13;
+        }
+        else if(fragmentIs.equals(a10)){
+            fragment = new FavoriteBook();
+            fragmentIs = a0;
+        }
+        else if(fragmentIs.equals(a11)){
+            fragment = new Home();
+        }else if(fragmentIs.equals(a12)){
+            fragment = new InfoAboutApp();
+            fragmentIs = a12;
+        }
+        else if(fragmentIs.equals(a13)){
+            fragment = new Library();
+            fragmentIs = a0;
+        }
+        else if(fragmentIs.equals(a14)){
+            super.onBackPressed();
+            fragmentIs = a0;
+        }
+        else if(fragmentIs.equals(a15)){
+            fragment = new Schedule();
+            fragmentIs = a0;
+        }
+        else if(fragmentIs.equals(a16)){
+            fragment = new Schedule2();
+            fragmentIs = a0;
+        }
+        else if(fragmentIs.equals(a17)){
+            fragment = new SchoolProfile();
+            fragmentIs = a0;
+        }
+        else if(fragmentIs.equals(a18)){
+            fragment = new Send();
+        }
+        else if(fragmentIs.equals(a19)){
+            fragment = new Server();
+            fragmentIs = a0;
+        }
+        else if(fragmentIs.equals(a20)){
+            fragment = new Settings();
+        }
+        else if(fragmentIs.equals(a21)){
+            fragment = new Storage();
+            fragmentIs = a13;
+        }
+        else if(fragmentIs.equals(a22)){
+            fragment = new Subscribe();
+            fragmentIs = a17;
+        }
+        else if(fragmentIs.equals(a23)){
+            fragment = new UploadBookOfSchool();
+            fragmentIs = a17;
+        }
+        else if(fragmentIs.equals(a24)){
+            fragment = new ViewBooksForChecking();
+            fragmentIs = a17;
+        }
+        else if(fragmentIs.equals(a25)){
+            fragment = new MainSettings();
+        }
+
+
+
+
+
+        if(fragment!=null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+        }
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -80,6 +263,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentManager fragmentManager = getSupportFragmentManager();
         assert fragment != null;
         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+        fragmentIs = a0;
 
         // проверяем, первый ли раз зашел человек (заполненя ли информация о человеке)
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -89,6 +273,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = new Settings();
             fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+            fragmentIs = a0;
 
             setTitle("Настройки");
 
@@ -108,13 +293,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            backPress();
+            //super.onBackPressed();
         }
     }
 
@@ -134,18 +321,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.library) {
             fragmentClass = Library.class;
+            fragmentIs = a0;
         }
         else if (id == R.id.settings) {
             fragmentClass = Settings.class;
+            fragmentIs = a0;
         }
         else if (id == R.id.server) {
             fragmentClass = MainSettings.class;
+            fragmentIs = a0;
         }
         else if (id == R.id.nav_send) {
             fragmentClass = Send.class;
+            fragmentIs = a0;
         }
         else if (id == R.id.home) {
             fragmentClass = FavoriteBook.class;
+            fragmentIs = a0;
         }
         else if (id == R.id.schedule) {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -153,13 +345,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             if("pair".equals(pair)) {
                 fragmentClass = Schedule.class;
+                fragmentIs = a0;
             }
             else{
                 fragmentClass = Schedule.class;
+                fragmentIs = a0;
             }
         }
         else {
             fragmentClass = Home.class;
+            fragmentIs = a0;
         }
 
         // ловим ошибки
@@ -191,6 +386,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Fragment fragment = new Settings();
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a20;
 
                 setTitle("Настройки");
             }

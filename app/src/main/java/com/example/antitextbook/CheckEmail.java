@@ -19,8 +19,41 @@ import android.widget.ImageView;
 
 import java.util.Objects;
 
+import static com.example.antitextbook.Constants.a0;
+import static com.example.antitextbook.MainActivity.fragmentIs;
+
 /**
  * Класс для проверки правильности введенного кода
+ */
+
+/**
+ * __¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶___
+ * _¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶__
+ * _¶¶¶_________________________________¶¶¶¶__
+ * _¶¶¶________________¶¶¶¶¶_____________¶¶¶__
+ * _¶¶¶________________¶¶¶¶¶_____________¶¶¶__
+ * _¶¶¶____________¶¶¶¶¶¶¶¶¶¶¶___________¶¶¶__
+ * _¶¶¶___________¶¶¶¶¶¶¶¶¶¶¶¶___________¶¶¶__
+ * _¶¶¶__________¶¶¶¶_¶¶¶¶¶¶_____________¶¶¶__
+ * _¶¶¶__________¶¶¶_¶¶¶¶¶¶¶¶¶___________¶¶¶__
+ * _¶¶¶_________¶¶¶_¶¶¶¶¶¶¶¶¶¶¶__________¶¶¶__
+ * _¶¶¶_________¶¶¶_¶¶¶¶¶¶¶¶¶¶¶__________¶¶¶__
+ * _¶¶¶_________¶¶¶_¶¶¶¶¶¶¶¶¶¶¶__________¶¶¶__
+ * _¶¶¶_________¶¶¶_¶¶¶¶¶¶¶¶¶¶¶__________¶¶¶__
+ * _¶¶¶_________¶¶¶_¶¶¶¶¶¶¶¶¶¶¶__________¶¶¶__
+ * _¶¶¶_________¶¶¶_¶¶¶¶¶¶¶¶¶¶¶__________¶¶¶__
+ * _¶¶¶_________¶¶¶_¶¶¶¶¶¶¶¶¶¶¶__________¶¶¶__
+ * _¶¶¶_________¶¶¶_¶¶¶¶¶¶¶¶¶¶¶__________¶¶¶__
+ * _¶¶¶_________¶¶¶_¶¶¶¶¶¶¶¶¶¶¶__________¶¶¶__
+ * _¶¶¶_________¶¶¶_¶¶¶¶¶¶¶¶¶¶¶__________¶¶¶__
+ * _¶¶¶_________¶¶¶_¶¶¶¶¶¶¶¶¶¶¶__________¶¶¶__
+ * _¶¶¶_________¶¶¶_¶¶¶¶¶¶¶¶¶¶¶__________¶¶¶__
+ * _¶¶¶_________¶¶¶_¶¶¶¶¶¶¶¶¶¶¶__________¶¶¶__
+ * _¶¶¶_________¶¶¶_¶¶¶¶¶¶¶¶¶¶¶__________¶¶¶__
+ * _¶¶¶__________¶¶_¶¶¶¶¶¶¶¶¶¶¶__________¶¶¶__
+ * _¶¶¶¶________________________________¶¶¶¶__
+ * _¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶___
+ * __¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶___
  */
 
 public class CheckEmail extends Fragment {
@@ -126,6 +159,7 @@ public class CheckEmail extends Fragment {
                         Fragment fragment = new SchoolProfile();
                         FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                        fragmentIs = a0;
 
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                         SharedPreferences.Editor editor = preferences.edit();
@@ -178,6 +212,7 @@ public class CheckEmail extends Fragment {
                 Fragment fragment = new MainSettings();
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a0;
             }
         });
 

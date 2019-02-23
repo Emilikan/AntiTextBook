@@ -35,6 +35,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
+import static com.example.antitextbook.Constants.a0;
+import static com.example.antitextbook.MainActivity.fragmentIs;
+
 /**
  * Вход в админку-разработчик
  */
@@ -67,6 +70,7 @@ public class Server extends Fragment {
             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
             DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
+            fragmentIs = a0;
         }
         else {
 
@@ -157,6 +161,7 @@ public class Server extends Fragment {
                         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                         DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
                         drawer.closeDrawer(GravityCompat.START);
+                        fragmentIs = a0;
                     }
 
                 }

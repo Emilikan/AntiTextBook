@@ -44,9 +44,42 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.antitextbook.Constants.*;
+import static com.example.antitextbook.MainActivity.fragmentIs;
 
 /**
  * Класс отправки книги от админа-разработчика (без доп проверок админов)
+ */
+
+/**
+ * ________________________________________¶¶¶_______
+ * ___________________________________¶¶¶¶¶¶_¶¶¶¶_1__
+ * __________________________________1¶¶¶¶¶¶_¶¶¶¶¶¶¶1
+ * _________________________________¶¶¶¶¶¶¶1111¶¶¶¶¶_
+ * ________________________________¶¶¶¶¶¶______¶¶¶___
+ * ______________________________¶¶¶¶¶¶__¶¶______¶1__
+ * ____________________________1¶¶¶¶¶____1¶¶1¶_¶1_¶__
+ * _____¶¶¶¶1__________________¶1_¶¶_______¶¶¶¶¶_¶¶¶_
+ * __1¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶1111¶¶¶¶________¶¶_1¶¶¶¶__
+ * _¶¶¶¶¶¶¶1¶¶¶¶______11¶¶¶¶¶¶¶¶¶1_________¶____1____
+ * ¶¶¶1¶¶¶_¶¶_____________________________¶¶_________
+ * ¶¶_¶¶¶_1¶__________1___________________¶¶_________
+ * ¶¶_¶¶__¶¶__________¶¶_________________1¶__________
+ * ¶_¶¶¶__¶¶__________¶¶_________________¶¶__________
+ * ¶_¶¶¶___¶1_________¶1________________¶¶___________
+ * ¶_¶¶¶___1¶¶_______¶¶1_______________1¶____________
+ * ____¶__1¶1¶¶_____¶¶_1¶¶¶¶¶¶111_1____¶¶____________
+ * ______¶¶__¶¶____¶¶_____11¶¶¶¶¶¶¶¶¶__¶¶____________
+ * _____¶¶_1¶¶____¶¶____________1¶_¶¶__¶¶____________
+ * _____¶¶1¶_____¶¶_____________¶¶_¶¶__¶¶____________
+ * ______¶1¶____¶¶______________¶¶_¶¶__¶¶____________
+ * ______¶_¶___¶¶_______________¶¶_¶¶__¶¶____________
+ * ______¶_¶¶___¶1______________¶1_¶¶__¶¶____________
+ * ______¶1_¶___¶¶______________¶__¶¶__¶¶____________
+ * ______¶1_¶¶___¶1_____________¶_1¶¶__¶¶____________
+ * ______¶¶¶¶¶_¶¶¶¶_____________¶¶¶¶¶_¶¶¶____________
+ * _______¶¶¶¶¶¶¶¶¶1____________¶¶¶¶¶¶¶¶¶____________
+ * __________1¶¶¶¶¶1________________1¶¶1_____________
  */
 
 public class Cloud extends Fragment {
@@ -105,6 +138,7 @@ public class Cloud extends Fragment {
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 assert fragment != null;
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a0;
             }
         });
 
@@ -122,6 +156,7 @@ public class Cloud extends Fragment {
                                     FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                                     Toast.makeText(getActivity(), "Нет книг", Toast.LENGTH_SHORT).show();
+                                    fragmentIs = a0;
                                 }
                             });
             AlertDialog alert = builder.create();
@@ -374,7 +409,7 @@ public class Cloud extends Fragment {
                                                         sendOnCloud.setClickable(true);
                                                     }
 
-                                                    AlertDialog.Builder ad;
+                                                    final AlertDialog.Builder ad;
                                                     ad = new AlertDialog.Builder(Objects.requireNonNull(context));
                                                     ad.setTitle("Error");  // заголовок
                                                     ad.setMessage("Ошибка: " + exception.getMessage() + ""); // сообщение
@@ -383,6 +418,7 @@ public class Cloud extends Fragment {
                                                             Fragment fragment = new Send();
                                                             FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                                             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                                            fragmentIs = a0;
                                                         }
                                                     });
                                                     ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
@@ -473,6 +509,7 @@ public class Cloud extends Fragment {
                                                             Fragment fragment = new Send();
                                                             FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                                             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                                            fragmentIs = a0;
                                                         }
                                                     });
                                                     ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
@@ -506,6 +543,7 @@ public class Cloud extends Fragment {
                                             Fragment fragment = new Send();
                                             FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                            fragmentIs = a0;
                                         }
                                     });
                                     ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
@@ -604,6 +642,7 @@ public class Cloud extends Fragment {
                         Fragment fragment = new Send();
                         FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                        fragmentIs = a0;
                     }
                 });
                 ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {

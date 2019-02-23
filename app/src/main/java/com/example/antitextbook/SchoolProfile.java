@@ -18,6 +18,10 @@ import android.widget.TextView;
 
 import java.util.Objects;
 
+import static com.example.antitextbook.Constants.a0;
+import static com.example.antitextbook.Constants.a17;
+import static com.example.antitextbook.MainActivity.fragmentIs;
+
 /**
  * Класс профиля школы. Что-то типо прокладки
  */
@@ -51,6 +55,7 @@ public class SchoolProfile extends Fragment {
                     Fragment fragment = new ChangeEmail();
                     FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                    fragmentIs = a17;
                 }
                 else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
@@ -86,6 +91,7 @@ public class SchoolProfile extends Fragment {
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 assert fragment != null;
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a17;
             }
         });
 
@@ -98,6 +104,7 @@ public class SchoolProfile extends Fragment {
                 Fragment fragment = new Subscribe();
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a17;
             }
         });
 
@@ -119,6 +126,7 @@ public class SchoolProfile extends Fragment {
                 Fragment fragment = new MainSettings();
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a0;
             }
         });
 

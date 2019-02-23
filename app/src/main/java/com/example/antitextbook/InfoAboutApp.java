@@ -16,8 +16,28 @@ import android.widget.FrameLayout;
 
 import java.util.Objects;
 
+import static com.example.antitextbook.Constants.a0;
+import static com.example.antitextbook.MainActivity.fragmentIs;
+
 /**
  * просто показываем информацию о проиложении
+ */
+
+/**
+ * ████████════███══════════════██████══███══████████
+ * ██░░░░░█═══█░░█═██████════════█░░░█═██░█══█░░░░█░█
+ * ═██░░░░██═██░░░█═█░░░█═██████═█░░░███░░█═█░░░░██░█
+ * ══██░░░░█═█░░░░░██░░░██░░░░░░██░░░██░░░██░░░░░█░░█
+ * ═══█░░░░░█░░░░░░██░░░█░░████░░█░░░░░░░░░█░░░░██░░█
+ * ═══██░░░░█░░░█░░░█░░░░░██══██░░░░░░░░░░░░░░░░█░░░█
+ * ════██░░░░░░░██░░░░░░░░██══██░░░░░░░██░░░░░░█░░░█
+ * ═════█░░░░░░█═██░░░░█░░░████░░█░░░░███░░░░░░█░░█
+ * ══════█░░░░██══██░░░███░░░░░░█░░░░██══█░░░░█░░█
+ * ═══════█████════██████═██████═█████═══████████
+ * ════█████████████████████████████████████████
+ * ════██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██░░██
+ * ════██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█████
+ * ════████████████████████████████████████
  */
 
 public class InfoAboutApp extends Fragment {
@@ -56,6 +76,7 @@ public class InfoAboutApp extends Fragment {
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 assert fragment != null;
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a0;
             }
         });
         return rootView;

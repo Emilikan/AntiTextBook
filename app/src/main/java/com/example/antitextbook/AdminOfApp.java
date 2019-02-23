@@ -20,10 +20,25 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
+import static com.example.antitextbook.Constants.*;
+import static com.example.antitextbook.MainActivity.fragmentIs;
+
 
 public class AdminOfApp extends Fragment {
     /**
      * Класс именно админки для разработчиков. Является некоторой прослойкой. (Класс входа называется Server)
+     */
+
+    /**
+     *   ...................／＞　 フ....💕...........
+       ....................| 　◠　◠ |💕........
+         .................／`ミ _x 彡..Мур.......
+          .............../　　　 　 |..............
+          ............../　 ヽ　　 ﾉ...... ..........
+                 .....／￣|　　 |　|　| ....................
+                 .....| (￣ヽ＿_ヽ_)_) ......................
+                ......＼二つ
+
      */
 
     @Override
@@ -36,7 +51,7 @@ public class AdminOfApp extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_admin_of_app, container, false);
-
+        fragmentIs = a0;
         // кнопка выхода
         Button singOut = rootView.findViewById(R.id.singOutOfAdmin);
         singOut.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +76,7 @@ public class AdminOfApp extends Fragment {
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 assert fragment != null;
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a0;
             }
         });
 
@@ -74,6 +90,7 @@ public class AdminOfApp extends Fragment {
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                 DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
+                fragmentIs = a3;
             }
         });
 
@@ -87,6 +104,7 @@ public class AdminOfApp extends Fragment {
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                 DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
+                fragmentIs = a3;
             }
         });
         return rootView;

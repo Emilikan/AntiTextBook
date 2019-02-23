@@ -45,6 +45,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.example.antitextbook.Constants.*;
+import static com.example.antitextbook.MainActivity.fragmentIs;
 import static java.lang.String.valueOf;
 
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -68,6 +70,17 @@ public class AboutBook extends Fragment {
 
     /**
      * Класс относится к фрагменту AboutBook. Позволяет пользователю просмотреть информацию о книге, cкачать ее
+     */
+
+    /*
+／ﾌﾌ 　　　　　 　　 　ム｀ヽ
+/ ノ)　　 ∧　　∧　　　　）　ヽ
+/ ｜　　(´・ω ・`）ノ⌒（ゝ._,ノ
+/　ﾉ⌒＿⌒ゝーく　 ＼　　／
+丶＿ ノ 　　 ノ､　　|　/
+　　 `ヽ `ー-‘人`ーﾉ /
+　　　 丶 ￣ _人’彡ﾉ
+　　　／｀ヽ _/\__'
      */
 
     @Override
@@ -96,6 +109,7 @@ public class AboutBook extends Fragment {
                                     FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                                     Toast.makeText(getActivity(), "Нет книг", Toast.LENGTH_SHORT).show();
+                                    fragmentIs = a0;
                                 }
                             });
             AlertDialog alert = builder.create();
@@ -163,6 +177,7 @@ public class AboutBook extends Fragment {
                                             Fragment fragment = new Send();
                                             FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                            fragmentIs = a1;
                                         }
                                     });
                                     ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
@@ -214,6 +229,7 @@ public class AboutBook extends Fragment {
                                                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                                                 Toast.makeText(context, "Файл скачан", Toast.LENGTH_LONG).show();
+                                                fragmentIs = a1;
                                             }
                                             else {
                                                 //* написать код для открытия сразу библиотеки
@@ -255,6 +271,7 @@ public class AboutBook extends Fragment {
                                             Fragment fragment = new Send();
                                             FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                                            fragmentIs = a1;
                                         }
                                     });
                                     ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
@@ -288,6 +305,7 @@ public class AboutBook extends Fragment {
                     FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                     assert fragment != null;
                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                    fragmentIs = a13;
                 }
             });
 
@@ -355,6 +373,7 @@ public class AboutBook extends Fragment {
                         Fragment fragment = new Send();
                         FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                        fragmentIs = a1;
                     }
                 });
                 ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
@@ -394,6 +413,7 @@ public class AboutBook extends Fragment {
                     Fragment fragment = new Send();
                     FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                    fragmentIs = a1;
                 }
             });
             ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {

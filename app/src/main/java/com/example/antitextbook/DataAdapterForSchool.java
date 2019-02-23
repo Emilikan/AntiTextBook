@@ -30,8 +30,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.example.antitextbook.Constants.a0;
+import static com.example.antitextbook.MainActivity.fragmentIs;
+
 /**
  * Класс генерирования RecycleView для школьной админки. Отдеьный класс, т.к. сильно другое действие при нажатии, а отслеживание нажатия происходит в этом классе
+ */
+
+/**
+ * ░░░░░░░░░░░░░░░░░░▄▄░░░░░░░░░░░░░░░░░░
+ * ░░░░░░░░░░░░░░░░░▄██▄░░░░░░░░░░░░░░░░░
+ * ░░░░░░░░░░░░░░░░▄████▄░░░░░░░░░░░░░░░░
+ * ░░░░░░░░░░░░░░░██░██░█▄░░░░░░░░░░░░░░░
+ * ░░░░░░░░░░░░░░█▀░░██░░▀█░░░░░░░░░░░░░░
+ * ░░░░░░░░░░░░░█▀░░░██░░░▀█░░░░░░░░░░░░░
+ * ░░░░░░░░░░░▄█▀░░▄▄██▄▄░░▀█░░░░░░░░░░░░
+ * ░░░░░░░░░░▄██▄█▀▀░██░▀▀█▄██▄░░░░░░░░░░
+ * ░░░░░░░░░▄██▀░░░░░██░░░░░▀██▄░░░░░░░░░
+ * ░░░░░░░░▄██▀░░░░░░██░░░░░░▀██▄░░░░░░░░
+ * ░░░░░░░████░░░░░░░██░░░░░░░███▄░░░░░░░
+ * ░░░░░░█▀░█░░░░░░░░██░░░░░░░░█░▀█░░░░░░
+ * ░░░░░█▀░░██░░░░░░░██░░░░░░░██░░▀█░░░░░
+ * ░░░▄█▀░░░░█▄░░░░░░██░░░░░░▄█░░░░▀█▄░░░
+ * ░░▄█▀░░░░░░█▄░░░░░██░░░░░▄█░░░░░░▀█▄░░
+ * ░▄█░░░░░░░░░▀▀█▄▄▄██▄▄▄█▀▀░░░░░░░░░█▄░
+ * ▄█▄▄▄▄▄▄▄▄▄▄▄▄▄████████▄▄▄▄▄▄▄▄▄▄▄▄▄█▄
  */
 
 public class DataAdapterForSchool extends RecyclerView.Adapter<DataAdapter.ViewHolder>  {
@@ -202,6 +225,7 @@ public class DataAdapterForSchool extends RecyclerView.Adapter<DataAdapter.ViewH
                     Fragment fragment = new Send();
                     FragmentManager fragmentManager = Objects.requireNonNull(bookForRecycle.getActivity()).getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                    fragmentIs = a0;
                 }
             });
             ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {

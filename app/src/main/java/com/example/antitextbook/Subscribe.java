@@ -35,6 +35,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.example.antitextbook.Constants.a0;
+import static com.example.antitextbook.MainActivity.fragmentIs;
+
 /**
  * Показываем книги для школ
  */
@@ -92,6 +95,7 @@ public class Subscribe extends Fragment {
                 Fragment fragment = new SchoolProfile();
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentIs = a0;
             }
         });
 
@@ -108,6 +112,7 @@ public class Subscribe extends Fragment {
                                     FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                                     Toast.makeText(getActivity(), "Нет книг", Toast.LENGTH_SHORT).show();
+                                    fragmentIs = a0;
                                 }
                             });
             AlertDialog alert = builder.create();
@@ -130,6 +135,7 @@ public class Subscribe extends Fragment {
                         FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                         Toast.makeText(getActivity(), "Нет книг", Toast.LENGTH_SHORT).show();
+                        fragmentIs = a0;
                     } else {
                         assert counter != null;
                         nameOfSubj.add("Все предметы");
@@ -247,6 +253,7 @@ public class Subscribe extends Fragment {
                             Fragment fragment = new Send();
                             FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                            fragmentIs = a0;
                         }
                     });
                     ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
@@ -331,6 +338,7 @@ public class Subscribe extends Fragment {
                         Fragment fragment = new Send();
                         FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                        fragmentIs = a0;
                     }
                 });
                 ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {

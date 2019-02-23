@@ -30,8 +30,39 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.Objects;
 
+import static com.example.antitextbook.Constants.a0;
+import static com.example.antitextbook.Constants.a3;
+import static com.example.antitextbook.Constants.a9;
+import static com.example.antitextbook.MainActivity.fragmentIs;
+
 /**
  * Класс для генерирования RecycleView на основе данных объекта класса BookForRecycle
+ */
+
+/**
+ * ░░░░░░░░░░░░▄▄▄██████▄▄░░░░░░░
+ * ░░░░░░░░▄▄███████▀░█▀█▀█▄░░░░░
+ * ░░░░░░▄████████▄▄██▄▀░▄▀██▄░░░
+ * ░░░░░████████████████▄▄█░▀██░░
+ * ░░░░█████████████████████▄██▄░
+ * ░░░▄████████▀██▄░░▀▀▀████████░
+ * ░░░████████▄▄▄██▄░░▄▄▄████████
+ * ░░▄████░░▀█▀░▀░▀░░░▀██▀▀▀█████
+ * ░░█████░░░░░░░░▄░░░░▀▀█▄░█████
+ * ░██████░░░░░░▄░▄░░░░░░░▀░▀███▀
+ * ▄██████░░░░░░▀▀▀░▀█░░░░░░░███░
+ * ███████░░░░░▄▄▄▄░░░░░░░░░░███░
+ * ░██████░░░░░░▄░▀▀▄░░░░░░░███▀░
+ * ░░▀█████░░░░▀▀██▄░░░░░░░▀███░░
+ * ░░░██████░░░░░░░░░░░░░░▄░▄█░░░
+ * ░░░███████▄░░░░░░░░░░░▄█▀░░░░░
+ * ░░░██████████▄▄▄░░░▄▄█░░░░░░░░
+ * ░░███████████████▀▀░░░░░░░░░░░
+ * ░░██░░▀▀███▀▀▀▀░░░░░░░░░░░░░░░
+ * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+ * ░█▀▀░█▀▄▀█░▀█▀░█▄░░█░█▀▀░█▀▄▀█
+ * ░█▀▀░█░█░█░░█░░█░█░█░█▀▀░█░█░█
+ * ░█▄▄░█░░░█░▄█▄░█░░▀█░█▄▄░█░░░█
  */
 
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
@@ -122,6 +153,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
                         Fragment fragment = new AboutBook();
                         FragmentTransaction fragmentManager = book.getActivity().getSupportFragmentManager().beginTransaction();
                         fragmentManager.replace(R.id.container, fragment).commit();
+                        fragmentIs = a9;
 
                         Bundle bundle = new Bundle();
                         String valueOfReplace = Integer.toString(book.getArrayList().get(viewHolder.getAdapterPosition()));
@@ -160,6 +192,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
                         Fragment fragment = new ViewBooksForChecking();
                         FragmentTransaction fragmentManager = book.getActivity().getSupportFragmentManager().beginTransaction();
                         fragmentManager.replace(R.id.container, fragment).commit();
+                        fragmentIs = a3;
 
                         Bundle bundle = new Bundle();
                         String valueOfReplace = Integer.toString(book.getArrayList().get(viewHolder.getAdapterPosition()));
