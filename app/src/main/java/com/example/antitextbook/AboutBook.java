@@ -187,7 +187,7 @@ public class AboutBook extends Fragment {
 
                                     StorageReference islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(Objects.requireNonNull(dataSnapshot.child("Books").child(contFrag).child("Pdf").getValue(String.class)));
 
-                                    String nameOfFileInTelephone = dataSnapshot.child("Books").child(contFrag).child("Author").getValue(String.class) + " " + dataSnapshot.child("Books").child(contFrag).child("Describing").getValue(String.class) + " " + dataSnapshot.child("Books").child(contFrag).child("Class").getValue(String.class)
+                                    final String nameOfFileInTelephone = dataSnapshot.child("Books").child(contFrag).child("Author").getValue(String.class) + " " + dataSnapshot.child("Books").child(contFrag).child("Describing").getValue(String.class) + " " + dataSnapshot.child("Books").child(contFrag).child("Class").getValue(String.class)
                                             + " " + dataSnapshot.child("Books").child(contFrag).child("Subject").getValue(String.class) + " " + dataSnapshot.child("Books").child(contFrag).child("Part").getValue(String.class)
                                             + " " + dataSnapshot.child("Books").child(contFrag).child("Year").getValue(String.class);
 
@@ -209,6 +209,7 @@ public class AboutBook extends Fragment {
                                                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
                                                 SharedPreferences.Editor editor = preferences.edit();
                                                 editor.putString("URI", valueOf(pdfFilePath));
+                                                editor.putString("openBook",nameOfFileInTelephone);
                                                 editor.apply();
                                             }
 
