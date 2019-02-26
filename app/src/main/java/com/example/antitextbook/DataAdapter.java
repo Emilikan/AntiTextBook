@@ -30,7 +30,6 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.Objects;
 
-import static com.example.antitextbook.Constants.a0;
 import static com.example.antitextbook.Constants.a3;
 import static com.example.antitextbook.Constants.a9;
 import static com.example.antitextbook.MainActivity.fragmentIs;

@@ -196,15 +196,29 @@ public class DownloadFromCloud extends Fragment {
                             spinnerSubject.setAdapter(adapter5);
 
                             if("School".equals(schoolOrInst)) {
+
                                 ArrayAdapter<String> adapter1 = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, arrayForClass1);
                                 adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 spinnerClass.setAdapter(adapter1);
-                                spinnerClass.setSelection(Integer.parseInt(fromSettingsClass));
+                                if(fromSettingsHigthSchool.equals("SchoolBoy")) {
+                                    spinnerClass.setSelection(Integer.parseInt(fromSettingsClass));
+                                }
+                                else {
+                                    spinnerClass.setSelection(0);
+                                }
+
                             } else {
+
                                 ArrayAdapter<String> adapter1 = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, arrayForClass2);
                                 adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 spinnerClass.setAdapter(adapter1);
-                                spinnerClass.setSelection(Integer.parseInt(fromSettingsClass));
+                                if(fromSettingsHigthSchool.equals("Student")) {
+                                    spinnerClass.setSelection(Integer.parseInt(fromSettingsClass));
+                                }
+                                else {
+                                    spinnerClass.setSelection(0);
+                                }
+
                             }
 
 
