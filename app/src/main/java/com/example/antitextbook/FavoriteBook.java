@@ -81,7 +81,7 @@ public class FavoriteBook extends Fragment {
 
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("URI", "content://com.android.providers.downloads.documents/document/1328");
+                editor.putString("URI", pdfUri);
                 editor.putString("openBook", mBooks.get(position));
 
                 editor.apply();
