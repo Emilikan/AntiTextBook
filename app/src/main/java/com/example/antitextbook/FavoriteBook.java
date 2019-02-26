@@ -14,10 +14,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.TreeSet;
 
 import static com.example.antitextbook.Constants.a10;
 import static com.example.antitextbook.MainActivity.fragmentIs;
@@ -70,14 +74,13 @@ public class FavoriteBook extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
                 pdfUri = arrPdfUriLB.get(position);
-                SharedPreferences preferences1 = PreferenceManager.getDefaultSharedPreferences(getContext());
-                SharedPreferences.Editor editor1 = preferences1.edit();
-                editor1.putString("openBook", mLastBook.get(position));
-                editor1.apply();
+
+
 
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("URI", pdfUri);
+                editor.putString("openBook", mLastBook.get(position));
                 editor.apply();
 
                 Fragment fragment = new Home();
@@ -92,14 +95,12 @@ public class FavoriteBook extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
                 pdfUri = arrPdfUri.get(position);
-                SharedPreferences preferences1 = PreferenceManager.getDefaultSharedPreferences(getContext());
-                SharedPreferences.Editor editor1 = preferences1.edit();
-                editor1.putString("openBook", mBooks.get(position));
-                editor1.apply();
+
 
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("URI", pdfUri);
+                editor.putString("openBook", mBooks.get(position));
 
                 editor.apply();
 
@@ -110,16 +111,12 @@ public class FavoriteBook extends Fragment {
             }
         });
 
-        File rootFolder = Objects.requireNonNull(getContext()).getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-        assert rootFolder != null;
-        File[] filesArray = rootFolder.listFiles();
 
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        for (File f: filesArray) {
-            if ((f.getName()).equals(preferences.getString(f.getName(), ""))){
-                mBooks.add(f.getName());
-                arrPdfUri.add(f.toURI() + "");
-            }
+
+        arrPdfUri.addAll(Objects.requireNonNull(preferences.getStringSet("FavoriteBookUri", new LinkedHashSet<String>())));
+        for (String i:arrPdfUri){
+            mBooks.add(preferences.getString(i,""));
         }
         return rootView;
     }
