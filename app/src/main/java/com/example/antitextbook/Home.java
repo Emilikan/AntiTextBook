@@ -38,7 +38,12 @@ import com.github.barteksc.pdfviewer.util.FitPolicy;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Home extends Fragment {
 
@@ -62,6 +67,9 @@ public class Home extends Fragment {
     private int color = Color.GREEN;
     private int thisWidth;
     private int thisHeight;
+
+    private Set<String> arrPdfUriForFB = new LinkedHashSet<>();
+    private Set<String> arrNamesForFB = new LinkedHashSet<>();
 
     private Boolean isReady = true;
     private Boolean isReadyN = false;
@@ -117,16 +125,23 @@ public class Home extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
+        arrPdfUriForFB.addAll(Objects.requireNonNull(preferences.getStringSet("FavoriteBookUri", new LinkedHashSet<String>())));
         if (Objects.requireNonNull(preferences.getString("openBook", "")).equals(preferences.getString(preferences.getString("openBook",""),""))){
+            arrPdfUriForFB.remove(preferences.getString("URI",""));
+            editor.remove(preferences.getString("URI",""));
             editor.remove(preferences.getString("openBook",""));
             item.setTitle("Добавить книгу в любимое");
         }
         else{
+            editor.putString(preferences.getString("URI",""),preferences.getString("openBook",""));
+            arrPdfUriForFB.add(preferences.getString("URI",""));
             editor.putString(preferences.getString("openBook",""),preferences.getString("openBook",""));
             item.setTitle("Удалить книгу из любимого");
         }
-
+        editor.putStringSet("FavoriteBook",arrNamesForFB);
+        editor.putStringSet("FavoriteBookUri",arrPdfUriForFB);
         editor.apply();
+
         return super.onOptionsItemSelected(item);
 
     }
