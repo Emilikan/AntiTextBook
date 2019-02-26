@@ -40,8 +40,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class Home extends Fragment {
 
@@ -66,8 +68,8 @@ public class Home extends Fragment {
     private int thisWidth;
     private int thisHeight;
 
-    private Set<String> arrPdfUriForFB = new HashSet<>();
-    private Set<String> arrNamesForFB = new HashSet<>();
+    private Set<String> arrPdfUriForFB = new LinkedHashSet<>();
+    private Set<String> arrNamesForFB = new LinkedHashSet<>();
 
     private Boolean isReady = true;
     private Boolean isReadyN = false;
@@ -110,26 +112,23 @@ public class Home extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
-        arrPdfUriForFB = preferences.getStringSet("FavoriteBookUri",new HashSet<String>());
-        arrNamesForFB = preferences.getStringSet("FavoriteBook",new HashSet<String>());
+        arrPdfUriForFB.addAll(Objects.requireNonNull(preferences.getStringSet("FavoriteBookUri", new LinkedHashSet<String>())));
         if (Objects.requireNonNull(preferences.getString("openBook", "")).equals(preferences.getString(preferences.getString("openBook",""),""))){
-            arrNamesForFB.remove(preferences.getString("openBook",""));
-            arrPdfUriForFB.remove(preferences.getString("openBook",""));
-            editor.putStringSet("FavoriteBook",arrNamesForFB);
-            editor.putStringSet("FavoriteBookUri",arrPdfUriForFB);
+            arrPdfUriForFB.remove(preferences.getString("URI",""));
+            editor.remove(preferences.getString("URI",""));
             editor.remove(preferences.getString("openBook",""));
             item.setTitle("Добавить книгу в любимое");
         }
         else{
-            arrNamesForFB.add(preferences.getString("openBook",""));
+            editor.putString(preferences.getString("URI",""),preferences.getString("openBook",""));
             arrPdfUriForFB.add(preferences.getString("URI",""));
-            editor.putStringSet("FavoriteBook",arrNamesForFB);
-            editor.putStringSet("FavoriteBookUri",arrPdfUriForFB);
             editor.putString(preferences.getString("openBook",""),preferences.getString("openBook",""));
             item.setTitle("Удалить книгу из любимого");
         }
-
+        editor.putStringSet("FavoriteBook",arrNamesForFB);
+        editor.putStringSet("FavoriteBookUri",arrPdfUriForFB);
         editor.apply();
+
         return super.onOptionsItemSelected(item);
 
     }

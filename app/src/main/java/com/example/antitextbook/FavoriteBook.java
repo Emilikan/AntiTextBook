@@ -19,7 +19,9 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.TreeSet;
 
 import static com.example.antitextbook.Constants.a0;
 import static com.example.antitextbook.Constants.a10;
@@ -79,7 +81,7 @@ public class FavoriteBook extends Fragment {
 
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("URI", pdfUri);
+                editor.putString("URI", "content://com.android.providers.downloads.documents/document/1328");
                 editor.putString("openBook", mBooks.get(position));
 
                 editor.apply();
@@ -91,15 +93,13 @@ public class FavoriteBook extends Fragment {
             }
         });
 
-        File rootFolder = Objects.requireNonNull(getContext()).getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-        assert rootFolder != null;
-        File[] filesArray = rootFolder.listFiles();
 
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-        arrPdfUri.addAll(Objects.requireNonNull(preferences.getStringSet("FavoriteBookUri", new HashSet<String>())));
-        mBooks.addAll(Objects.requireNonNull(preferences.getStringSet("FavoriteBook", new HashSet<String>())));
-
+        arrPdfUri.addAll(Objects.requireNonNull(preferences.getStringSet("FavoriteBookUri", new LinkedHashSet<String>())));
+        for (String i:arrPdfUri){
+            mBooks.add(preferences.getString(i,""));
+        }
         return rootView;
     }
 

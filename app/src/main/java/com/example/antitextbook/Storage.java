@@ -1,5 +1,6 @@
 package com.example.antitextbook;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +11,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.DocumentsContract;
+import android.provider.DocumentsProvider;
+import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -34,8 +38,10 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static android.app.Activity.RESULT_OK;
 import static android.support.constraint.Constraints.TAG;
@@ -55,8 +61,7 @@ public class Storage extends Fragment {
     private Button choosePdf;
     private ListView listBooks;
     private String pdfUri;
-    private Set<String> arrPdfUriLibraryBooks = new HashSet<>();
-    private Set<String> arrNamesLibraryBooks = new HashSet<>();
+    private Set<String> arrPdfUriLibraryBooks = new LinkedHashSet<>();
 
 
 
@@ -147,16 +152,17 @@ public class Storage extends Fragment {
             arrPdfUri.add(f.toURI() + "");
         }
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        mBooks.addAll(Objects.requireNonNull(preferences.getStringSet("LibraryBook", new HashSet<String>())));
-        arrPdfUri.addAll(Objects.requireNonNull(preferences.getStringSet("UriLibraryBook", new HashSet<String>())));
-
+        arrPdfUri.addAll(Objects.requireNonNull(preferences.getStringSet("UriLibraryBook", new LinkedHashSet<String>())));
+        for (String i :Objects.requireNonNull(preferences.getStringSet("UriLibraryBook", new LinkedHashSet<String>()))){
+            mBooks.add(preferences.getString(i, ""));
+        }
         return rootView;
     }
     // метод, который открывает проводник для выбора pdf
     private void pdfChooser() {
         Intent intent = new Intent();
         intent.setType("application/pdf");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
         startActivityForResult(Intent.createChooser(intent, "Select PDF"), PICK_PDF_REQUEST);
     }
 
@@ -188,16 +194,12 @@ public class Storage extends Fragment {
         if(requestCode == PICK_PDF_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
             final Uri filePdfPath = data.getData();
             final String nameOfFile = getNameOfFile(filePdfPath);
-
             final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
             final SharedPreferences.Editor editor = preferences.edit();
 
             editor.putString("URI", String.valueOf(filePdfPath));
             editor.putString("openBook",nameOfFile);
-            final Context cont = getContext();
-
-            arrPdfUriLibraryBooks = preferences.getStringSet("UriLibraryBook",new HashSet<String>());
-            arrNamesLibraryBooks = preferences.getStringSet("LibraryBook",new HashSet<String>());
+            arrPdfUriLibraryBooks.addAll(Objects.requireNonNull(preferences.getStringSet("UriLibraryBook", new LinkedHashSet<String>())));
             AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
             builder.setTitle("Warning")
                     .setMessage("Хотите добавить эту книгу в библиотеку?")
@@ -205,9 +207,8 @@ public class Storage extends Fragment {
                     .setPositiveButton("Да",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    arrNamesLibraryBooks.add(nameOfFile);
                                     arrPdfUriLibraryBooks.add(filePdfPath+"");
-                                    editor.putStringSet("LibraryBook", arrNamesLibraryBooks);
+                                    editor.putString(filePdfPath+"",nameOfFile);
                                     editor.putStringSet("UriLibraryBook", arrPdfUriLibraryBooks);
                                     editor.apply();
                                     dialog.cancel();
@@ -220,7 +221,7 @@ public class Storage extends Fragment {
                         }
                     });
             AlertDialog alert = builder.create();
-            if (!Objects.requireNonNull(preferences.getStringSet("LibraryBook", new HashSet<String>())).contains(nameOfFile)){
+            if (!Objects.requireNonNull(preferences.getStringSet("UriLibraryBook", new LinkedHashSet<String>())).contains(filePdfPath+"")){
                 alert.show();
             }
 
@@ -233,11 +234,14 @@ public class Storage extends Fragment {
             fragmentIs = a21;
         }
     }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public String getNameOfFile(Uri uri) {
         String displayName = null;
         Cursor cursor = getActivity().getContentResolver()
                 .query(uri, null, null, null, null, null);
 
+        ContentResolver ct = getContext().getContentResolver();
+        ct.takePersistableUriPermission(uri,Intent.FLAG_GRANT_READ_URI_PERMISSION);
         try {
             // moveToFirst() returns false if the cursor has 0 rows.  Very handy for
             // "if there's anything to look at, look at it" conditionals.
@@ -246,12 +250,14 @@ public class Storage extends Fragment {
                 // Note it's called "Display Name".  This is
                 // provider-specific, and might not necessarily be the file name.
                 displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+
             }
         } finally {
             cursor.close();
         }
         return displayName;
     }
+
 
 
 
