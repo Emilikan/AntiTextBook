@@ -358,7 +358,7 @@ public class Home extends Fragment {
                     .enableAntialiasing(true) // improve rendering a little bit on low-res screens
                     .spacing(0) // расстояние между страницами
                     .pageSnap(true)
-                    .pageFitPolicy(FitPolicy.WIDTH)
+                    .pageFitPolicy(FitPolicy.HEIGHT)
                     .load();
 
         }

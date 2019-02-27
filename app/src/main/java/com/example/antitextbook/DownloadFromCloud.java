@@ -70,7 +70,7 @@ public class DownloadFromCloud extends Fragment {
 
     private ProgressBar progressBar;
 
-    private ArrayList<String> nameOfSubj= new ArrayList<>(); // тут хронятся все виды предметов (для вывода их)
+    private ArrayList<String> nameOfSubj= new ArrayList<>(); // тут хранятся все виды предметов (для вывода их)
     private ArrayList<Integer> realIdOfBook= new ArrayList<>(); // тут под id в новом списке хранится настоящий id книги
 
     private String schoolOrInst = "School";
@@ -196,31 +196,16 @@ public class DownloadFromCloud extends Fragment {
                             spinnerSubject.setAdapter(adapter5);
 
                             if("School".equals(schoolOrInst)) {
-
                                 ArrayAdapter<String> adapter1 = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, arrayForClass1);
                                 adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 spinnerClass.setAdapter(adapter1);
-                                if(fromSettingsHigthSchool.equals("SchoolBoy")) {
-                                    spinnerClass.setSelection(Integer.parseInt(fromSettingsClass));
-                                }
-                                else {
-                                    spinnerClass.setSelection(0);
-                                }
-
+                                spinnerClass.setSelection(Integer.parseInt(fromSettingsClass));
                             } else {
-
                                 ArrayAdapter<String> adapter1 = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, arrayForClass2);
                                 adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 spinnerClass.setAdapter(adapter1);
-                                if(fromSettingsHigthSchool.equals("Student")) {
-                                    spinnerClass.setSelection(Integer.parseInt(fromSettingsClass));
-                                }
-                                else {
-                                    spinnerClass.setSelection(0);
-                                }
-
+                                spinnerClass.setSelection(Integer.parseInt(fromSettingsClass));
                             }
-
 
                             ArrayAdapter<String> adapter2 = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, arrayForWho);
                             adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -258,7 +243,11 @@ public class DownloadFromCloud extends Fragment {
                                     ArrayAdapter<String> adapter1 = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, arrayForClass1);
                                     adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                     spinnerClass.setAdapter(adapter1);
-                                    spinnerClass.setSelection(Integer.parseInt(fromSettingsClass));
+                                    try {
+                                        spinnerClass.setSelection(Integer.parseInt(fromSettingsClass));
+                                    } catch (Exception e){
+                                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                                 else{
                                     schoolOrInst = "Inst";
@@ -266,7 +255,11 @@ public class DownloadFromCloud extends Fragment {
                                     ArrayAdapter<String> adapter1 = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, arrayForClass2);
                                     adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                     spinnerClass.setAdapter(adapter1);
-                                    spinnerClass.setSelection(Integer.parseInt(fromSettingsClass));
+                                    try {
+                                        spinnerClass.setSelection(Integer.parseInt(fromSettingsClass));
+                                    } catch (Exception e){
+                                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                                 sortingBook1();
                             }
