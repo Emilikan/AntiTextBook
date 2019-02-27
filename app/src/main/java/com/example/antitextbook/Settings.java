@@ -97,9 +97,9 @@ public class Settings extends Fragment {
         RadioButton buttonStudent = rootView.findViewById(R.id.heightSchoolBoy);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        userClassED.setText(preferences.getString("UserClass", "Поле не заполнено"));
-        userNameED.setText(preferences.getString("UserName", "Поле не заполнено"));
-        userSchoolED.setText(preferences.getString("UserSchool", "Поле не заполнено"));
+        userClassED.setText(preferences.getString("UserClass", ""));
+        userNameED.setText(preferences.getString("UserName", ""));
+        userSchoolED.setText(preferences.getString("UserSchool", ""));
 
         String uStOrSch = preferences.getString("UserStudentOrSchoolBoy", "0");
         if(!"0".equals(uStOrSch) && "Student".equals(uStOrSch)){

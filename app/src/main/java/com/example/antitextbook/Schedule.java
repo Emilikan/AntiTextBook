@@ -36,13 +36,13 @@ public class Schedule extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        final String[] lesson_mon1 = {preferences.getString("lesson_mon1", "Первый урок")};
-        final String[] lesson_mon2 = {preferences.getString("lesson_mon2", "Второй урок")};
-        final String[] lesson_mon3 = {preferences.getString("lesson_mon3", "Третий урок")};
-        final String[] lesson_mon4 = {preferences.getString("lesson_mon4", "Четвертый урок")};
-        final String[] lesson_mon5 = {preferences.getString("lesson_mon5", "Пятый урок")};
-        final String[] lesson_mon6 = {preferences.getString("lesson_mon6", "Шестой урок")};
-        final String[] lesson_mon7 = {preferences.getString("lesson_mon7", "Седьмой урок")};
+        final String[] lesson_mon1 = {preferences.getString("lesson_mon1", "")};
+        final String[] lesson_mon2 = {preferences.getString("lesson_mon2", "")};
+        final String[] lesson_mon3 = {preferences.getString("lesson_mon3", "")};
+        final String[] lesson_mon4 = {preferences.getString("lesson_mon4", "")};
+        final String[] lesson_mon5 = {preferences.getString("lesson_mon5", "")};
+        final String[] lesson_mon6 = {preferences.getString("lesson_mon6", "")};
+        final String[] lesson_mon7 = {preferences.getString("lesson_mon7", "")};
 
         final String[] lesson_th1 = {preferences.getString("lesson_th1", "")};
         final String[] lesson_th2 = {preferences.getString("lesson_th2", "")};

@@ -17,7 +17,15 @@
         <Button
             android:id="@+id/buttonChangeSchedule"
             android:layout_width="match_parent"
-            android:layout_height="38sp"
+            android:layout_height="38dp"
+            android:background="@drawable/button_gradient"
+            android:fontFamily="@font/roboto_light"
+            android:textColor="#FFFFFF"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="5dp"
+            android:textSize="12sp"
             android:text="Изменить расписание" />
 
         <ScrollView
@@ -61,7 +69,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/mon"
-                            android:text="Первый урок"
+                            android:hint="Первый урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -69,7 +77,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_mon1"
-                            android:text="Второй урок"
+                            android:hint="Второй урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -77,7 +85,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_mon2"
-                            android:text="Третий урок"
+                            android:hint="Третий урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -85,7 +93,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_mon3"
-                            android:text="Четвертый урок"
+                            android:hint="Четвертый урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -93,7 +101,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_mon4"
-                            android:text="Пятый урок"
+                            android:hint="Пятый урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -101,7 +109,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_mon5"
-                            android:text="Шестой урок"
+                            android:hint="Шестой урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -109,7 +117,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_mon6"
-                            android:text="Седьмой урок"
+                            android:hint="Седьмой урок"
                             android:textColor="#6221d8" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
@@ -146,7 +154,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/thuesday"
-                            android:text="Первый урок"
+                            android:hint="Первый урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -154,7 +162,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_th1"
-                            android:text="Второй урок"
+                            android:hint="Второй урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -162,7 +170,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_th2"
-                            android:text="Третий урок"
+                            android:hint="Третий урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -170,7 +178,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_th3"
-                            android:text="Четвертый урок"
+                            android:hint="Четвертый урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -178,7 +186,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_th4"
-                            android:text="Пятый урок"
+                            android:hint="Пятый урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -186,7 +194,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_th5"
-                            android:text="Шестой урок"
+                            android:hint="Шестой урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -194,7 +202,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_th6"
-                            android:text="Седьмой урок"
+                            android:hint="Седьмой урок"
                             android:textColor="#6221d8" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
@@ -230,7 +238,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/wednesday"
-                            android:text="Первый урок"
+                            android:hint="Первый урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -238,7 +246,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_wed1"
-                            android:text="Второй урок"
+                            android:hint="Второй урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -246,7 +254,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_wed2"
-                            android:text="Третий урок"
+                            android:hint="Третий урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -254,7 +262,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_wed3"
-                            android:text="Четвертый урок"
+                            android:hint="Четвертый урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -262,7 +270,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_wed4"
-                            android:text="Пятый урок"
+                            android:hint="Пятый урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -270,7 +278,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_wed5"
-                            android:text="Шестой урок"
+                            android:hint="Шестой урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -278,7 +286,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_wed6"
-                            android:text="Седьмой урок"
+                            android:hint="Седьмой урок"
                             android:textColor="#6221d8" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
@@ -314,7 +322,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/thursday"
-                            android:text="Первый урок"
+                            android:hint="Первый урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -322,7 +330,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_thur1"
-                            android:text="Второй урок"
+                            android:hint="Второй урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -330,7 +338,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_thur2"
-                            android:text="Третий урок"
+                            android:hint="Третий урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -338,7 +346,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_thur3"
-                            android:text="Четвертый урок"
+                            android:hint="Четвертый урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -346,7 +354,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_thur4"
-                            android:text="Пятый урок"
+                            android:hint="Пятый урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -354,7 +362,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_thur5"
-                            android:text="Шестой урок"
+                            android:hint="Шестой урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -362,7 +370,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_thur6"
-                            android:text="Седьмой урок"
+                            android:hint="Седьмой урок"
                             android:textColor="#6221d8" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
@@ -398,7 +406,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/friday"
-                            android:text="Первый урок"
+                            android:hint="Первый урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -406,7 +414,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_fri1"
-                            android:text="Второй урок"
+                            android:hint="Второй урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -414,7 +422,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_fri2"
-                            android:text="Третий урок"
+                            android:hint="Третий урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -422,7 +430,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_fri3"
-                            android:text="Четвертый урок"
+                            android:hint="Четвертый урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -430,7 +438,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_fri4"
-                            android:text="Пятый урок"
+                            android:hint="Пятый урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -438,7 +446,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_fri5"
-                            android:text="Шестой урок"
+                            android:hint="Шестой урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -446,7 +454,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_fri6"
-                            android:text="Седьмой урок"
+                            android:hint="Седьмой урок"
                             android:textColor="#6221d8" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
@@ -482,7 +490,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/saturday"
-                            android:text="Первый урок"
+                            android:hint="Первый урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -490,7 +498,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_sat1"
-                            android:text="Второй урок"
+                            android:hint="Второй урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -498,7 +506,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_sat2"
-                            android:text="Третий урок"
+                            android:hint="Третий урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -506,7 +514,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_sat3"
-                            android:text="Четвертый урок"
+                            android:hint="Четвертый урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -514,7 +522,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_sat4"
-                            android:text="Пятый урок"
+                            android:hint="Пятый урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -522,7 +530,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_sat5"
-                            android:text="Шестой урок"
+                            android:hint="Шестой урок"
                             android:textColor="#6221d8" />
 
                         <EditText
@@ -530,7 +538,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/lesson_sat6"
-                            android:text="Седьмой урок"
+                            android:hint="Седьмой урок"
                             android:textColor="#6221d8" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
