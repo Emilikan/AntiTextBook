@@ -68,7 +68,7 @@ public class Schedule2 extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_schedule2, container, false);
 
         frameLayout = rootView.findViewById(R.id.schedule2);
-
+        /*
         couples_mon1.setText(R.string.couples_mon1);
         couples_mon2.setText(R.string.couples_mon2);
         couples_mon3.setText(R.string.couples_mon3);
@@ -98,6 +98,7 @@ public class Schedule2 extends Fragment {
         couples_sat2.setText(R.string.couples_sat2);
         couples_sat3.setText(R.string.couples_sat3);
         couples_sat4.setText(R.string.couples_sat4);
+        */
 
         changingSchedule =  rootView.findViewById(R.id.buttonChangeSchedule_couples);
         changingSchedule.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +108,7 @@ public class Schedule2 extends Fragment {
                 Toast.makeText(getActivity(), "Нажата кнопка", Toast.LENGTH_SHORT).show();
 
                 //сохранение расписания
+                /*
                 couples_mon1 = Objects.requireNonNull(getActivity()).findViewById(R.id.couples_mon1);
                 couples_mon2 = Objects.requireNonNull(getActivity()).findViewById(R.id.couples_mon2);
                 couples_mon3 = Objects.requireNonNull(getActivity()).findViewById(R.id.couples_mon3);
@@ -170,6 +172,7 @@ public class Schedule2 extends Fragment {
                 editor.putString("couples_sat4", valueOf(couples_sat4));
 
                 editor.apply();
+                */
             }
         });
 

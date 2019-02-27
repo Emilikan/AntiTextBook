@@ -125,7 +125,14 @@ public class Settings extends Fragment {
                 userSchool = ((EditText) getActivity().findViewById(R.id.profSchool)).getText().toString();
                 userClass = ((EditText) getActivity().findViewById(R.id.profClass)).getText().toString();
 
-                if("".equals(userClass) || "".equals(userName) || "".equals(userSchool) || "".equals(studentOrSchoolBoy) || "".equals(studentOrSchoolBoy)){
+                int k;
+                try {
+                    k = Integer.parseInt(userClass);
+                } catch (Exception e){
+                    k = -1;
+                }
+
+                if("".equals(k) || "".equals(userName) || "".equals(userSchool) || "".equals(studentOrSchoolBoy) || "".equals(studentOrSchoolBoy)){
 
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
@@ -141,8 +148,7 @@ public class Settings extends Fragment {
                     AlertDialog alert = builder.create();
                     alert.show();
                 }
-                else if(Integer.parseInt(userClass) > 8 && studentOrSchoolBoy.equals("Student")){
-
+                else if(k > 8 && studentOrSchoolBoy.equals("Student") && k != -1){
 
                     AlertDialog.Builder ad;
                     ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
@@ -164,12 +170,33 @@ public class Settings extends Fragment {
                     ad.setCancelable(true);
                     ad.show();
                 }
-                else if(Integer.parseInt(userClass) > 12 && studentOrSchoolBoy.equals("SchoolBoy")){
+                else if(k > 12 && studentOrSchoolBoy.equals("SchoolBoy") && k != -1){
 
                     AlertDialog.Builder ad;
                     ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
                     ad.setTitle("Предупреждение");  // заголовок
                     ad.setMessage("Вы не можете быть больше 12 класса. Выберите 'студент' или напишите в службу поддержки."); // сообщение
+                    ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            Fragment fragment = new Send();
+                            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                            fragmentIs = a20;
+                        }
+                    });
+                    ad.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            dialog.cancel();
+                        }
+                    });
+                    ad.setCancelable(true);
+                    ad.show();
+                }
+                else if(k == -1){
+                    AlertDialog.Builder ad;
+                    ad = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    ad.setTitle("Предупреждение");  // заголовок
+                    ad.setMessage("Пожалуйста, заполните информацию о номере своего класса"); // сообщение
                     ad.setPositiveButton("Служба поддержки", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int arg1) {
                             Fragment fragment = new Send();
